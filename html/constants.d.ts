@@ -1,0 +1,10 @@
+export declare const nothing: unique symbol;
+export declare const TPL: unique symbol;
+export declare const HTML_KIND = 1;
+export declare const SVG_KIND = 2;
+export declare const MARKER_START = "$";
+export declare const MARKER_END = "/";
+export declare const ROOT_MARKER_START = "$r";
+export declare const ROOT_MARKER_END = "/r";
+export declare const ASSIGNED_ATTR = "data-assigned";
+export declare const UNSLOTTED_TAG = "unslotted";

@@ -1,0 +1,59 @@
+declare const _default: Omit<{
+    tag: string;
+    props: {
+        options: Prop<(string | SegmentedOption)[]>;
+        value: string;
+        values: Prop<string[]>;
+        multiple: false;
+        disabled: false;
+        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+            readonly defaultValue: "md";
+            readonly enum: readonly ["sm", "md", "lg"];
+        }>;
+        block: false;
+        name: string;
+    };
+    style: boolean;
+    events: {
+        change: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+            readonly values: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown[], import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        }>;
+    };
+    _options(): SegmentedOption[];
+    /** @param {string} value */
+    _isOn(value: string): boolean;
+    /** @param {string} value */
+    _pick(value: string): void;
+    /** @param {string} value */
+    _toggle(value: string): void;
+    /** @param {KeyboardEvent} e @param {{ value: string }[]} options */
+    _onKeydown(e: KeyboardEvent, options: {
+        value: string;
+    }[]): void;
+    render(): import("@bootstrapp/light/html").TemplateResult;
+}, "events"> & {
+    props?: {
+        options: Prop<(string | SegmentedOption)[]>;
+        value: string;
+        values: Prop<string[]>;
+        multiple: false;
+        disabled: false;
+        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+            readonly defaultValue: "md";
+            readonly enum: readonly ["sm", "md", "lg"];
+        }>;
+        block: false;
+        name: string;
+    } | undefined;
+    events?: {
+        change: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+            readonly values: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown[], import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        }>;
+    } | undefined;
+    mixins?: [] | undefined;
+};
+export default _default;
+import type { SegmentedOption } from "../types.js";
+import type { Prop } from "../types.js";

@@ -1,0 +1,349 @@
+/**
+ * @bootstrapp/light/model/store: every model's reads and writes over the
+ * adapter that holds it, in the page or in a worker. The write pipeline runs
+ * once here for every adapter: hooks, id, relation stripping, defaults,
+ * validation, file uploads, then the adapter's own insert/update/delete, then
+ * the `model:changed` event live queries follow. Adapters store rows; the store knows the
+ * schema. A model's adapter is the routed one wrapped by the decorators its
+ * schema directives call for (`registerAdapterDecorator`); a `$shadow`
+ * directive names a second, device-local adapter a decorator may use.
+ */
+
+import { MODEL_CHANGED } from "./events.js";
+import { newId } from "./config.js";
+import { decoratorsFor } from "./factory.js";
+import { ValidationError, validateRow } from "./validate.js";
+import { uploadFiles } from "./file-storage.js";
+import { loadRelationships, loadRelationshipsForMany } from "./relationship-loader.js";
+import { relationValueToId } from "./relationships.js";
+import { applyFields, validateQueryOptions } from "./query-builder.js";
+import { eachField, entryOf, schemaField } from "./fields.js";
+
+export { createModelHandlers, storeRequest } from "./handlers.js";
+
+                                                                                                                                                                                
+
+const isId = (value         )                           => typeof value === "string" || typeof value === "number";
+
+const copy = (record                         )                          => Object.fromEntries(Object.entries(record));
+
+const callHook = (name                  , fn         , row            , ctx             )          => {
+  if (typeof fn !== "function") throw new TypeError(`$hooks.${name} is not a function`);
+  return (fn                                                  )(row, ctx);
+};
+
+const forStorage = (schema                         , row     )      => {
+  const relations = new Map                    ();
+  eachField(schema, (field, def) => {
+    if (def.relationship) relations.set(field, def);
+  });
+  return Object.fromEntries(Object.entries(row).flatMap(([field, value])                      => {
+    const def = relations.get(field);
+    if (def === undefined) return [[field, value]];
+    if (!def.belongs) return [];
+    if (value === undefined) return [[field, value]];
+    return [[field, def.relationship === "belongs_many" && Array.isArray(value) ? value.map(relationValueToId) : relationValueToId(value)]];
+  }));
+};
+
+const withDefaults = (schema                         , row     )      => {
+  const filled                      = [];
+  eachField(schema, (field, def) => {
+    if (row[field] !== undefined || def.defaultValue === undefined) return;
+    if (def.relationship && !def.belongs) return;
+    const value = def.defaultValue;
+    filled.push([field, typeof value === "function" ? (value                 )() : value && typeof value === "object" ? structuredClone(value) : value]);
+  });
+  return filled.length === 0 ? row : Object.fromEntries([...Object.entries(row), ...filled]);
+};
+
+const withoutImmutable = (schema                         , patch     )      => {
+  const immutable = new Set        ();
+  eachField(schema, (field, def) => {
+    if (def.immutable && field !== "id") immutable.add(field);
+  });
+  return Object.fromEntries(Object.entries(patch).filter(([field]) => !immutable.has(field)));
+};
+
+const at = (error         , index        )        => {
+  const failure = error instanceof Error ? error : new Error(String(error));
+  Reflect.set(failure, "index", index);
+  return failure;
+};
+
+const without = (record                         , omitted        )                          =>
+  Object.fromEntries(Object.entries(record).filter(([key]) => key !== omitted));
+
+const queryOf = (opts                          )               => (opts === undefined ? {} : opts);
+
+const writeOf = (options                          )               => (options === undefined ? {} : options);
+
+const merged = (...rows       )      => Object.fromEntries(rows.flatMap((row) => Object.entries(row)));
+
+/** The store over `models` and the adapters in `databases`, routing each model to its adapter. */
+export function createStore({ models, databases = {}, defaultAdapter = "indexeddb", emit = null }             )        {
+  const routes                      = new Map();
+  const decorated                              = new Map();
+
+  const route = ()       => {
+    decorated.clear();
+    for (const [name, schema] of Object.entries(models)) {
+      if (name.startsWith("$")) continue;
+      const wanted = schema.$extension ? `ext:${schema.$extension}` : (schema.$adapter || defaultAdapter);
+      const target = entryOf(databases, wanted);
+      if (!target) console.warn(`[store] no "${wanted}" database for model "${name}"; using "${defaultAdapter}"`);
+      routes.set(name, target ? wanted : defaultAdapter);
+    }
+  };
+
+  const baseAdapterFor = (model        )                 => {
+    const name = routes.get(model);
+    const adapter = name ? entryOf(databases, name) : undefined;
+    if (!adapter)
+      throw new Error(`Model "${model}" is not mapped to any database. Registered models: ${[...routes.keys()].join(", ")}`);
+    return adapter;
+  };
+
+  const shadowFor = (model        )                        => {
+    const name = schemaOf(model)?.$shadow;
+    if (!name) return null;
+    return entryOf(databases, name) ?? null;
+  };
+
+  const adapterFor = (model        )                 => {
+    const known = decorated.get(model);
+    if (known) return known;
+    const schema = schemaOf(model);
+    let adapter = baseAdapterFor(model);
+    for (const decorate of decoratorsFor(schema))
+      adapter = decorate(adapter, { model, schema, store, shadow: shadowFor(model), emit: emit ?? (() => undefined) });
+    decorated.set(model, adapter);
+    return adapter;
+  };
+
+  const schemaOf = (model        )                          => entryOf(models, model);
+
+  const hookOf = (model        , name                  )          => schemaOf(model)?.$hooks?.[name];
+
+  const changed = (model        , action                           , row     )       => {
+    if (emit) emit(MODEL_CHANGED, { model, action, row });
+  };
+
+  const context = (model        , operation                          , extra                       = {})              => ({ model, store, operation, ...extra });
+
+  const runBefore = async (model        , name                            , data     , ctx             )               => {
+    const fn = hookOf(model, name);
+    if (!fn) return data;
+    const out = await callHook(name, fn, data, ctx);
+    return out == null ? data : (out       );
+  };
+
+  const runAfter = async (model        , name                                          , row            , ctx             )                => {
+    const fn = hookOf(model, name);
+    if (fn) await callHook(name, fn, row, ctx);
+  };
+
+  const prepareAdd = async (model        , data     , options              )               => {
+    const schema = schemaOf(model);
+    let row = await runBefore(model, "beforeAdd", copy(data), context(model, "add", { importing: Boolean(options.importing) }));
+    if (row.id == null) {
+      const adapter = adapterFor(model);
+      const nextId = adapter.nextId;
+      if (typeof nextId === "function") row.id = nextId.call(adapter, model, row);
+      else {
+        const idField = schema ? schemaField(schema, "id") : undefined;
+        if (idField?.$type !== "number") row.id = newId();
+      }
+    }
+    row = withDefaults(schema, forStorage(schema, row));
+    const { valid, errors } = validateRow(models, model, row, { operation: "add" });
+    if (!valid) throw new ValidationError(model, errors);
+    return uploadFiles(schema, model, row);
+  };
+
+  const store        = {
+    models,
+    databases,
+    defaultAdapter,
+    adapterFor,
+    baseAdapterFor,
+    shadowFor,
+
+    addDatabase(name, adapter)       {
+      databases[name] = adapter;
+      route();
+    },
+
+    addModels(more)       {
+      for (const name of Object.keys(more)) if (!(name in models)) models[name] = more[name];
+      route();
+    },
+
+    supportsOperator(model, operator)          {
+      const adapter = adapterFor(model);
+      const supports = adapter.supportsOperator;
+      return typeof supports === "function" ? supports.call(adapter, operator) : false;
+    },
+
+    async get(model, idOrWhere, options)                      {
+      const opts               = options === undefined ? {} : options;
+      const adapter = adapterFor(model);
+      let row             = null;
+      const scope                               = opts.locale ? { locale: opts.locale } : {};
+      if (isId(idOrWhere)) row = await adapter.get(model, idOrWhere, scope);
+      else if (idOrWhere && typeof idOrWhere === "object") {
+        const first               = { where: idOrWhere, order: opts.order, limit: 1, total: false };
+        if (opts.locale) first.locale = opts.locale;
+        const { rows } = await adapter.query(model, first);
+        const found = rows[0] ?? null;
+        row = found;
+        const heavy = schemaOf(model)?.$heavy ?? [];
+        if (found && heavy.some((field) => !(field in found)))
+          row = (await adapter.get(model, found.id                   , scope)) ?? found;
+      }
+      if (!row) return null;
+      const includes = opts.includes ?? [];
+      if (includes.length) row = await loadRelationships(store, models, model, row, includes);
+      return opts.fields?.length ? applyFields([row], [...opts.fields, ...includes])[0] : row;
+    },
+
+    async query(model, given)                     {
+      const opts = queryOf(given);
+      validateQueryOptions(opts);
+      const { includes } = opts;
+      const selection               = without(opts, "includes");
+      const { rows, total } = await adapterFor(model).query(model, selection);
+      return { rows: includes?.length ? await loadRelationshipsForMany(store, models, model, rows, includes) : rows, total };
+    },
+
+    async getAll(model, given)                 {
+      const query               = copy(queryOf(given));
+      query.total = false;
+      return (await store.query(model, query)).rows;
+    },
+
+    async count(model, given)                  {
+      return adapterFor(model).count(model, queryOf(given).where);
+    },
+
+    async exists(model, where)                   {
+      const adapter = adapterFor(model);
+      const exists = adapter.exists;
+      if (typeof exists === "function") return exists.call(adapter, model, where);
+      return (await adapter.count(model, where)) > 0;
+    },
+
+    async facets(model, fields, given)                       {
+      const adapter = adapterFor(model);
+      const facets = adapter.facets;
+      if (typeof facets === "function") return facets.call(adapter, model, fields, queryOf(given));
+      return {};
+    },
+
+    async add(model, data, given)               {
+      const options = writeOf(given);
+      const row = await prepareAdd(model, data, options);
+      const stored = await adapterFor(model).insert(model, row, options);
+      changed(model, "add", stored);
+      await runAfter(model, "afterAdd", stored, context(model, "add", { importing: Boolean(options.importing) }));
+      return stored;
+    },
+
+    async addMany(model, rows, given)                 {
+      const options = writeOf(given);
+      const adapter = adapterFor(model);
+      const prepared        = [];
+      for (const [index, data] of rows.entries())
+        try {
+          prepared.push(await prepareAdd(model, data, options));
+        } catch (error) {
+          throw at(error, index);
+        }
+      let stored        = [];
+      const insertMany = adapter.insertMany;
+      if (typeof insertMany === "function") stored = await insertMany.call(adapter, model, prepared, options);
+      else
+        for (const [index, row] of prepared.entries())
+          try {
+            stored.push(await adapter.insert(model, row, options));
+          } catch (error) {
+            throw at(error, index);
+          }
+      const ctx = context(model, "add", { importing: Boolean(options.importing) });
+      for (const row of stored) changed(model, "add", row);
+      for (const row of stored) await runAfter(model, "afterAdd", row, ctx);
+      return stored;
+    },
+
+    async edit(model, id, patch, given)               {
+      const options = writeOf(given);
+      const schema = schemaOf(model);
+      const adapter = adapterFor(model);
+      const ctx = context(model, "edit", { id });
+      const changes = await runBefore(model, "beforeEdit", merged(forStorage(schema, withoutImmutable(schema, patch)), { id }), ctx);
+      const current = await adapter.get(model, id);
+      if (!current) throw new Error(`Record ${id} not found in model "${model}"`);
+      let row = forStorage(schema, merged(current, changes, { id }));
+      const { valid, errors } = validateRow(models, model, row, { operation: "edit" });
+      if (!valid) throw new ValidationError(model, errors);
+      row = await uploadFiles(schema, model, row);
+      const stored = await adapter.update(model, row, { ...options, patch: without(changes, "id") });
+      changed(model, "edit", stored);
+      await runAfter(model, "afterEdit", stored, ctx);
+      return stored;
+    },
+
+    async remove(model, id, given)                   {
+      const options = writeOf(given);
+      const adapter = adapterFor(model);
+      const ctx = context(model, "remove", { id });
+      const before = hookOf(model, "beforeRemove");
+      const current = before || hookOf(model, "afterRemove") ? await adapter.get(model, id) : null;
+      if (before && (await callHook("beforeRemove", before, current, ctx)) === false) return false;
+      await adapter.delete(model, id, options);
+      changed(model, "remove", current ?? { id });
+      await runAfter(model, "afterRemove", current, ctx);
+      return true;
+    },
+
+    async removeAll(model, where)                  {
+      const rows = await store.getAll(model, { where, fields: ["id"] });
+      let removed = 0;
+      for (const row of rows) if (await store.remove(model, row.id                   )) removed += 1;
+      return removed;
+    },
+
+    async truncate(model)                {
+      const adapter = adapterFor(model);
+      const truncate = adapter.truncate;
+      if (typeof truncate === "function") await truncate.call(adapter, model);
+    },
+
+    async runAfterAdd(model, row)                {
+      await runAfter(model, "afterAdd", row, context(model, "add"));
+    },
+
+    async exportData()                                 {
+      const dump                        = {};
+      for (const model of routes.keys()) dump[model] = (await baseAdapterFor(model).query(model, {})).rows;
+      return dump;
+    },
+
+    async importData(dump)                {
+      for (const [model, rows] of Object.entries(dump)) {
+        if (!routes.has(model)) {
+          console.warn(`[store] import skips "${model}": no such model`);
+          continue;
+        }
+        if (Array.isArray(rows) && rows.length) await store.addMany(model, rows, { importing: true });
+      }
+    },
+
+    async close()                {
+      for (const adapter of Object.values(databases)) await adapter.close();
+    },
+  };
+
+  route();
+  return store;
+}

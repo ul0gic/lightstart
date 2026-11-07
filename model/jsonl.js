@@ -1,0 +1,194 @@
+/**
+ * @bootstrapp/light/model/jsonl: a storage adapter over JSON Lines files, one
+ * file per model (`<dir>/<model>.jsonl`). A file is the log of its model's
+ * writes: every write appends the row as one line, a later line for an id
+ * replaces an earlier one, and a removal appends `{"id":…,"$removed":true}`.
+ * A model's file is read into memory the first time the model is reached, so
+ * reads answer from memory, and a line an interrupted append cut short is
+ * skipped. When the lines a file no longer needs outnumber its rows, the file
+ * is rewritten with the rows alone. The adapter reaches its files through
+ * `io` (`read`, `append`, `write`), so it runs wherever its host can read and
+ * append a file; one process owns a directory. Importing it registers
+ * nothing: `registerStorageAdapter("jsonl", JsonlAdapter)` where the store is
+ * built, then `createAdapter("jsonl", { name, dir, io })`; `openJsonl` does
+ * both for a process that holds its own models and store.
+ */
+
+import { configureModel, modelBus } from "./config.js";
+import { createAdapter, hasAdapter, registerStorageAdapter } from "./factory.js";
+import { buildQueryResult, validateQueryOptions } from "./query-builder.js";
+import { createStore, storeRequest } from "./store.js";
+
+                                                                                                                                                             
+
+const COMPACT_AFTER = 32;
+
+const readLines = (text        )                                                            => {
+  const rows                   = new Map();
+  let lines = 0;
+  let clean = text === "" || text.endsWith("\n");
+  for (const line of text.split("\n")) {
+    if (line.trim() === "") continue;
+    let parsed          = null;
+    try {
+      parsed = JSON.parse(line);
+    } catch {
+      clean = false;
+      continue;
+    }
+    if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) {
+      clean = false;
+      continue;
+    }
+    const entry = parsed       ;
+    if (entry.id === undefined || entry.id === null) {
+      clean = false;
+      continue;
+    }
+    lines++;
+    const key = String(entry.id);
+    if (entry.$removed === true) rows.delete(key);
+    else rows.set(key, entry);
+  }
+  return { rows, stale: lines - rows.size, clean };
+};
+
+const linesOf = (rows                  )         => [...rows.values()].map((row) => `${JSON.stringify(row)}\n`).join("");
+
+const compact = (adapter              , table            )       => {
+  adapter.io.write(table.path, linesOf(table.rows));
+  table.stale = 0;
+};
+
+const settle = (adapter              , table            )       => {
+  if (table.stale > COMPACT_AFTER && table.stale > table.rows.size) compact(adapter, table);
+};
+
+const tableOf = (adapter              , model        )             => {
+  let table = adapter.tables.get(model);
+  if (!table) {
+    const path = `${adapter.dir}/${model}.jsonl`;
+    const { rows, stale, clean } = readLines(adapter.io.read(path) ?? "");
+    table = { path, rows, stale };
+    adapter.tables.set(model, table);
+    if (!clean) compact(adapter, table);
+    else settle(adapter, table);
+  }
+  return table;
+};
+
+const copy = (row     )      => Object.fromEntries(Object.entries(row));
+
+const record = (adapter              , table            , row     )      => {
+  const line = JSON.stringify(row);
+  const stored = JSON.parse(line)       ;
+  const key = String(stored.id);
+  if (table.rows.has(key)) table.stale++;
+  table.rows.set(key, stored);
+  adapter.io.append(table.path, `${line}\n`);
+  return stored;
+};
+
+const assertNew = (table            , model        , row     )       => {
+  if (row.id === undefined || row.id === null) throw new Error(`Model "${model}": a row needs an id to be stored in a JSONL file`);
+  if (table.rows.has(String(row.id))) throw new Error(`Model "${model}": a row with id "${String(row.id)}" exists`);
+};
+
+const JsonlAdapter                 = {
+  async init(                  )                {
+    this.tables = new Map();
+  },
+
+  async get(                    model        , id                 )                      {
+    const row = tableOf(this, model).rows.get(String(id));
+    return row ? copy(row) : null;
+  },
+
+  async query(                    model        , given                          )                     {
+    const options               = given === undefined ? {} : given;
+    validateQueryOptions(options);
+    const result = buildQueryResult([...tableOf(this, model).rows.values()], options);
+    return { rows: result.items.map(copy), total: result.total };
+  },
+
+  async insert(                    model        , row     )               {
+    const table = tableOf(this, model);
+    assertNew(table, model, row);
+    const stored = record(this, table, row);
+    return copy(stored);
+  },
+
+  async insertMany(                    model        , rows       )                 {
+    const table = tableOf(this, model);
+    for (const row of rows) assertNew(table, model, row);
+    return rows.map((row) => copy(record(this, table, row)));
+  },
+
+  async update(                    model        , row     )               {
+    const table = tableOf(this, model);
+    const stored = record(this, table, row);
+    settle(this, table);
+    return copy(stored);
+  },
+
+  async delete(                    model        , id                 )                   {
+    const table = tableOf(this, model);
+    const key = String(id);
+    if (!table.rows.has(key)) return false;
+    table.rows.delete(key);
+    this.io.append(table.path, `${JSON.stringify({ id, $removed: true })}\n`);
+    table.stale += 2;
+    settle(this, table);
+    return true;
+  },
+
+  async count(                    model        , where                         )                  {
+    const { rows } = tableOf(this, model);
+    if (!where || Object.keys(where).length === 0) return rows.size;
+    return buildQueryResult([...rows.values()], { where }).total;
+  },
+
+  async exists(                    model        , where                         )                   {
+    return (await this.count(model, where)) > 0;
+  },
+
+  async truncate(                    model        )                {
+    const table = tableOf(this, model);
+    table.rows.clear();
+    compact(this, table);
+  },
+
+  async close(                  )                {
+    this.tables = new Map();
+  },
+};
+
+export default JsonlAdapter;
+
+/** What `openJsonl` takes: the database's name, the directory of its files, how to reach them, and the models it holds. */
+                            
+               
+              
+              
+                                       
+ 
+
+/**
+ * The store of a process that holds its own models, over JSONL files: the
+ * adapter registered once, opened on `dir` through `io`, a store over the
+ * models' schemas with the model bus as its emitter, and the store's request
+ * as what every model call goes through from here on. Answers the store.
+ */
+export const openJsonl = async ({ name, dir, io, models }           )                 => {
+  if (!hasAdapter("jsonl")) registerStorageAdapter("jsonl", JsonlAdapter);
+  const db = createAdapter("jsonl", { name, dir, io });
+  await db.init();
+  const store = createStore({
+    models: Object.fromEntries(models.map((model)                        => [model.name, model.schema])),
+    databases: { jsonl: db },
+    defaultAdapter: "jsonl",
+    emit: (event, data) => modelBus().emit(event, data),
+  });
+  configureModel({ request: storeRequest(store) });
+  return store;
+};
