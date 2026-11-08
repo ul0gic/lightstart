@@ -26,7 +26,8 @@ const ratioOf = (aspect) => {
  * what a round avatar keeps; the square is what `toBlob()` answers, an image
  * `outputSize` wide in `outputType`, stepped down in quality until it is at
  * most `maxBytes`. An `aspect` such as `3:4` makes the frame, and the image,
- * that shape instead: 3 wide to 4 tall.
+ * that shape instead: 3 wide to 4 tall. It takes `shape="square"`, since the
+ * circle stretches to a pill over a frame that is not square.
  *
  * `pick()` opens the file chooser and has to run inside the tap that asks for
  * it, which is what iOS requires. A file can also be dropped on the frame, or

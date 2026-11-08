@@ -1,5 +1,6 @@
 :where(.lc-rating, lc-rating) {
   display: inline-flex;
+  flex-direction: column;
 
   .lc-rating__container {
     display: flex;

@@ -24,6 +24,7 @@ declare const _default: Omit<{
     style: boolean;
     props: {
         placeholder: string;
+        label: string;
         query: string;
         open: false;
         active: number;
@@ -47,6 +48,10 @@ declare const _default: Omit<{
             readonly reactive: false;
             readonly defaultValue: false;
         }>;
+        _id: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+            readonly reactive: false;
+            readonly defaultValue: "";
+        }>;
     };
     events: {
         "search-select": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
@@ -55,6 +60,7 @@ declare const _default: Omit<{
             readonly expanded: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
         }>;
     };
+    connected(): void;
     firstUpdated(): void;
     _shown(): SearchDoc[];
     _grouped(): {
@@ -90,6 +96,7 @@ declare const _default: Omit<{
 }, "events"> & {
     props?: {
         placeholder: string;
+        label: string;
         query: string;
         open: false;
         active: number;
@@ -112,6 +119,10 @@ declare const _default: Omit<{
         _expanding: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
             readonly reactive: false;
             readonly defaultValue: false;
+        }>;
+        _id: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+            readonly reactive: false;
+            readonly defaultValue: "";
         }>;
     } | undefined;
     events?: {

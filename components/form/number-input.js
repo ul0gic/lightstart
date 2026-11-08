@@ -23,6 +23,7 @@ export default defineComponent({
     unit: "",
     display: "",
     editing: false,
+    errorMessage: T.string(),
   },
   style: true,
 
@@ -206,6 +207,8 @@ export default defineComponent({
           ?disabled=${this.disabled}
           ?readonly=${this.readonly}
           ?required=${this.required}
+          aria-invalid=${this.errorMessage ? "true" : nothing}
+          aria-describedby=${this.errorMessage ? `${this.getInputId()}-error` : nothing}
           @input=${this.handleInput.bind(this)}
           @change=${this.handleChange.bind(this)}
         />
@@ -238,6 +241,7 @@ export default defineComponent({
             : ""
         }
       </div>
+      ${this.errorMessage ? html`<span class="input-error" id=${`${this.getInputId()}-error`}>${this.errorMessage}</span>` : ""}
     `;
   },
 });
@@ -336,5 +340,11 @@ export default defineComponent({
  *   </label>
  *   <button type="submit">Add to Cart</button>
  * </form>
+ * ```
+ *
+ * @example
+ * // With an error message, drawn under the field and named to it
+ * ```html
+ * <lc-number-input label="Guests" min="1" error-message="At least one guest."></lc-number-input>
  * ```
  */

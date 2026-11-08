@@ -131,6 +131,19 @@
     --lc-number-input-padding-right: 3.5rem;
   }
 
+  &[error-message]:not([error-message=""]) {
+    --lc-input-border-color: var(--color-danger);
+    --lc-input-focus-border-color: var(--color-danger);
+    --lc-input-focus-shadow: 0 0 0 3px rgba(251, 73, 52, 0.1);
+  }
+
+  .input-error {
+    display: block;
+    color: var(--lc-input-error-color, color-mix(in srgb, var(--color-danger) 75%, var(--text-color)));
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+  }
+
   &[show-buttons="false"] {
     .number-input {
       padding-right: var(--lc-input-padding-x, 0.75rem);

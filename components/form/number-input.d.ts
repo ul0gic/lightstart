@@ -84,6 +84,7 @@ declare const _default: Omit<{
         unit: string;
         display: string;
         editing: false;
+        errorMessage: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
     };
     style: boolean;
     connected(): void;
@@ -121,6 +122,7 @@ declare const _default: Omit<{
         unit: string;
         display: string;
         editing: false;
+        errorMessage: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
     } | undefined;
     events?: {} | undefined;
     mixins?: [{

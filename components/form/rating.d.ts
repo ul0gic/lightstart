@@ -77,6 +77,7 @@ declare const _default: Omit<{
     props: {
         value: number;
         max: number;
+        clearable: false;
         change: import("@bootstrapp/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
     };
     /** @param {KeyboardEvent} e @param {number} index */
@@ -86,6 +87,7 @@ declare const _default: Omit<{
     props?: {
         value: number;
         max: number;
+        clearable: false;
         change: import("@bootstrapp/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
     } | undefined;
     events?: {} | undefined;
