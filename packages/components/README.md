@@ -355,7 +355,7 @@ A page without the framework defines these too, one level deep; follow the table
 | `lc-rating` | `lc-icon` |
 | `lc-ruler` |  |
 | `lc-scroller` | `lc-icon` |
-| `lc-search` | `lc-icon`, `lc-join` |
+| `lc-search` | `lc-icon`, `lc-join`, `lc-label` |
 | `lc-section` | `lc-button`, `lc-icon`, `lc-panel` |
 | `lc-segmented` | `lc-icon` |
 | `lc-select` | `lc-icon`, `lc-label`, `lc-tag` |
