@@ -1971,7 +1971,8 @@
     "extends": null,
     "uses": [
       "lc-icon",
-      "lc-join"
+      "lc-join",
+      "lc-label"
     ],
     "loads": [],
     "doc": {
