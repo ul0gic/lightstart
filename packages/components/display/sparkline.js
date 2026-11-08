@@ -2,6 +2,7 @@ import { html, svg } from "@lightstart/light/html";
 import T from "@lightstart/light/types";
 import { defineComponent } from "@lightstart/light";
 import { uniqueId } from "../utils/id.js";
+import { lcText } from "../utils/text.js";
 
 /** @import { Prop, SparklineDatum } from "../types.ts" */
 
@@ -19,6 +20,7 @@ export default defineComponent({
 		}),
 		showArea: false,
 		smooth: true,
+		label: T.string(),
 		_gradientId: T.string({ reactive: false, defaultValue: "" }),
 	},
 
@@ -45,6 +47,9 @@ export default defineComponent({
 
 		const linePath = this._createPath(points);
 		const areaPath = this._createAreaPath(points, this.height - padding);
+		const summary = values.length === 1
+			? lcText("lc-sparkline", "point", { value: values[0] })
+			: lcText("lc-sparkline", "summary", { first: values[0], last: values[values.length - 1], count: values.length });
 
 		return html`
 			<svg
@@ -52,6 +57,8 @@ export default defineComponent({
 				width="${this.width}"
 				height="${this.height}"
 				viewBox="0 0 ${this.width} ${this.height}"
+				role="img"
+				aria-label=${this.label || lcText("lc-sparkline", "name")}
 			>
 				${this.showArea ? this._area(areaPath) : ""}
 				<path
@@ -62,6 +69,7 @@ export default defineComponent({
 					stroke-linejoin="round"
 				></path>
 			</svg>
+			<span class="sparkline-summary">${summary}</span>
 		`;
 	},
 

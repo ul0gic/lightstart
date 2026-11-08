@@ -99,4 +99,24 @@ describe("@lightstart/light - lc-bar-chart", () => {
     assert.ok(bubble.getBoundingClientRect().bottom <= bar.top, "the bubble sits above its bar");
     assert.equal(el.querySelector(".bar-value"), null, "the bubble replaces the current bar's value");
   });
+
+  it("is an image named after its kind or its label, with its data in a table only a screen reader sees", async () => {
+    for (const props of [{}, { showAxis: true }]) {
+      const el = await mount(props);
+      const drawing = el.querySelector('[role="img"]');
+      assert.equal(drawing.getAttribute("aria-label"), "Bar chart");
+      const table = el.querySelector("table");
+      assert.equal(drawing.contains(table), false, "the table sits outside the image");
+      assert.equal(table.caption.textContent, "Bar chart");
+      assert.deepEqual([...table.rows].map((row) => [...row.cells].map((cell) => cell.textContent)), [["Mon", "1200"], ["Tue", "3100"], ["Wed", "0"], ["Thu", "2400"]]);
+      const box = table.parentElement.getBoundingClientRect();
+      assert.ok(box.width <= 1 && box.height <= 1, "and takes no room");
+    }
+    const named = await mount({ label: "Weekly revenue" });
+    assert.equal(named.querySelector('[role="img"]').getAttribute("aria-label"), "Weekly revenue");
+    assert.equal(named.querySelector("caption").textContent, "Weekly revenue");
+    const priced = await mount({ showAxis: true, formatValue: (value) => `$${value}` });
+    const cells = [...priced.querySelectorAll("tr")].map((row) => `${row.cells[0].textContent}: ${row.cells[1].textContent}`);
+    assert.deepEqual(cells, [...priced.querySelectorAll(".bar")].map((bar) => bar.getAttribute("title")), "the table reads each value as its bar's title does, whatever formats the axis");
+  });
 });
