@@ -1,6 +1,6 @@
 import { html } from "@lightstart/light/html";
 import T from "@lightstart/light/types";
-import { getFormFieldRenderer, renderFormControl, drawsOwnLabel } from "./field-renderers.js";
+import { getFormFieldRenderer, renderFormControl, drawsOwnLabel, drawsOwnError } from "./field-renderers.js";
 import { getPath, setPath } from "./path.js";
 import { defineComponent } from "@lightstart/light";
 import { lcText } from "../utils/text.js";
@@ -525,13 +525,14 @@ export default defineComponent({
           const value = formData[original.name];
           const field = this._withOptions(original, value);
           const error = this.errors[field.name];
+          const ownsError = !this.typeHandlers[field.type]?.render && drawsOwnError(field);
           const hint = field.help || field.description;
           return html`
             <div class="form-field ${field.class || ""} ${error ? "has-error" : ""}">
               ${field.label && !drawsOwnLabel(field) ? html`<lc-label text=${field.label} ?required=${field.required}></lc-label>` : ""}
-              ${this.renderField(field, value)}
+              ${this.renderField(ownsError ? { ...field, errorMessage: error ?? "" } : field, value)}
               ${hint ? html`<small class="form-hint">${hint}</small>` : ""}
-              ${error ? html`<span class="form-error">${error}</span>` : ""}
+              ${error && !ownsError ? html`<span class="form-error">${error}</span>` : ""}
             </div>
           `;
         })}

@@ -121,7 +121,7 @@ describe("lc-form", () => {
       const el = await mount({ fields: [{ name: "title", label: "Title", type: "text" }] });
       el.setErrors({ title: "Title is required" });
       await frame();
-      assert.equal(el.querySelector(".form-error").textContent.trim(), "Title is required");
+      assert.equal(el.querySelector("lc-input .input-error").textContent.trim(), "Title is required");
       el.setErrors(null);
       await frame();
       assert.equal(el.querySelector(".form-error"), null);
@@ -133,7 +133,7 @@ describe("lc-form", () => {
       const el = await mount({ fields: [{ name: "title", label: "Title", type: "text" }] });
       el.setErrors({ title: "Title is required" });
       await frame();
-      assert.equal(el.querySelector(".form-error").textContent.trim(), "Title is required");
+      assert.equal(el.querySelector("lc-input .input-error").textContent.trim(), "Title is required");
       assert.ok(el.querySelector(".has-error"));
       el.clearErrors();
       await frame();
@@ -344,7 +344,7 @@ describe("lc-form", () => {
       const el = await mount({ fields: [{ name: "title", label: "Title", type: "text" }], data: { title: "x" } });
       el.setErrors({ title: "Title is required" });
       await frame();
-      assert.ok(el.querySelector(".form-error"));
+      assert.ok(el.querySelector("lc-input .input-error"));
       el.submit();
       await frame();
       assert.equal(el.querySelector(".form-error"), null);
@@ -592,7 +592,7 @@ describe("lc-form: refusing a submit", () => {
     const message = /** @type {HTMLInputElement} */ (el.querySelector('[name="title"] input')).validationMessage;
     assert.deepEqual(refused, [{ errors: { title: message } }], "the platform's refusal is announced once");
     assert.equal(el.errors.title, message, "the platform's reason becomes the form's");
-    assert.equal(el.querySelector(".form-error").textContent.trim(), message);
+    assert.equal(el.querySelector("lc-input .input-error").textContent.trim(), message);
   });
 
   it("two refused controls are announced as one refusal", async () => {
@@ -1057,5 +1057,91 @@ describe("lc-form: options that have to be fetched", () => {
       { value: "octo/saved", label: "Saved" },
       { value: "octo/other", label: "Other" },
     ], "and the loaded label replaces the placeholder once it lands");
+  });
+});
+
+describe("lc-form: a field's error", () => {
+  /** @type {HTMLElement[]} */
+  const mounted = [];
+  before(() => {
+    define("lc-label", labelDef);
+    define("lc-input", inputDef);
+    define("lc-select", selectDef);
+    define("lc-form", formDef);
+  });
+  after(() => {
+    for (const el of mounted) el.remove();
+  });
+  /** @param {Record<string, unknown>} props */
+  const mount = async (props) => {
+    const el = /** @type {HTMLElement & { setErrors(errors: Record<string, string>): void, clearErrors(): void }} */ (document.createElement("lc-form"));
+    Object.assign(el, props);
+    document.body.appendChild(el);
+    mounted.push(el);
+    await frame();
+    await tick();
+    return el;
+  };
+
+  it("an input field's error is drawn once, by the input, and named to it", async () => {
+    const el = await mount({
+      fields: [
+        { name: "email", label: "Email", type: "email" },
+        { name: "kind", label: "Kind", type: "select", options: ["a", "b"] },
+      ],
+    });
+    el.setErrors({ email: "Enter an email address.", kind: "Pick one." });
+    await frame();
+    await tick();
+    const emailField = el.querySelector('lc-input[name="email"]').closest(".form-field");
+    assert.equal(emailField.querySelectorAll(".input-error, .form-error").length, 1, "one message, not two");
+    const message = emailField.querySelector("lc-input .input-error");
+    assert.equal(message.textContent, "Enter an email address.");
+    const input = emailField.querySelector("input");
+    assert.equal(input.getAttribute("aria-invalid"), "true");
+    assert.equal(document.getElementById(input.getAttribute("aria-describedby")), message);
+    assert.ok(emailField.classList.contains("has-error"));
+
+    const kindField = el.querySelector('lc-select[name="kind"]').closest(".form-field");
+    assert.equal(kindField.querySelector(".form-error").textContent.trim(), "Pick one.");
+    assert.ok(kindField.classList.contains("has-error"));
+
+    el.clearErrors();
+    await frame();
+    await tick();
+    assert.equal(emailField.querySelector(".input-error"), null);
+    assert.equal(input.hasAttribute("aria-invalid"), false);
+    assert.equal(input.hasAttribute("aria-describedby"), false);
+    assert.equal(kindField.querySelector(".form-error"), null);
+  });
+
+  it("a field drawn by a typeHandler keeps the form's own message", async () => {
+    const el = await mount({
+      fields: [{ name: "title", label: "Title", type: "text" }],
+      typeHandlers: {
+        text: {
+          render: (field) => {
+            const input = document.createElement("input");
+            input.name = field.name;
+            return input;
+          },
+        },
+      },
+    });
+    el.setErrors({ title: "Title is required" });
+    await frame();
+    assert.equal(el.querySelector(".form-error").textContent.trim(), "Title is required");
+  });
+
+  it("a number field's error is drawn once, by its input, and named to it", async () => {
+    const el = await mount({ fields: [{ name: "guests", label: "Guests", type: "number" }] });
+    el.setErrors({ guests: "At least one guest." });
+    await frame();
+    await tick();
+    const field = /** @type {HTMLElement} */ (el.querySelector(".form-field"));
+    assert.equal(field.querySelectorAll(".input-error, .form-error").length, 1, "one message, not two");
+    const input = /** @type {HTMLInputElement} */ (field.querySelector('input[type="number"]'));
+    assert.equal(input.getAttribute("aria-invalid"), "true");
+    assert.equal(document.getElementById(/** @type {string} */ (input.getAttribute("aria-describedby")))?.textContent, "At least one guest.");
   });
 });
