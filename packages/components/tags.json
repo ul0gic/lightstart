@@ -1242,12 +1242,12 @@
   },
   "lc-image": {
     "module": "display/image.js",
-    "style": null,
+    "style": "display/image.css",
     "extends": null,
     "uses": [],
     "loads": [],
     "doc": {
-      "description": "",
+      "description": "Image Component",
       "parts": [],
       "slots": []
     }
