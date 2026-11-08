@@ -46,7 +46,30 @@
   th[align="right"], td[align="right"] { text-align: right; }
   th[align="center"], td[align="center"] { text-align: center; }
 
-  th[aria-sort] { cursor: pointer; user-select: none; }
+  th:has(> .lc-table-sort-button) { cursor: pointer; user-select: none; }
+
+  .lc-table-sort-button {
+    appearance: none;
+    width: 100%;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    text-align: inherit;
+    white-space: inherit;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .lc-table-sort-button:focus-visible {
+    outline: 2px solid var(--color-focus, var(--color-primary));
+    outline-offset: 2px;
+  }
 
   th .lc-table-sort {
     margin-left: var(--spacing-xs, 0.25rem);
@@ -68,6 +91,11 @@
   }
 
   tbody tr.clickable { cursor: pointer; }
+
+  tbody tr.clickable:focus-visible {
+    outline: 2px solid var(--color-focus, var(--color-primary));
+    outline-offset: -2px;
+  }
 
   tbody tr.is-selected {
     background-color: var(--lc-table-row-selected-background, var(--color-primary-surface, var(--color-surface-light, #eef2ff)));
