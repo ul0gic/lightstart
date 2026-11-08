@@ -57,5 +57,24 @@ export default {
         </div>
       `,
     },
+    {
+      title: "Focused by a shortcut",
+      description: "Focus the button, then press /: the key handler around them calls `focusInput()`.",
+      render: () => html`
+        <div style="display: flex; width: 100%; max-width: 360px; gap: 0.5rem;" @keydown=${FOCUS_ON_SLASH}>
+          <lc-button size="md">Filters</lc-button>
+          <lc-input type="search" placeholder="Search docs..." size="md"></lc-input>
+        </div>
+      `,
+    },
   ],
+};
+
+/** @param {KeyboardEvent} e */
+const FOCUS_ON_SLASH = (e) => {
+  if (e.key !== "/" || e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+  const input = /** @type {(HTMLElement & { focusInput(): void }) | null} */ (/** @type {HTMLElement} */ (e.currentTarget).querySelector("lc-input"));
+  if (!input) return;
+  e.preventDefault();
+  input.focusInput();
 };
