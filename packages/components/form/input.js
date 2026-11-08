@@ -18,6 +18,7 @@ export default defineComponent({
     max: /** @type {Prop<string | number | null>} */ (T.any({ defaultValue: null })),
     step: /** @type {Prop<string | number | null>} */ (T.any({ defaultValue: null })),
     prefix: "",
+    errorMessage: T.string(),
   },
   style: true,
 
@@ -55,6 +56,8 @@ export default defineComponent({
         ?disabled=${this.disabled}
         ?readonly=${this.readonly}
         ?required=${this.required}
+        aria-invalid=${this.errorMessage ? "true" : nothing}
+        aria-describedby=${this.errorMessage ? `${id}-error` : nothing}
         @input=${this.handleInput.bind(this)}
         @change=${this.handleChange.bind(this)}
       />`;
@@ -63,6 +66,7 @@ export default defineComponent({
       ${this.prefix
         ? html`<span class="input-affixed" style=${`--lc-input-prefix-chars:${[...this.prefix].length}`}><span class="input-prefix" aria-hidden="true">${this.prefix}</span>${field}</span>`
         : field}
+      ${this.errorMessage ? html`<span class="input-error" id=${`${id}-error`}>${this.errorMessage}</span>` : ""}
     `;
   },
 });
