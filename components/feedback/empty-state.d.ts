@@ -4,6 +4,7 @@ declare const _default: Omit<{
     props: {
         icon: string;
         title: string;
+        headingLevel: number;
         description: string;
         size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
@@ -15,6 +16,7 @@ declare const _default: Omit<{
     props?: {
         icon: string;
         title: string;
+        headingLevel: number;
         description: string;
         size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
