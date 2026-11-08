@@ -1,8 +1,9 @@
-import { html } from "@lightstart/light/html";
+import { html, nothing } from "@lightstart/light/html";
 import T from "@lightstart/light/types";
 import { defineComponent } from "@lightstart/light";
 import { withOverlay } from "@lightstart/components/mixins/overlay.js";
 import { lcText } from "../utils/text.js";
+import { uniqueId } from "../utils/id.js";
 
 /** @import { Prop } from "../types.ts" */
 
@@ -19,8 +20,12 @@ export default defineComponent({
     dialog: /** @type {Prop<HTMLDialogElement | null>} */ (
       T.object({ reactive: false, defaultValue: null })
     ),
+    _titleId: T.string({ reactive: false, defaultValue: "" }),
   },
   style: true,
+  connected() {
+    this._titleId ||= uniqueId("lc-modal-");
+  },
   firstUpdated() {
     const dialog = this.querySelector("dialog");
     this.dialog = dialog;
@@ -85,11 +90,16 @@ export default defineComponent({
     }
   },
   render() {
+    const labelledBy = this.querySelector('[slot="header"]')?.textContent?.trim()
+      ? this._titleId
+      : this.caption
+        ? `${this._titleId}-caption`
+        : nothing;
     return html`
       <slot name="trigger" @click=${this.showModal.bind(this)}></slot>
-      <dialog part="lc-modal-dialog">
+      <dialog part="lc-modal-dialog" aria-labelledby=${labelledBy}>
         <div part="lc-modal-header" class="modal-header">
-          <slot name="header"></slot>
+          <slot name="header" id=${this._titleId}></slot>
           <button
             part="lc-modal-close-button"
             class="modal-close-button"
@@ -106,7 +116,7 @@ export default defineComponent({
           <slot></slot>
         </div>
         <slot part="lc-modal-footer" class="modal-footer" name="footer"></slot>
-        ${this.caption ? html`<div part="lc-modal-caption">${this.caption}</div>` : ""}
+        ${this.caption ? html`<div part="lc-modal-caption" id="${this._titleId}-caption">${this.caption}</div>` : ""}
       </dialog>
     `;
   },
