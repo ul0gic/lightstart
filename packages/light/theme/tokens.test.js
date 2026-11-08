@@ -34,7 +34,7 @@ test("the sides of the default preset", () => {
   assert.equal(dark["--color-primary"], "#e9ebe8");
   assert.equal(light["--font-bold"], "700");
   assert.equal(dark["--font-bold"], "700");
-  assert.equal(light["--text-muted"], "#6b716b");
+  assert.equal(light["--text-muted"], "#656a65");
   assert.ok(dark["--text-muted"] !== light["--text-muted"]);
   assert.equal(light["--color-on-primary"], "#ffffff");
   assert.ok(!("--dark-color-primary" in light));
