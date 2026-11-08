@@ -685,7 +685,8 @@
     "extends": null,
     "uses": [
       "lc-icon",
-      "lc-join"
+      "lc-join",
+      "lc-label"
     ]
   },
   "lc-section": {

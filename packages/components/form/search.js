@@ -4,6 +4,7 @@ import { withClickOutside } from "@lightstart/components/mixins/click-outside.js
 import { withOverlay } from "@lightstart/components/mixins/overlay.js";
 import { groupDocs, matchDocs } from "@lightstart/components/form/search-match.js";
 import { nextIndex } from "../utils/roving.js";
+import { uniqueId } from "../utils/id.js";
 import T from "@lightstart/light/types";
 import { lcText } from "../utils/text.js";
 import { navigation } from "@lightstart/light/navigation";
@@ -17,10 +18,12 @@ export default defineComponent({
   style: true,
   props: {
     placeholder: "",
+    label: "",
     query: "",
     open: false,
     active: -1,
     limit: 8,
+    remote: false,
     docs: /** @type {Prop<SearchDoc[]>} */ (T.array({ defaultValue: [], attribute: false })),
     suggestions: /** @type {Prop<SearchDoc[]>} */ (T.array({ defaultValue: [], attribute: false })),
     groups: /** @type {Prop<string[]>} */ (T.array({ defaultValue: [] })),
@@ -33,11 +36,16 @@ export default defineComponent({
     trailing: /** @type {Prop<(() => TemplateValue) | null>} */ (T.object({ attribute: false, defaultValue: null, hasChanged: () => false })),
     renderResult: /** @type {Prop<((doc: SearchDoc) => TemplateValue) | null>} */ (T.object({ attribute: false, defaultValue: null, hasChanged: () => false })),
     _expanding: T.boolean({ reactive: false, defaultValue: false }),
+    _id: T.string({ reactive: false, defaultValue: "" }),
   },
   events: {
     "search-select": T.object(),
     "search-input": T.string(),
     "search-expand": T.object({ expanded: T.boolean() }),
+  },
+
+  connected() {
+    this._id ||= uniqueId("lc-search-");
   },
 
   firstUpdated() {
@@ -46,9 +54,10 @@ export default defineComponent({
   },
 
   _shown() {
-    return this.query.trim()
-      ? matchDocs(this.docs, this.query, this.limit)
-      : this.suggestions.slice(0, this.limit);
+    if (!this.query.trim()) return this.suggestions.slice(0, this.limit);
+    return this.remote
+      ? this.docs.slice(0, this.limit)
+      : matchDocs(this.docs, this.query, this.limit);
   },
 
   _grouped() {
@@ -149,8 +158,10 @@ export default defineComponent({
   },
 
   _escape() {
-    if (this.inline) return;
-    if (this.open) return void (this.open = false);
+    if (this.inline) {
+      this.open = false;
+      if (this.active >= 0) return void (this.active = -1);
+    } else if (this.open) return void (this.open = false);
     if (this.collapsible) this.collapse();
   },
 
@@ -178,10 +189,15 @@ export default defineComponent({
         </span>
       `;
     const classes = `search-result ${index === this.active ? "active" : ""}`;
+    const id = `${this._id}-option-${index}`;
+    const selected = index === this.active ? "true" : "false";
     const activate = () => { this.active = index; };
     return doc.href
       ? html`
         <a
+          id=${id}
+          role="option"
+          aria-selected=${selected}
           class=${classes}
           href=${navigation.href(String(doc.href))}
           @click=${() => this._select(doc)}
@@ -190,6 +206,9 @@ export default defineComponent({
       `
       : html`
         <button
+          id=${id}
+          role="option"
+          aria-selected=${selected}
           type="button"
           class=${classes}
           @click=${() => this._select(doc)}
@@ -215,18 +234,24 @@ export default defineComponent({
 
   _field() {
     const grouped = this._grouped();
+    const shown = this._showPanel();
+    const listbox = `${this._id}-listbox`;
+    const placeholder = this.placeholder || lcText("lc-search", "placeholder");
     let index = -1;
     return html`
       <div class="search-wrapper" part="lc-search-field">
         <lc-icon name="search" class="search-icon"></lc-icon>
         <input
+          id="${this._id}-input"
           type="search"
           class="search-input"
           .value=${this.query}
-          placeholder=${this.placeholder || lcText("lc-search", "placeholder")}
+          placeholder=${placeholder}
           autocomplete="off"
           role="combobox"
-          aria-expanded=${this.open ? "true" : "false"}
+          aria-controls=${listbox}
+          aria-expanded=${shown ? "true" : "false"}
+          aria-activedescendant=${shown && this.active >= 0 && this.active < this._flat().length ? `${this._id}-option-${this.active}` : nothing}
           @input=${(e) => this._onInput(e)}
           @focus=${() => this._onFocus()}
           @keydown=${(/** @type {KeyboardEvent} */ e) => this._onKeydown(e)}
@@ -244,9 +269,15 @@ export default defineComponent({
             </button>
           `
           : nothing}
-        ${this._showPanel()
+        ${shown
           ? html`
-            <div class="search-dropdown" role="listbox">
+            <div
+              id=${listbox}
+              class="search-dropdown"
+              role=${grouped.length ? "listbox" : nothing}
+              aria-labelledby=${grouped.length && this.label ? `${this._id}-label` : nothing}
+              aria-label=${grouped.length && !this.label ? placeholder : nothing}
+            >
               ${grouped.length === 0
                 ? html`<div class="search-empty">${lcText("lc-search", "noResults")}</div>`
                 : grouped.map(
@@ -268,8 +299,12 @@ export default defineComponent({
   render() {
     const collapsed = this.collapsible && !this.expanded;
     const body = collapsed ? this._trigger() : this._field();
-    if (!this.leading && !this.trailing) return body;
+    const label = this.label && !collapsed
+      ? html`<lc-label id="${this._id}-label" for="${this._id}-input" text=${this.label}></lc-label>`
+      : nothing;
+    if (!this.leading && !this.trailing) return html`${label}${body}`;
     return html`
+      ${label}
       <lc-join class="search-join" @click=${collapsed ? () => this.expand() : null}>
         ${this.leading ? html`<div class="search-aside" part="lc-search-leading"><div class="search-aside-body">${this.leading()}</div></div>` : nothing}
         ${body}
@@ -295,6 +330,15 @@ export default defineComponent({
  * every choice emits `search-select` with the chosen doc, and typing emits
  * `search-input` with the query. Arrow keys and Enter navigate; Escape and
  * clicking outside close the dropdown.
+ *
+ * The field is an ARIA combobox and the results a listbox of options, the
+ * active one followed by `aria-activedescendant` while focus stays in the
+ * field. `label` draws a visible label that names both; without one the
+ * placeholder names the list.
+ *
+ * With `remote` the host does the matching: `docs` are its results for the
+ * query, kept in the order given (still grouped by `group`) and capped at
+ * `limit` overall, and a `search-input` listener is where to fetch the next set.
  *
  * `leading` and `trailing` put content beside the field, at which point the
  * component wraps itself in a `lc-join` and the three read as one control.
@@ -334,6 +378,16 @@ export default defineComponent({
  *   .docs=${commands.map((c) => ({ id: c.id, group: "Commands", title: c.label }))}
  *   @search-select=${(e) => runCommand(e.detail.id)}
  *   @search-input=${(e) => track(e.detail)}
+ * ></lc-search>`
+ * ```
+ *
+ * @example
+ * // Results the server ranked, kept as it sent them
+ * ```js
+ * html`<lc-search
+ *   remote
+ *   .docs=${results}
+ *   @search-input=${async (e) => { e.target.docs = await fetchResults(e.detail); }}
  * ></lc-search>`
  * ```
  *
