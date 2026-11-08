@@ -22,7 +22,7 @@ export default {
   text: {
     secondary: "#d5c4a1",
     color: "#ebdbb2",
-    muted: "#bdae93",
+    muted: "#c5b8a0",
     disabled: "#7c6f64",
 
     xs: "0.75rem",
@@ -170,6 +170,9 @@ export default {
       shadow: "0 10px 15px -3px rgb(0 0 0 / 0.3)",
       background: "#3c3836",
       "active-background": "#665c54",
+    },
+    search: {
+      "active-result-background": "#504945",
     },
     button: {
       background: "#3c3836",
