@@ -20,7 +20,7 @@ export default {
     {
       title: "Basic",
       render: () => html`
-        <lc-line-chart .data=${signups} height="200"></lc-line-chart>
+        <lc-line-chart .data=${signups} height="200" label="Signups by month"></lc-line-chart>
       `,
     },
     {

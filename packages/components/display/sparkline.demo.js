@@ -17,7 +17,7 @@ export default {
       render: () => html`
         <lc-flex align="center" gap="md">
           <lc-text weight="bold">1,204</lc-text>
-          <lc-sparkline .data=${week}></lc-sparkline>
+          <lc-sparkline .data=${week} label="Signups, last 7 days"></lc-sparkline>
           <lc-text size="xs" muted>7 days</lc-text>
         </lc-flex>
       `,
