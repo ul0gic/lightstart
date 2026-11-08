@@ -898,6 +898,31 @@ describe("lc-form: nested fields", () => {
       assert.equal(add.disabled, true);
     });
 
+    it("each row's buttons are named by the list and the row's position", async () => {
+      const el = await mount({
+        fields: [LINKS],
+        data: { links: [{ url: "https://a" }, { url: "https://b" }] },
+      });
+      const names = [...el.querySelectorAll(".lc-form-list-item")].map((row) =>
+        [...row.querySelectorAll(".lc-form-list-actions button")].map((b) => b.getAttribute("aria-label")));
+      assert.deepEqual(names, [
+        ["Move Links 1 up", "Move Links 1 down", "Remove Links 1"],
+        ["Move Links 2 up", "Move Links 2 down", "Remove Links 2"],
+      ]);
+    });
+
+    it("a list without a label names its rows as items", async () => {
+      const el = await mount({
+        fields: [{ ...LINKS, label: undefined }],
+        data: { links: [{ url: "https://a" }, { url: "https://b" }] },
+      });
+      const second = el.querySelectorAll(".lc-form-list-item")[1];
+      assert.deepEqual(
+        [...second.querySelectorAll(".lc-form-list-actions button")].map((b) => b.getAttribute("aria-label")),
+        ["Move item 2 up", "Move item 2 down", "Remove item 2"],
+      );
+    });
+
     it("editing inside an entry keeps the list a list", async () => {
       const el = await mount({
         fields: [LINKS],
