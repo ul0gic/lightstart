@@ -23,6 +23,8 @@ export default {
   "lc-clipboard": {
     copy: "Copiar",
     copied: "Copiado",
+    field: "Texto para copiar",
+    manual: "No se pudo copiar. El texto está seleccionado; pulsa {keys} para copiarlo.",
   },
   "lc-code-block": {
     showAll: "Mostrar las {count} líneas",

@@ -28,6 +28,8 @@ export default {
   "lc-clipboard": {
     copy: "Copy",
     copied: "Copied",
+    field: "Text to copy",
+    manual: "Couldn't copy. The text is selected; press {keys} to copy it.",
   },
   "lc-code-block": {
     showAll: "Show all {count} lines",
