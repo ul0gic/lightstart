@@ -130,4 +130,41 @@ describe("colorScheme", () => {
     assert.equal(localStorage.getItem(KEY), "false");
     assert.equal(boot("dark").dark.value, false, "the stored choice beats the default on the next boot");
   });
+
+  it("follows the OS again after a choice, and forgets the choice", () => {
+    const scheme = boot();
+    scheme.choose(true);
+    scheme.follow();
+    assert.equal(localStorage.getItem(KEY), null, "following again removes the stored choice");
+    assert.equal(scheme.followsSystem, true);
+    assert.equal(scheme.dark.value, false, "the OS prefers light");
+    assert.equal(isDarkClass(), false);
+    setSystem(true);
+    assert.equal(scheme.dark.value, true, "a later OS change moves it again");
+    assert.equal(isDarkClass(), true);
+    assert.equal(localStorage.getItem(KEY), null);
+    assert.equal(boot().followsSystem, true, "the next boot follows too");
+  });
+
+  it("follows the OS from a page that started light, on one subscription", () => {
+    setSystem(true);
+    const scheme = boot("light");
+    assert.equal(scheme.dark.value, false);
+    assert.equal(watchers.size, 0);
+    scheme.follow();
+    scheme.follow();
+    assert.equal(watchers.size, 1, "a second follow() does not subscribe twice");
+    assert.equal(scheme.dark.value, true);
+    assert.equal(isDarkClass(), true);
+    setSystem(false);
+    assert.equal(scheme.dark.value, false);
+    assert.equal(isDarkClass(), false);
+  });
+
+  it("keeps the one subscription a system page started when it follows again", () => {
+    const scheme = boot();
+    scheme.choose(true);
+    scheme.follow();
+    assert.equal(watchers.size, 1);
+  });
 });
