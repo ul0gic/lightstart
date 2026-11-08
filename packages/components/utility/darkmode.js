@@ -45,15 +45,17 @@ export default defineComponent({
         tooltipSize="lg"
       ></lc-nav-item>`;
 
+    const label = this.label || lcText("lc-darkmode", "label");
     if (this.compact)
-      return html`<button aria-label="darkmode toggle">
+      return html`<button aria-label=${label}>
         <lc-icon ghost name=${this.getIcon()} size=${this.size || "28"} class="cursor-pointer shrink-0"></lc-icon>
       </button>`;
 
     return html`
       <div class="darkmode-row">
-        <span class="darkmode-label">${this.label || lcText("lc-darkmode", "label")}</span>
+        <span class="darkmode-label" aria-hidden="true">${label}</span>
         <lc-switch
+          label=${label}
           ?checked=${this.dark}
           @change=${(/** @type {CustomEvent<{ checked: boolean }>} */ e) => colorScheme.choose(e.detail.checked)}
         ></lc-switch>
