@@ -39,6 +39,10 @@ export const getFormFieldRenderer = (type) => renderers.get(type);
 /** Every registered key, for a caller listing what it can draw. */
 export const formFieldTypes = () => [...renderers.keys()];
 
+/** @param {FormField} field */
+const resolveRenderer = (field) =>
+  /** @type {FormFieldRenderer} */ (renderers.get(field.cmsType || field.type) || renderers.get("text"));
+
 /**
  * The control for one field. An unknown type falls back to a text input, so
  * it draws something a person can still type into.
@@ -49,10 +53,8 @@ export const formFieldTypes = () => [...renderers.keys()];
  * @param {typeof defaultHtml} [html]
  * @returns {Renderable}
  */
-export const renderFormControl = (field, value, onChange = () => {}, html = defaultHtml) => {
-  const render = renderers.get(field.cmsType || field.type) || renderers.get("text");
-  return /** @type {FormFieldRenderer} */ (render)(field, value, onChange, html);
-};
+export const renderFormControl = (field, value, onChange = () => {}, html = defaultHtml) =>
+  resolveRenderer(field)(field, value, onChange, html);
 
 /**
  * What a control now holds, however it reported it. A lc component emits its
@@ -94,6 +96,7 @@ const input = (/** @type {string} */ type, /** @type {string} */ placeholder = "
       ?readonly=${field.readonly}
       placeholder=${field.placeholder || placeholder}
       prefix=${field.prefix || ""}
+      error-message=${field.errorMessage || nothing}
       .min=${field.min ?? null}
       .max=${field.max ?? null}
       .step=${field.step ?? (type === "number" ? "any" : null)}
@@ -112,6 +115,8 @@ for (const [type, placeholder] of [
   ["url", "https://"],
 ])
   registerFormFieldRenderer(type, input(type, placeholder));
+
+const INPUTS = new Set(renderers.values());
 
 registerFormFieldRenderer("color", (field, value, onChange, html) => html`
   <lc-color-picker
@@ -331,3 +336,12 @@ const BUILT_IN = new Set(renderers.keys());
  * @param {FormField} field
  */
 export const drawsOwnLabel = (field) => BUILT_IN.has(field.cmsType || field.type);
+
+/**
+ * Whether the control drawn for `field` is a lc input, which draws and names
+ * its own error message, so `<lc-form>` hands the message down rather than
+ * drawing it under the control. Decided by the renderer the field resolves
+ * to, so one registered under `text` draws its own or gets the form's.
+ * @param {FormField} field
+ */
+export const drawsOwnError = (field) => INPUTS.has(resolveRenderer(field));

@@ -146,3 +146,49 @@ describe("@lightstart/light - lc-input full width", () => {
     assert.equal(el.getBoundingClientRect().width, wide.getBoundingClientRect().width, "its width follows its content, not the container");
   });
 });
+
+describe("@lightstart/light - lc-input error message", () => {
+  before(() => {
+    if (!customElements.get("lc-input")) View.define("lc-input", inputDef);
+  });
+
+  afterEach(async () => {
+    for (const el of mounted.splice(0)) el.remove();
+    await tick();
+  });
+
+  it("draws the message under the field and names it to the field", async () => {
+    const el = await mount({ label: "Email", "error-message": "Enter an email address." });
+    const message = /** @type {HTMLElement} */ (el.querySelector(".input-error"));
+    assert.equal(message.textContent, "Enter an email address.");
+    assert.equal(field(el).getAttribute("aria-invalid"), "true");
+    const describedBy = /** @type {string} */ (field(el).getAttribute("aria-describedby"));
+    assert.equal(document.getElementById(describedBy), message, "aria-describedby resolves to the message");
+  });
+
+  it("clearing the message removes it and both attributes", async () => {
+    const el = /** @type {HTMLElement & { errorMessage: string, $requestUpdate: () => Promise<unknown> }} */ (await mount({ "error-message": "Enter an email address." }));
+    el.errorMessage = "";
+    await el.$requestUpdate();
+    assert.equal(el.querySelector(".input-error"), null);
+    assert.equal(field(el).hasAttribute("aria-invalid"), false);
+    assert.equal(field(el).hasAttribute("aria-describedby"), false);
+    el.errorMessage = "Taken.";
+    await el.$requestUpdate();
+    assert.equal(el.querySelector(".input-error")?.textContent, "Taken.");
+    assert.equal(el.getAttribute("error-message"), "Taken.", "the property reflects, so the error style follows it");
+  });
+
+  it("a message carrying markup shows its characters", async () => {
+    const el = await mount({ "error-message": "<b>x</b>" });
+    const message = /** @type {HTMLElement} */ (el.querySelector(".input-error"));
+    assert.equal(message.textContent, "<b>x</b>");
+    assert.equal(message.querySelector("b"), null);
+  });
+
+  it("a prefixed field keeps the message outside its wrapper", async () => {
+    const el = await mount({ prefix: "@", "error-message": "Taken." });
+    assert.equal(el.querySelector(".input-affixed .input-error"), null);
+    assert.equal(el.querySelector(".input-affixed")?.nextElementSibling, el.querySelector(".input-error"));
+  });
+});
