@@ -1,13 +1,15 @@
 /**
- * The geometry of cropping a picture to a square: which square of the
- * picture the frame shows, in the picture's own pixels, and how a drag, a
- * pinch, a wheel turn or a key moves it. A rect is `{ x, y, size }`. The frame
- * is `view` screen pixels wide, so one screen pixel is `size / view` picture
- * pixels.
+ * The geometry of cropping a picture to a frame of a fixed shape: which part
+ * of the picture the frame shows, in the picture's own pixels, and how a drag,
+ * a pinch, a wheel turn or a key moves it. A rect is `{ x, y, size }`, `size`
+ * wide and `size / aspect` tall, where `aspect` is the frame's width over its
+ * height (1, a square, unless the bounds say otherwise). The frame is `view`
+ * screen pixels wide, so one screen pixel is `size / view` picture pixels.
  *
- * Every answer is clamped to the bounds: the square never leaves the picture,
- * never grows past the shorter side (the frame is always covered) and never
- * shrinks below `minSize`, which is how far in a crop may zoom.
+ * Every answer is clamped to the bounds: the rect never leaves the picture,
+ * never grows past the widest rect of its shape that fits (the frame is always
+ * covered) and never shrinks below `minSize` wide, which is how far in a crop
+ * may zoom.
  *
  * Pure, so the component and its tests share one account of it.
  */
@@ -19,23 +21,35 @@ const WHEEL_MAX = 1.5;
 const KEY_ZOOM = 1.2;
 
 /**
- * The bounds of a picture `width` by `height`, zoomable to `maxZoom` times
- * the zoom at which it just covers the frame.
+ * The width of the widest rect of the frame's shape that fits the picture.
+ * @param {CropBounds} bounds
+ */
+const widest = ({ width, height, aspect }) => Math.min(width, height * aspect);
+
+/**
+ * The bounds of a picture `width` by `height` under a frame `aspect` wide to
+ * 1 tall, zoomable to `maxZoom` times the zoom at which it just covers it.
  * @param {number} width
  * @param {number} height
  * @param {number} [maxZoom]
+ * @param {number} [aspect]
  * @returns {CropBounds}
  */
-export const boundsOf = (width, height, maxZoom = 4) => ({ width, height, minSize: Math.max(1, Math.min(width, height) / Math.max(1, maxZoom)) });
+export const boundsOf = (width, height, maxZoom = 4, aspect = 1) => ({
+  width,
+  height,
+  minSize: Math.max(1, Math.min(width, height * aspect) / Math.max(1, maxZoom)),
+  aspect,
+});
 
 /**
- * The largest square in the middle of the picture: what a crop opens on.
+ * The largest rect in the middle of the picture: what a crop opens on.
  * @param {CropBounds} bounds
  * @returns {CropRect}
  */
-export const coverRect = ({ width, height }) => {
-  const size = Math.min(width, height);
-  return { x: (width - size) / 2, y: (height - size) / 2, size };
+export const coverRect = (bounds) => {
+  const size = widest(bounds);
+  return { x: (bounds.width - size) / 2, y: (bounds.height - size / bounds.aspect) / 2, size };
 };
 
 /**
@@ -43,10 +57,11 @@ export const coverRect = ({ width, height }) => {
  * @param {CropBounds} bounds
  * @returns {CropRect}
  */
-export const clampRect = (rect, { width, height, minSize }) => {
-  const max = Math.min(width, height);
+export const clampRect = (rect, bounds) => {
+  const { width, height, minSize, aspect } = bounds;
+  const max = widest(bounds);
   const size = Math.min(max, Math.max(Math.min(minSize, max), rect.size));
-  return { size, x: Math.min(width - size, Math.max(0, rect.x)), y: Math.min(height - size, Math.max(0, rect.y)) };
+  return { size, x: Math.min(width - size, Math.max(0, rect.x)), y: Math.min(height - size / aspect, Math.max(0, rect.y)) };
 };
 
 /**
@@ -85,7 +100,7 @@ export const zoomRectAt = (rect, factor, fx, fy, view, bounds) => {
  * @param {CropRect} rect
  * @param {CropBounds} bounds
  */
-export const zoomOf = (rect, { width, height }) => Math.min(width, height) / rect.size;
+export const zoomOf = (rect, bounds) => widest(bounds) / rect.size;
 
 /**
  * The rect at a zoom, about the middle of the frame: what a slider sets.
@@ -94,8 +109,9 @@ export const zoomOf = (rect, { width, height }) => Math.min(width, height) / rec
  * @param {CropBounds} bounds
  */
 export const rectAtZoom = (rect, zoom, bounds) => {
-  const size = Math.min(bounds.width, bounds.height) / Math.max(zoom, Number.EPSILON);
-  return clampRect({ size, x: rect.x + rect.size / 2 - size / 2, y: rect.y + rect.size / 2 - size / 2 }, bounds);
+  const size = widest(bounds) / Math.max(zoom, Number.EPSILON);
+  const { aspect } = bounds;
+  return clampRect({ size, x: rect.x + rect.size / 2 - size / 2, y: rect.y + rect.size / aspect / 2 - size / aspect / 2 }, bounds);
 };
 
 /**
@@ -160,15 +176,15 @@ export const keyIntent = (key, { step = 16, shift = false } = {}) => {
 };
 
 /**
- * The square to draw, in whole pixels inside the picture.
+ * The rect to draw, in whole pixels inside the picture.
  * @param {CropRect} rect
  * @param {CropBounds} bounds
  */
-export const sourceRect = (rect, { width, height }) => {
-  const size = Math.max(1, Math.min(Math.round(rect.size), width, height));
+export const sourceRect = (rect, { width, height, aspect }) => {
+  const size = Math.max(1, Math.min(Math.round(rect.size), width, Math.floor(height * aspect)));
   return {
     sx: Math.min(Math.max(0, Math.round(rect.x)), width - size),
-    sy: Math.min(Math.max(0, Math.round(rect.y)), height - size),
+    sy: Math.min(Math.max(0, Math.round(rect.y)), height - Math.round(size / aspect)),
     size,
   };
 };
