@@ -19,6 +19,12 @@ export default {
       `,
     },
     {
+      title: "Indeterminate",
+      render: () => html`
+        <lc-progress-bar indeterminate label="Loading"></lc-progress-bar>
+      `,
+    },
+    {
       title: "Size variants",
       render: () => html`
         <div style="display: flex; flex-direction: column; gap: 1rem;">
