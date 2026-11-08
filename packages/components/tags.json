@@ -552,7 +552,8 @@
     "style": "form/number-input.css",
     "extends": null,
     "uses": [
-      "lc-icon"
+      "lc-icon",
+      "lc-label"
     ]
   },
   "lc-page": {

@@ -61,3 +61,50 @@ describe("lc-number-input with no value", () => {
     assert.equal(el.querySelector("input").value, "");
   });
 });
+
+describe("lc-number-input with a label", () => {
+  let el;
+
+  before(async () => {
+    define("lc-label", labelDef);
+    define("lc-number-input", numberInputDef);
+    el = document.createElement("lc-number-input");
+    el.setAttribute("label", "Quantity");
+    el.setAttribute("step", "5");
+    el.setAttribute("value", "10");
+    document.body.appendChild(el);
+    await rendered(el);
+    await rendered(el.querySelector("lc-label"));
+  });
+
+  after(() => el.remove());
+
+  it("names the field with its label", () => {
+    const input = el.querySelector("input");
+    assert.equal(input.labels.length, 1, "the lc-label's for points at the field");
+    assert.equal(input.labels[0].textContent.trim(), "Quantity");
+  });
+
+  it("names the two spinner buttons with the stepper's words and keeps them out of the tab order", () => {
+    const raise = el.querySelector(".number-input-button.increment");
+    const lower = el.querySelector(".number-input-button.decrement");
+    assert.equal(raise.getAttribute("aria-label"), "Raise Quantity");
+    assert.equal(lower.getAttribute("aria-label"), "Lower Quantity");
+    assert.equal(raise.tabIndex, -1);
+    assert.equal(lower.tabIndex, -1);
+  });
+
+  it("steps by step from the field, as ArrowUp and ArrowDown do", async () => {
+    const input = el.querySelector("input");
+    assert.equal(input.step, "5", "the field carries step, which the arrow keys step by");
+    input.stepUp();
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    await rendered(el);
+    assert.equal(el.value, 15);
+    input.stepDown();
+    input.stepDown();
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    await rendered(el);
+    assert.equal(el.value, 5);
+  });
+});
