@@ -48,5 +48,14 @@ export default {
         <lc-rating value="4" readonly></lc-rating>
       `,
     },
+    {
+      title: "Half steps: click a star's left half for the half, or press Home and End",
+      render: () => html`
+        <lc-flex direction="column" gap="sm">
+          ${settable(3.5, { label: "Your rating", step: "0.5", "?clearable": true })}
+          <lc-rating value="3.5" step="0.5" readonly></lc-rating>
+        </lc-flex>
+      `,
+    },
   ],
 };
