@@ -13,3 +13,8 @@ export declare const getFileStorage: () => FileStorage | null;
  * comes back untouched.
  */
 export declare const uploadFiles: (schema: ModelSchema | undefined, model: string, row: Row) => Promise<Row>;
+/**
+ * Whether a row holds a `T.file()` / `T.files()` value the registered storage
+ * would upload: a writer that cannot wait for an upload refuses such a row.
+ */
+export declare const needsUpload: (schema: ModelSchema | undefined, row: Row) => boolean;

@@ -2,14 +2,14 @@ declare const _default: Omit<{
     tag: string;
     style: boolean;
     props: {
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "sm";
             readonly enum: readonly ["xs", "sm", "md"];
         }>;
     };
 }, "events"> & {
     props?: {
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "sm";
             readonly enum: readonly ["xs", "sm", "md"];
         }>;

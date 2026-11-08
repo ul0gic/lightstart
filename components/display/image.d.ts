@@ -1,10 +1,10 @@
 declare const _default: Omit<{
     tag: string;
     props: {
-        src: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        src: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         alt: string;
         placeholder: string;
-        _loaded: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        _loaded: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly attribute: false;
             readonly defaultValue: false;
         }>;
@@ -14,13 +14,13 @@ declare const _default: Omit<{
     willUpdate({ changedProps }: {
         changedProps: Map<string, unknown>;
     }): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
-        src: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        src: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         alt: string;
         placeholder: string;
-        _loaded: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        _loaded: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly attribute: false;
             readonly defaultValue: false;
         }>;

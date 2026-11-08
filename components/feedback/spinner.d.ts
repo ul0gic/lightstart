@@ -1,39 +1,39 @@
 declare const _default: Omit<{
     tag: string;
     props: {
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "circular";
             readonly enum: readonly ["circular", "dots", "bars"];
         }>;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["xs", "sm", "md", "lg", "xl"];
         }>;
-        primary: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        secondary: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        success: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        danger: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        warning: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        info: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        primary: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        secondary: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        success: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        danger: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        warning: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        info: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
     };
     style: boolean;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "circular";
             readonly enum: readonly ["circular", "dots", "bars"];
         }>;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["xs", "sm", "md", "lg", "xl"];
         }>;
-        primary: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        secondary: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        success: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        danger: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        warning: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        info: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        primary: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        secondary: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        success: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        danger: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        warning: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        info: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
     } | undefined;
     events?: {} | undefined;
     mixins?: [] | undefined;

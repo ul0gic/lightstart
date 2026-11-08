@@ -2,7 +2,7 @@ declare const _default: Omit<{
     tag: string;
     icons: string[];
     props: {
-        position: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        position: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "top-right";
             readonly enum: readonly ["top-left", "top-center", "top-right", "bottom-left", "bottom-center", "bottom-right"];
         }>;
@@ -20,11 +20,11 @@ declare const _default: Omit<{
      */
     _release(event: MouseEvent | FocusEvent, id: string): void;
     /** @param {ToastItem} toast */
-    _body(toast: ToastItem): import("@bootstrapp/light/html").TemplateResult;
-    render(): "" | import("@bootstrapp/light/html").TemplateResult;
+    _body(toast: ToastItem): import("@lightstart/light/html").TemplateResult;
+    render(): "" | import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
-        position: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        position: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "top-right";
             readonly enum: readonly ["top-left", "top-center", "top-right", "bottom-left", "bottom-center", "bottom-right"];
         }>;

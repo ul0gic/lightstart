@@ -1,14 +1,14 @@
 /** @import { Prop } from "../types.js" */
 /**
- * @bootstrapp/light/components/mixins/popover
+ * @lightstart/light/components/mixins/popover
  *
  * A layer anchored to whatever opened it: `toggle(trigger)` positions the host
  * against that element, keeps it there while the page scrolls or the viewport
  * changes, and takes it down on Escape or an outside click. The host stays
  * `position: fixed` in its own stylesheet and draws whatever it likes.
  *
- *   import { defineComponent } from "@bootstrapp/light";
- *   import { withPopover } from "@bootstrapp/light/components/mixins/popover.js";
+ *   import { defineComponent } from "@lightstart/light";
+ *   import { withPopover } from "@lightstart/light/components/mixins/popover.js";
  *
  *   export default defineComponent({
  *     mixins: [withPopover],
@@ -36,7 +36,7 @@ export const withPopover: {
         } | undefined;
         events?: {} | undefined;
     }) | ({
-        connected(this: import("@bootstrapp/light").default & {
+        connected(this: import("@lightstart/light").default & {
             onClickOutside?: (e: Event) => void;
         }): void;
     } & {

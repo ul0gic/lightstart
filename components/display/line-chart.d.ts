@@ -4,7 +4,7 @@ declare const _default: Omit<{
     props: {
         data: Prop<ChartDataPoint[]>;
         height: number;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "primary";
             readonly enum: readonly ["primary", "secondary", "success", "warning", "error", "info"];
         }>;
@@ -14,13 +14,13 @@ declare const _default: Omit<{
         smooth: true;
         fit: false;
         reference: Prop<number | null>;
-        label: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        _gradientId: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        _gradientId: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";
         }>;
     };
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
     /**
      * The value range the chart spans: from zero, or with `fit`, the values'
      * own range with a margin above and below.
@@ -30,7 +30,7 @@ declare const _default: Omit<{
      */
     _scale(values: number[]): [number, number];
     /** @param {string} areaPath */
-    _area(areaPath: string): import("@bootstrapp/light/html").TemplateResult;
+    _area(areaPath: string): import("@lightstart/light/html").TemplateResult;
     /** @param {{ x: number, y: number }[]} points */
     _createPath(points: {
         x: number;
@@ -55,7 +55,7 @@ declare const _default: Omit<{
     props?: {
         data: Prop<ChartDataPoint[]>;
         height: number;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "primary";
             readonly enum: readonly ["primary", "secondary", "success", "warning", "error", "info"];
         }>;
@@ -65,8 +65,8 @@ declare const _default: Omit<{
         smooth: true;
         fit: false;
         reference: Prop<number | null>;
-        label: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        _gradientId: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        _gradientId: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";
         }>;

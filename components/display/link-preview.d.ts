@@ -9,7 +9,7 @@ declare const _default: Omit<{
         favicon: string;
         domain: string;
     };
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         url: string;

@@ -3,11 +3,11 @@ declare const _default: Omit<{
     props: {
         value: number;
         max: number;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "success", "danger", "warning", "info"];
         }>;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["sm", "md", "lg"];
         }>;
@@ -19,16 +19,16 @@ declare const _default: Omit<{
     };
     style: boolean;
     getPercentage(): number;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         value: number;
         max: number;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "success", "danger", "warning", "info"];
         }>;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["sm", "md", "lg"];
         }>;

@@ -4,7 +4,7 @@ declare const _default: Omit<{
     props: {
         data: Prop<BarChartDatum[]>;
         height: number;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "primary";
             readonly enum: readonly ["primary", "secondary", "success", "warning", "error", "info"];
         }>;
@@ -13,26 +13,26 @@ declare const _default: Omit<{
         horizontal: false;
         gap: number;
         currentIndex: number;
-        showAxis: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        showAxis: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
         formatValue: Prop<((value: number) => string) | null>;
-        callout: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        label: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        callout: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
     };
     /** @param {string} name */
-    _table(name: string): import("@bootstrapp/light/html").TemplateResult;
+    _table(name: string): import("@lightstart/light/html").TemplateResult;
     /** @param {number} value */
     _format(value: number): string;
     /**
      * @param {number} max
      * @param {boolean} withLabels
      */
-    _bars(max: number, withLabels: boolean): import("@bootstrapp/light/html").TemplateResult[];
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    _bars(max: number, withLabels: boolean): import("@lightstart/light/html").TemplateResult[];
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         data: Prop<BarChartDatum[]>;
         height: number;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "primary";
             readonly enum: readonly ["primary", "secondary", "success", "warning", "error", "info"];
         }>;
@@ -41,10 +41,10 @@ declare const _default: Omit<{
         horizontal: false;
         gap: number;
         currentIndex: number;
-        showAxis: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        showAxis: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
         formatValue: Prop<((value: number) => string) | null>;
-        callout: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        label: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        callout: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
     } | undefined;
     events?: {} | undefined;
     mixins?: [] | undefined;

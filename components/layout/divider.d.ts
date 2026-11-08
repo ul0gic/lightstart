@@ -2,7 +2,7 @@ declare const _default: Omit<{
     mixins: [{
         props: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;
@@ -11,7 +11,7 @@ declare const _default: Omit<{
     } & {
         props?: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;
@@ -21,19 +21,19 @@ declare const _default: Omit<{
     tag: string;
     style: boolean;
     props: {
-        label: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        vertical: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        vertical: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
         resizable: false;
-        key: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        key: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         minPrev: number;
         minNext: number;
         maxPrev: number;
         maxNext: number;
-        prevSize: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        prevSize: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly sync: "local";
             readonly scope: "key";
         }>;
-        nextSize: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        nextSize: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly sync: "local";
             readonly scope: "key";
         }>;
@@ -54,22 +54,22 @@ declare const _default: Omit<{
     /** @param {DragMove} move */
     onDragMove({ dx, dy }: DragMove): void;
     onDragEnd(): void;
-    render(): import("@bootstrapp/light/html").TemplateResult | null;
+    render(): import("@lightstart/light/html").TemplateResult | null;
 }, "events"> & {
     props?: {
-        label: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        vertical: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        vertical: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
         resizable: false;
-        key: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        key: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         minPrev: number;
         minNext: number;
         maxPrev: number;
         maxNext: number;
-        prevSize: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        prevSize: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly sync: "local";
             readonly scope: "key";
         }>;
-        nextSize: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        nextSize: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly sync: "local";
             readonly scope: "key";
         }>;
@@ -86,7 +86,7 @@ declare const _default: Omit<{
     mixins?: [{
         props: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;
@@ -95,7 +95,7 @@ declare const _default: Omit<{
     } & {
         props?: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;

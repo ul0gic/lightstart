@@ -31,7 +31,7 @@ declare const _default: Omit<{
         index: number;
         open: false;
         full: false;
-        axis: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        axis: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "y";
             readonly enum: readonly ["x", "y"];
         }>;
@@ -41,7 +41,7 @@ declare const _default: Omit<{
         header: Prop<StoryRenderer | null>;
         footer: Prop<StoryRenderer | null>;
         background: Prop<StoryBackground | null>;
-        _lastWheel: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _lastWheel: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly reactive: false;
             readonly defaultValue: 0;
         }>;
@@ -66,14 +66,14 @@ declare const _default: Omit<{
     _onSegmentEnd(): void;
     /** @param {WheelEvent} e */
     _onWheel(e: WheelEvent): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         items: Prop<unknown[]>;
         index: number;
         open: false;
         full: false;
-        axis: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        axis: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "y";
             readonly enum: readonly ["x", "y"];
         }>;
@@ -83,7 +83,7 @@ declare const _default: Omit<{
         header: Prop<StoryRenderer | null>;
         footer: Prop<StoryRenderer | null>;
         background: Prop<StoryBackground | null>;
-        _lastWheel: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _lastWheel: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly reactive: false;
             readonly defaultValue: 0;
         }>;

@@ -1,7 +1,7 @@
 declare const _default: Omit<{
     tag: string;
     props: {
-        orientation: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        orientation: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "horizontal";
             readonly enum: readonly ["horizontal", "vertical"];
         }>;
@@ -9,7 +9,7 @@ declare const _default: Omit<{
     style: boolean;
 }, "events"> & {
     props?: {
-        orientation: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        orientation: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "horizontal";
             readonly enum: readonly ["horizontal", "vertical"];
         }>;

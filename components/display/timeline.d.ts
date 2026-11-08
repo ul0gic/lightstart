@@ -3,14 +3,14 @@ declare const _default: Omit<{
     style: boolean;
     props: {
         entries: Prop<TimelineEntry[]>;
-        oldestFirst: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        oldestFirst: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
         extra: Prop<TimelineExtra | null>;
     };
-    render(): typeof nothing | import("@bootstrapp/light/html").TemplateResult[];
+    render(): typeof nothing | import("@lightstart/light/html").TemplateResult[];
 }, "events"> & {
     props?: {
         entries: Prop<TimelineEntry[]>;
-        oldestFirst: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        oldestFirst: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
         extra: Prop<TimelineExtra | null>;
     } | undefined;
     events?: {} | undefined;
@@ -20,4 +20,4 @@ export default _default;
 import type { TimelineEntry } from "../types.js";
 import type { Prop } from "../types.js";
 import type { TimelineExtra } from "../types.js";
-import { nothing } from "@bootstrapp/light/html";
+import { nothing } from "@lightstart/light/html";

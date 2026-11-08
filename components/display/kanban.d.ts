@@ -45,13 +45,13 @@ declare const _default: Omit<{
     /** @param {string} columnName */
     _submitAdd(columnName: string): void;
     /** @param {KanbanRow} row */
-    _defaultCard(row: KanbanRow): import("@bootstrapp/light/html").TemplateResult;
+    _defaultCard(row: KanbanRow): import("@lightstart/light/html").TemplateResult;
     /**
      * @param {string | number} rowId
      * @param {string} columnName
      */
     _cardWrapperClass(rowId: string | number, columnName: string): string;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         rows: Prop<KanbanRow[]>;

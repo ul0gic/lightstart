@@ -8,15 +8,15 @@ declare const _default: Omit<{
         collapseAt: number;
         expanded: Prop<string[]>;
         active: string;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "sm";
             readonly enum: readonly ["sm", "md"];
         }>;
         _path: string;
     };
     events: {
-        "nav-tree-toggle": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        "nav-tree-select": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "nav-tree-toggle": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        "nav-tree-select": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
     };
     connected(): void;
     /** @param {string} id */
@@ -29,8 +29,8 @@ declare const _default: Omit<{
         exact?: boolean;
     }): boolean;
     /** @param {NavTreeGroup} group */
-    _renderGroup(group: NavTreeGroup): import("@bootstrapp/light/html").TemplateResult;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    _renderGroup(group: NavTreeGroup): import("@lightstart/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         groups: Prop<NavTreeGroup[]>;
@@ -38,15 +38,15 @@ declare const _default: Omit<{
         collapseAt: number;
         expanded: Prop<string[]>;
         active: string;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "sm";
             readonly enum: readonly ["sm", "md"];
         }>;
         _path: string;
     } | undefined;
     events?: {
-        "nav-tree-toggle": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        "nav-tree-select": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "nav-tree-toggle": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        "nav-tree-select": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
     } | undefined;
     mixins?: [] | undefined;
 };

@@ -39,7 +39,7 @@ declare const _default: {
     sections: ({
         type: string;
         props: {
-            decorations: import("@bootstrapp/light/html").TemplateResult;
+            decorations: import("@lightstart/light/html").TemplateResult;
             eyebrow: {
                 badge: string;
                 label: string;
@@ -58,7 +58,7 @@ declare const _default: {
         type: string;
         props: {
             sectionId: string;
-            stepMockups: import("@bootstrapp/light/html").TemplateResult[];
+            stepMockups: import("@lightstart/light/html").TemplateResult[];
             eyebrow: string;
             eyebrowIcon: string;
             headline: string;

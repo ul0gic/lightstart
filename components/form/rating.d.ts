@@ -2,9 +2,9 @@ declare const _default: Omit<{
     mixins: [{
         formAssociated: boolean;
         props: {
-            label: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            name: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            id: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+            label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            name: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            id: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
             value: import("../types.js").Prop<import("../types.js").Renderable>;
             placeholder: string;
             disabled: false;
@@ -12,26 +12,26 @@ declare const _default: Omit<{
             required: false;
             error: false;
             fullWidth: false;
-            size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+            size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
                 readonly defaultValue: "md";
                 readonly enum: readonly ["xs", "sm", "md", "lg", "xl"];
             }>;
-            variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+            variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
                 readonly defaultValue: "default";
                 readonly enum: readonly ["default", "primary", "secondary", "success", "warning", "error"];
             }>;
-            _inputId: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+            _inputId: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;
             _internals: import("../types.js").Prop<ElementInternals | null>;
         };
         events: {
-            input: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-                readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+            input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+                readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, import("@lightstart/light/types").TypeOptionsOrDefault>;
             }>;
-            change: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-                readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+            change: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+                readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, import("@lightstart/light/types").TypeOptionsOrDefault>;
             }>;
         };
         getInputId(): string;
@@ -39,9 +39,9 @@ declare const _default: Omit<{
         syncFormValue(value: unknown): void;
     } & {
         props?: {
-            label: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            name: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            id: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+            label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            name: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            id: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
             value: import("../types.js").Prop<import("../types.js").Renderable>;
             placeholder: string;
             disabled: false;
@@ -49,26 +49,26 @@ declare const _default: Omit<{
             required: false;
             error: false;
             fullWidth: false;
-            size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+            size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
                 readonly defaultValue: "md";
                 readonly enum: readonly ["xs", "sm", "md", "lg", "xl"];
             }>;
-            variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+            variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
                 readonly defaultValue: "default";
                 readonly enum: readonly ["default", "primary", "secondary", "success", "warning", "error"];
             }>;
-            _inputId: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+            _inputId: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;
             _internals: import("../types.js").Prop<ElementInternals | null>;
         } | undefined;
         events?: {
-            input: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-                readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+            input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+                readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, import("@lightstart/light/types").TypeOptionsOrDefault>;
             }>;
-            change: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-                readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+            change: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+                readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, import("@lightstart/light/types").TypeOptionsOrDefault>;
             }>;
         } | undefined;
     }];
@@ -79,26 +79,26 @@ declare const _default: Omit<{
         max: number;
         step: number;
         clearable: false;
-        change: import("@bootstrapp/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
+        change: import("@lightstart/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
     };
     /** @param {KeyboardEvent} e @param {number} index @param {number} perStar */
     _onKeydown(e: KeyboardEvent, index: number, perStar: number): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         value: number;
         max: number;
         step: number;
         clearable: false;
-        change: import("@bootstrapp/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
+        change: import("@lightstart/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
     } | undefined;
     events?: {} | undefined;
     mixins?: [{
         formAssociated: boolean;
         props: {
-            label: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            name: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            id: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+            label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            name: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            id: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
             value: import("../types.js").Prop<import("../types.js").Renderable>;
             placeholder: string;
             disabled: false;
@@ -106,26 +106,26 @@ declare const _default: Omit<{
             required: false;
             error: false;
             fullWidth: false;
-            size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+            size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
                 readonly defaultValue: "md";
                 readonly enum: readonly ["xs", "sm", "md", "lg", "xl"];
             }>;
-            variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+            variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
                 readonly defaultValue: "default";
                 readonly enum: readonly ["default", "primary", "secondary", "success", "warning", "error"];
             }>;
-            _inputId: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+            _inputId: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;
             _internals: import("../types.js").Prop<ElementInternals | null>;
         };
         events: {
-            input: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-                readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+            input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+                readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, import("@lightstart/light/types").TypeOptionsOrDefault>;
             }>;
-            change: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-                readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+            change: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+                readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, import("@lightstart/light/types").TypeOptionsOrDefault>;
             }>;
         };
         getInputId(): string;
@@ -133,9 +133,9 @@ declare const _default: Omit<{
         syncFormValue(value: unknown): void;
     } & {
         props?: {
-            label: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            name: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            id: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+            label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            name: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            id: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
             value: import("../types.js").Prop<import("../types.js").Renderable>;
             placeholder: string;
             disabled: false;
@@ -143,26 +143,26 @@ declare const _default: Omit<{
             required: false;
             error: false;
             fullWidth: false;
-            size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+            size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
                 readonly defaultValue: "md";
                 readonly enum: readonly ["xs", "sm", "md", "lg", "xl"];
             }>;
-            variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+            variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
                 readonly defaultValue: "default";
                 readonly enum: readonly ["default", "primary", "secondary", "success", "warning", "error"];
             }>;
-            _inputId: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+            _inputId: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;
             _internals: import("../types.js").Prop<ElementInternals | null>;
         } | undefined;
         events?: {
-            input: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-                readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+            input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+                readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, import("@lightstart/light/types").TypeOptionsOrDefault>;
             }>;
-            change: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-                readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+            change: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+                readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, import("@lightstart/light/types").TypeOptionsOrDefault>;
             }>;
         } | undefined;
     }] | undefined;

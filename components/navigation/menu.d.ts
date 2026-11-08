@@ -1,11 +1,11 @@
 declare const _default: Omit<{
     tag: string;
     props: {
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["sm", "md", "lg"];
         }>;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "bordered", "compact", "flush", "sidebar"];
         }>;
@@ -15,11 +15,11 @@ declare const _default: Omit<{
     style: boolean;
 }, "events"> & {
     props?: {
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["sm", "md", "lg"];
         }>;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "bordered", "compact", "flush", "sidebar"];
         }>;

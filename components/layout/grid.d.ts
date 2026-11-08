@@ -3,24 +3,24 @@ declare const _default: Omit<{
     props: {
         columns: string;
         minColumnWidth: string;
-        cols: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        rows: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        gap: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        cols: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        rows: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        gap: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["none", "xs", "sm", "md", "lg", "xl", "2xl", "3xl"];
         }>;
-        align: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        align: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "stretch";
             readonly enum: readonly ["start", "center", "end", "stretch"];
         }>;
-        justify: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        justify: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "start";
             readonly enum: readonly ["start", "center", "end", "stretch"];
         }>;
-        _effectiveCols: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        _effectiveCols: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly attribute: false;
         }>;
-        _breakpoint: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        _breakpoint: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";
         }>;
@@ -28,29 +28,29 @@ declare const _default: Omit<{
     style: boolean;
     connected(): void;
     _updateResponsiveCols(): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         columns: string;
         minColumnWidth: string;
-        cols: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        rows: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        gap: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        cols: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        rows: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        gap: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["none", "xs", "sm", "md", "lg", "xl", "2xl", "3xl"];
         }>;
-        align: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        align: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "stretch";
             readonly enum: readonly ["start", "center", "end", "stretch"];
         }>;
-        justify: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        justify: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "start";
             readonly enum: readonly ["start", "center", "end", "stretch"];
         }>;
-        _effectiveCols: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        _effectiveCols: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly attribute: false;
         }>;
-        _breakpoint: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        _breakpoint: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";
         }>;

@@ -5,7 +5,7 @@ declare const _default: Omit<{
         src: string;
         accept: string;
         capture: string;
-        shape: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        shape: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "circle";
             readonly enum: readonly ["circle", "square"];
         }>;
@@ -17,7 +17,7 @@ declare const _default: Omit<{
         maxZoom: number;
         hint: string;
         disabled: false;
-        status: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        status: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "empty";
             readonly enum: readonly ["empty", "loading", "ready", "error"];
         }>;
@@ -31,23 +31,23 @@ declare const _default: Omit<{
             rect: CropRect;
             scale: number;
         } | null>;
-        _loads: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _loads: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly defaultValue: 0;
             readonly reactive: false;
             readonly attribute: false;
         }>;
     };
     events: {
-        loadstart: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        load: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly width: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly height: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        loadstart: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        load: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly width: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly height: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
-        change: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly zoom: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        change: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly zoom: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
-        error: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly message: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        error: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly message: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     };
     connected(): void;
@@ -107,13 +107,13 @@ declare const _default: Omit<{
     _dragged(e: DragEvent): void;
     /** @param {DragEvent} e */
     _dropped(e: DragEvent): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         src: string;
         accept: string;
         capture: string;
-        shape: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        shape: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "circle";
             readonly enum: readonly ["circle", "square"];
         }>;
@@ -125,7 +125,7 @@ declare const _default: Omit<{
         maxZoom: number;
         hint: string;
         disabled: false;
-        status: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        status: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "empty";
             readonly enum: readonly ["empty", "loading", "ready", "error"];
         }>;
@@ -139,23 +139,23 @@ declare const _default: Omit<{
             rect: CropRect;
             scale: number;
         } | null>;
-        _loads: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _loads: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly defaultValue: 0;
             readonly reactive: false;
             readonly attribute: false;
         }>;
     } | undefined;
     events?: {
-        loadstart: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        load: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly width: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly height: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        loadstart: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        load: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly width: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly height: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
-        change: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly zoom: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        change: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly zoom: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
-        error: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly message: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        error: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly message: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     } | undefined;
     mixins?: [] | undefined;

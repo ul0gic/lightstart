@@ -1,21 +1,21 @@
 declare const _default: Omit<{
     tag: string;
     props: {
-        _tabsBaseId: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        _tabsBaseId: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";
         }>;
-        _raf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _raf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly reactive: false;
             readonly defaultValue: 0;
         }>;
         activeTab: number;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "pills", "underline"];
         }>;
-        vertical: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        responsive: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        vertical: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        responsive: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
         fullWidth: false;
     };
     style: boolean;
@@ -29,24 +29,24 @@ declare const _default: Omit<{
     updateActivePanels(): void;
     /** @param {MouseEvent} e */
     selectTab(e: MouseEvent): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
-        _tabsBaseId: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        _tabsBaseId: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";
         }>;
-        _raf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _raf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly reactive: false;
             readonly defaultValue: 0;
         }>;
         activeTab: number;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "pills", "underline"];
         }>;
-        vertical: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        responsive: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        vertical: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        responsive: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
         fullWidth: false;
     } | undefined;
     events?: {} | undefined;

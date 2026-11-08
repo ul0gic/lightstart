@@ -2,7 +2,7 @@ declare const _default: Omit<{
     mixins: [{
         props: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;
@@ -11,7 +11,7 @@ declare const _default: Omit<{
     } & {
         props?: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;
@@ -38,13 +38,13 @@ declare const _default: Omit<{
         } | null>;
     };
     events: {
-        "panel-moved": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly x: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly y: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "panel-moved": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly x: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly y: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
-        "panel-resized": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly w: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly h: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "panel-resized": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly w: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly h: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     };
     connected(): void;
@@ -81,19 +81,19 @@ declare const _default: Omit<{
         } | null>;
     } | undefined;
     events?: {
-        "panel-moved": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly x: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly y: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "panel-moved": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly x: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly y: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
-        "panel-resized": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly w: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly h: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "panel-resized": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly w: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly h: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     } | undefined;
     mixins?: [{
         props: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;
@@ -102,7 +102,7 @@ declare const _default: Omit<{
     } & {
         props?: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;

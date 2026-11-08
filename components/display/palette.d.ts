@@ -7,14 +7,14 @@ declare const _default: Omit<{
         meta: string;
         selected: false;
         interactive: false;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["sm", "md"];
         }>;
     };
     events: {
-        select: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly colors: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown[], import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        select: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly colors: import("@lightstart/light/types").DeclaredTypeDefinition<unknown[], import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     };
     connected(): void;
@@ -26,7 +26,7 @@ declare const _default: Omit<{
     _reflect(): void;
     /** @param {Event} e */
     _activate(e: Event): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         colors: Prop<string[]>;
@@ -34,14 +34,14 @@ declare const _default: Omit<{
         meta: string;
         selected: false;
         interactive: false;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["sm", "md"];
         }>;
     } | undefined;
     events?: {
-        select: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly colors: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown[], import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        select: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly colors: import("@lightstart/light/types").DeclaredTypeDefinition<unknown[], import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     } | undefined;
     mixins?: [] | undefined;

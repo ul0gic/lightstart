@@ -2,7 +2,7 @@ declare const _default: Omit<{
     tag: string;
     style: boolean;
     props: {
-        position: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        position: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "left";
             readonly enum: readonly ["left", "right"];
         }>;
@@ -10,10 +10,10 @@ declare const _default: Omit<{
         collapsible: true;
     };
     toggle(): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
-        position: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        position: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "left";
             readonly enum: readonly ["left", "right"];
         }>;

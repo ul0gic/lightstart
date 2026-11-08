@@ -1,5 +1,5 @@
 /**
- * @bootstrapp/light/components: the element type of every tag in the loader
+ * @lightstart/light/components: the element type of every tag in the loader
  * map, so `document.createElement("lc-input")` and `querySelector` answer it.
  * One row per entry of `bootstrapp.components.lc`, in its order.
  */

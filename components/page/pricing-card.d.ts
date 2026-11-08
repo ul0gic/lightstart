@@ -18,7 +18,7 @@ declare const _default: Omit<{
         cta: Prop<PricingCta>;
         highlighted: false;
     };
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         name: string;

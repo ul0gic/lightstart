@@ -3,11 +3,11 @@ declare const _default: Omit<{
     style: boolean;
     props: {
         max: number;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "sm";
             readonly enum: readonly ["xs", "sm", "md", "lg", "xl"];
         }>;
-        _overflow: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _overflow: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly attribute: false;
             readonly defaultValue: 0;
         }>;
@@ -17,15 +17,15 @@ declare const _default: Omit<{
     updated({ changedProps }: {
         changedProps: Map<string, unknown>;
     }): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         max: number;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "sm";
             readonly enum: readonly ["xs", "sm", "md", "lg", "xl"];
         }>;
-        _overflow: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _overflow: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly attribute: false;
             readonly defaultValue: 0;
         }>;

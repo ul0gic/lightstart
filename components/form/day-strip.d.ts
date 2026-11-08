@@ -23,8 +23,8 @@ declare const _default: Omit<{
         disabled: false;
     };
     events: {
-        change: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        change: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     };
     /** @returns {DayStripDay[]} */
@@ -33,7 +33,7 @@ declare const _default: Omit<{
     _pick(date: string): void;
     /** @param {KeyboardEvent} e @param {DayStripDay[]} days */
     _onKeydown(e: KeyboardEvent, days: DayStripDay[]): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         value: string;
@@ -45,8 +45,8 @@ declare const _default: Omit<{
         disabled: false;
     } | undefined;
     events?: {
-        change: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        change: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     } | undefined;
     mixins?: [] | undefined;

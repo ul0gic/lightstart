@@ -1,11 +1,11 @@
 declare const _default: Omit<{
     tag: string;
     props: {
-        fixed: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        fixed: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "none";
             readonly enum: readonly ["none", "top", "bottom"];
         }>;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "bordered", "floating"];
         }>;
@@ -13,7 +13,7 @@ declare const _default: Omit<{
         mobileMenuOpen: false;
         collapsed: false;
         collapsible: false;
-        direction: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        direction: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly enum: readonly ["vertical", "horizontal"];
             readonly defaultValue: "horizontal";
         }>;
@@ -21,14 +21,14 @@ declare const _default: Omit<{
     style: boolean;
     toggleMobileMenu(): void;
     toggle(): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
-        fixed: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        fixed: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "none";
             readonly enum: readonly ["none", "top", "bottom"];
         }>;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "bordered", "floating"];
         }>;
@@ -36,7 +36,7 @@ declare const _default: Omit<{
         mobileMenuOpen: false;
         collapsed: false;
         collapsible: false;
-        direction: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        direction: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly enum: readonly ["vertical", "horizontal"];
             readonly defaultValue: "horizontal";
         }>;

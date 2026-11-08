@@ -10,8 +10,8 @@ declare const _default: Omit<{
         disabled: false;
     };
     events: {
-        change: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown[], import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        change: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<unknown[], import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     };
     /** @param {number} day */
@@ -31,8 +31,8 @@ declare const _default: Omit<{
     /** @param {number} day @param {"open" | "close"} which @param {string} time */
     _time(day: number, which: "open" | "close", time: string): void;
     /** @param {number} day @param {WeekHoursDay} hours @param {string} name */
-    _times(day: number, hours: WeekHoursDay, name: string): import("@bootstrapp/light/html").TemplateResult;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    _times(day: number, hours: WeekHoursDay, name: string): import("@lightstart/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         value: Prop<WeekHoursEntry[]>;
@@ -43,8 +43,8 @@ declare const _default: Omit<{
         disabled: false;
     } | undefined;
     events?: {
-        change: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown[], import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        change: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<unknown[], import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     } | undefined;
     mixins?: [] | undefined;

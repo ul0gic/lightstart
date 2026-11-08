@@ -9,7 +9,7 @@ declare const _default: Omit<{
         required: false;
         maxSize: Prop<number | null>;
         showPreview: true;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "dropzone"];
         }>;
@@ -63,10 +63,10 @@ declare const _default: Omit<{
         size: string;
         preview: string | null;
     };
-    render(): import("@bootstrapp/light/html").TemplateResult;
-    _renderDefault(): import("@bootstrapp/light/html").TemplateResult;
-    _renderDropzone(): import("@bootstrapp/light/html").TemplateResult;
-    _renderFileList(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
+    _renderDefault(): import("@lightstart/light/html").TemplateResult;
+    _renderDropzone(): import("@lightstart/light/html").TemplateResult;
+    _renderFileList(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         _internals: Prop<ElementInternals | null>;
@@ -77,7 +77,7 @@ declare const _default: Omit<{
         required: false;
         maxSize: Prop<number | null>;
         showPreview: true;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "dropzone"];
         }>;

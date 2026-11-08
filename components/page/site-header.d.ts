@@ -13,7 +13,7 @@ declare const _default: Omit<{
         links: Prop<SiteHeaderLink[]>;
         actions: Prop<SiteHeaderAction[]>;
     };
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         brand: Prop<SiteHeaderBrand>;

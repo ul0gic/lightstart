@@ -14,7 +14,7 @@ declare const _default: Omit<{
             } | undefined;
             events?: {} | undefined;
         }) | ({
-            connected(this: import("@bootstrapp/light").default & {
+            connected(this: import("@lightstart/light").default & {
                 onClickOutside?: (e: Event) => void;
             }): void;
         } & {
@@ -73,7 +73,7 @@ declare const _default: Omit<{
             } | undefined;
             events?: {} | undefined;
         }) | ({
-            connected(this: import("@bootstrapp/light").default & {
+            connected(this: import("@lightstart/light").default & {
                 onClickOutside?: (e: Event) => void;
             }): void;
         } & {

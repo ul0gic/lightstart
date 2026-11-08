@@ -14,12 +14,12 @@ declare const _default: Omit<{
     style: boolean;
     props: {
         events: Prop<CalendarEvent[]>;
-        viewMode: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        viewMode: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "month";
             readonly enum: readonly ["list", "month", "week"];
         }>;
-        currentMonth: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, number>;
-        currentYear: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, number>;
+        currentMonth: import("@lightstart/light/types").DeclaredTypeDefinition<number, number>;
+        currentYear: import("@lightstart/light/types").DeclaredTypeDefinition<number, number>;
         selectedDate: string;
         showDayPanel: false;
         dayPanel: true;
@@ -56,24 +56,24 @@ declare const _default: Omit<{
      */
     handleEventClick(event: CalendarEvent, e?: MouseEvent): void;
     getEventsForSelectedDay(): CalendarEvent[];
-    render(): import("@bootstrapp/light/html").TemplateResult;
-    renderViewToggle(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
+    renderViewToggle(): import("@lightstart/light/html").TemplateResult;
     /** @param {Record<string, CalendarEvent[]>} groupedEvents */
-    renderWeekView(groupedEvents: Record<string, CalendarEvent[]>): import("@bootstrapp/light/html").TemplateResult;
+    renderWeekView(groupedEvents: Record<string, CalendarEvent[]>): import("@lightstart/light/html").TemplateResult;
     /** @param {Record<string, CalendarEvent[]>} groupedEvents */
-    renderListView(groupedEvents: Record<string, CalendarEvent[]>): import("@bootstrapp/light/html").TemplateResult;
+    renderListView(groupedEvents: Record<string, CalendarEvent[]>): import("@lightstart/light/html").TemplateResult;
     /** @param {CalendarEvent[]} events */
-    renderGridView(events: CalendarEvent[]): import("@bootstrapp/light/html").TemplateResult;
-    renderDayDetailPanel(): import("@bootstrapp/light/html").TemplateResult;
+    renderGridView(events: CalendarEvent[]): import("@lightstart/light/html").TemplateResult;
+    renderDayDetailPanel(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         events: Prop<CalendarEvent[]>;
-        viewMode: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        viewMode: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "month";
             readonly enum: readonly ["list", "month", "week"];
         }>;
-        currentMonth: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, number>;
-        currentYear: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, number>;
+        currentMonth: import("@lightstart/light/types").DeclaredTypeDefinition<number, number>;
+        currentYear: import("@lightstart/light/types").DeclaredTypeDefinition<number, number>;
         selectedDate: string;
         showDayPanel: false;
         dayPanel: true;

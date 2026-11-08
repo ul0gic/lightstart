@@ -15,7 +15,7 @@ declare const _default: Omit<{
     }, {
         props: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;
@@ -24,7 +24,7 @@ declare const _default: Omit<{
     } & {
         props?: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;
@@ -39,15 +39,15 @@ declare const _default: Omit<{
         grabber: false;
         expandable: false;
         expanded: false;
-        _room: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _room: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly reactive: false;
             readonly defaultValue: 0;
         }>;
-        _classified: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        _classified: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";
         }>;
-        _suppressClick: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        _suppressClick: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly reactive: false;
             readonly defaultValue: false;
         }>;
@@ -90,7 +90,7 @@ declare const _default: Omit<{
     toggle(): void;
     openSheet(): void;
     close(): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         open: false;
@@ -98,15 +98,15 @@ declare const _default: Omit<{
         grabber: false;
         expandable: false;
         expanded: false;
-        _room: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _room: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly reactive: false;
             readonly defaultValue: 0;
         }>;
-        _classified: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        _classified: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";
         }>;
-        _suppressClick: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        _suppressClick: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly reactive: false;
             readonly defaultValue: false;
         }>;
@@ -130,7 +130,7 @@ declare const _default: Omit<{
     }, {
         props: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;
@@ -139,7 +139,7 @@ declare const _default: Omit<{
     } & {
         props?: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;

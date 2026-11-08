@@ -14,7 +14,7 @@ declare const _default: Omit<{
         cancelLabel: string;
         finishLabel: string;
         stepLabel: string;
-        canProceed: import("@bootstrapp/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
+        canProceed: import("@lightstart/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
     };
     nextStep(): boolean;
     prevStep(): boolean;
@@ -22,7 +22,7 @@ declare const _default: Omit<{
     goToStep(step: number): boolean;
     handleBackClick(): void;
     handleNextClick(): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         currentStep: number;
@@ -37,7 +37,7 @@ declare const _default: Omit<{
         cancelLabel: string;
         finishLabel: string;
         stepLabel: string;
-        canProceed: import("@bootstrapp/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
+        canProceed: import("@lightstart/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
     } | undefined;
     events?: {} | undefined;
     mixins?: [] | undefined;

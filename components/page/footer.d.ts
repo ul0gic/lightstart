@@ -14,7 +14,7 @@ declare const _default: Omit<{
         copyright: string;
         socials: Prop<FooterSocial[]>;
     };
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         brand: Prop<FooterBrand>;

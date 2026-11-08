@@ -6,5 +6,5 @@ export function drawsOwnLabel(field: FormField): boolean;
 export function drawsOwnError(field: FormField): boolean;
 import type { FormFieldRenderer } from "../types.js";
 import type { FormField } from "../types.js";
-import { html as defaultHtml } from "@bootstrapp/light/html";
+import { html as defaultHtml } from "@lightstart/light/html";
 import type { Renderable } from "../types.js";

@@ -3,22 +3,22 @@ declare const _default: Omit<{
     style: boolean;
     props: {
         crumbs: Prop<PageHeaderCrumb[]>;
-        title: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        subtitle: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        _hasTools: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        title: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        subtitle: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        _hasTools: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly attribute: false;
         }>;
     };
     /** @param {Event} e */
     _onToolsChange(e: Event): void;
     firstUpdated(): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         crumbs: Prop<PageHeaderCrumb[]>;
-        title: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        subtitle: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        _hasTools: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        title: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        subtitle: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        _hasTools: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly attribute: false;
         }>;
     } | undefined;

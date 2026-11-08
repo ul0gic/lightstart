@@ -7,11 +7,11 @@ declare const _default: Omit<{
         showFirst: true;
         showLast: true;
         showPrevNext: true;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["sm", "md", "lg"];
         }>;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "simple", "loadmore", "pager"];
         }>;
@@ -30,24 +30,24 @@ declare const _default: Omit<{
     _getPageNumbers(): (number | "...")[];
     /**
      * @param {number} page
-     * @param {{ cls?: string, label: string, content: import("@bootstrapp/light/html").TemplateValue, disabled?: boolean }} arg
+     * @param {{ cls?: string, label: string, content: import("@lightstart/light/html").TemplateValue, disabled?: boolean }} arg
      */
     _ctrl(page: number, { cls, label, content, disabled }: {
         cls?: string;
         label: string;
-        content: import("@bootstrapp/light/html").TemplateValue;
+        content: import("@lightstart/light/html").TemplateValue;
         disabled?: boolean;
-    }): import("@bootstrapp/light/html").TemplateResult;
-    renderDefault(): import("@bootstrapp/light/html").TemplateResult;
-    renderSimple(): import("@bootstrapp/light/html").TemplateResult;
-    renderLoadmore(): import("@bootstrapp/light/html").TemplateResult;
+    }): import("@lightstart/light/html").TemplateResult;
+    renderDefault(): import("@lightstart/light/html").TemplateResult;
+    renderSimple(): import("@lightstart/light/html").TemplateResult;
+    renderLoadmore(): import("@lightstart/light/html").TemplateResult;
     /**
      * @param {PagerLink | null} link
      * @param {"previous" | "next"} side
      */
-    _pagerLink(link: PagerLink | null, side: "previous" | "next"): import("@bootstrapp/light/html").TemplateResult;
-    renderPager(): import("@bootstrapp/light/html").TemplateResult;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    _pagerLink(link: PagerLink | null, side: "previous" | "next"): import("@lightstart/light/html").TemplateResult;
+    renderPager(): import("@lightstart/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         current: number;
@@ -56,11 +56,11 @@ declare const _default: Omit<{
         showFirst: true;
         showLast: true;
         showPrevNext: true;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["sm", "md", "lg"];
         }>;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "simple", "loadmore", "pager"];
         }>;

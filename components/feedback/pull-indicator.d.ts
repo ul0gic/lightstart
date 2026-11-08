@@ -7,7 +7,7 @@ declare const _default: Omit<{
         refreshing: false;
     };
     willUpdate(): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         pull: number;

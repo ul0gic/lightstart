@@ -1,5 +1,5 @@
 /**
- * @bootstrapp/light/controller: type declarations.
+ * @lightstart/light/controller: type declarations.
  */
 import type { PropertyDeclaration, PropertyDeclarations, PropsToThis } from "../types/types.js";
 import type { Signal } from "../signals/index.js";
@@ -56,7 +56,7 @@ export interface ControllerInstance {
 export type ControllerDefinitionKey = "name" | "props" | "sync" | "mixins" | "connected" | "disconnected";
 /**
  * Targets a host teaches the binding (through `registerSyncBinder`), added by
- * declaration merging: `declare module "@bootstrapp/light/controller" { interface SyncTargets { model: ModelApi } }`.
+ * declaration merging: `declare module "@lightstart/light/controller" { interface SyncTargets { model: ModelApi } }`.
  */
 export interface SyncTargets {
 }

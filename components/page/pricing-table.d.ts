@@ -15,7 +15,7 @@ declare const _default: Omit<{
         plans: Prop<PricingPlan[]>;
         sectionId: string;
     };
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         eyebrow: string;

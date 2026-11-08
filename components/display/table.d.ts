@@ -8,15 +8,15 @@ declare const _default: Omit<{
         selectRow: Prop<TableRowSelect | null>;
         isSelected: Prop<TableRowSelected | null>;
         sortable: false;
-        sortBy: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        sortBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         sortDir: string;
         emptyMessage: string;
     };
     /** @param {string} name */
     handleSort(name: string): void;
     /** @param {string | TableColumn} column */
-    renderHead(column: string | TableColumn): import("@bootstrapp/light/html").TemplateResult;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    renderHead(column: string | TableColumn): import("@lightstart/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         columns: Prop<(string | TableColumn)[]>;
@@ -24,7 +24,7 @@ declare const _default: Omit<{
         selectRow: Prop<TableRowSelect | null>;
         isSelected: Prop<TableRowSelected | null>;
         sortable: false;
-        sortBy: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        sortBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         sortDir: string;
         emptyMessage: string;
     } | undefined;

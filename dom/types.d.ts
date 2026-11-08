@@ -31,6 +31,6 @@ export type ProjectedUnit = {
     slot: string;
     taken: boolean;
 };
-/** Re-export the runtime so `@bootstrapp/light/dom` surfaces the browser View and the host beside these declarations. */
+/** Re-export the runtime so `@lightstart/light/dom` surfaces the browser View and the host beside these declarations. */
 export * from "./index.js";
 export { default } from "./index.js";

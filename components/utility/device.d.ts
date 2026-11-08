@@ -1,7 +1,7 @@
 declare const _default: Omit<{
     tag: string;
     props: {
-        device: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        device: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "iphone";
             readonly enum: readonly ["iphone", "android", "ipad", "desktop"];
         }>;
@@ -13,10 +13,10 @@ declare const _default: Omit<{
     };
     style: boolean;
     updated(): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
-        device: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        device: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "iphone";
             readonly enum: readonly ["iphone", "android", "ipad", "desktop"];
         }>;

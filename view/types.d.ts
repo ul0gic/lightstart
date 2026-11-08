@@ -1,5 +1,5 @@
 /**
- * @bootstrapp/light: the view engine's public type declarations.
+ * @lightstart/light: the view engine's public type declarations.
  */
 import type { DeclaredTypeDefinition, PropertyDeclarations, PropsToThis, TypeDefinition } from "../types/types.js";
 import type View from "./index.js";
@@ -265,6 +265,6 @@ export type ViewConstructor = typeof View & {
     _hooks?: Record<string, LifecycleHook | undefined>;
     _hookLists?: Map<string, LifecycleHook[]> | null;
 };
-/** Re-export runtime types from the JS entry so the bare `@bootstrapp/light` specifier surfaces both the type-only declarations above and the JSDoc-inferred types of runtime exports (`import type View from "@bootstrapp/light"`). */
+/** Re-export runtime types from the JS entry so the bare `@lightstart/light` specifier surfaces both the type-only declarations above and the JSDoc-inferred types of runtime exports (`import type View from "@lightstart/light"`). */
 export * from "./index.js";
 export { default } from "./index.js";

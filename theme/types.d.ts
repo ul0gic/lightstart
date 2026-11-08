@@ -1,5 +1,5 @@
 /**
- * @bootstrapp/light/theme: the shapes a theme is made of.
+ * @lightstart/light/theme: the shapes a theme is made of.
  */
 export type { FontValue, HSL, ShadeOption, ThemeData, ThemeFont } from "./tokens.js";
 /** One icon set, in the `@iconify-json` shape: bodies keyed by name, sizes shared. */

@@ -13,7 +13,7 @@ declare const _default: Omit<{
         changedProps: Map<string, unknown>;
     }): void;
     _applyTheme(): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         theme: Prop<Record<string, unknown> | null>;

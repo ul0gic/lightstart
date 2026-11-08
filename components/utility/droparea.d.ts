@@ -2,12 +2,12 @@ declare const _default: Omit<{
     tag: string;
     style: boolean;
     props: {
-        _dropIndex: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _dropIndex: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly reactive: false;
             readonly defaultValue: -1;
         }>;
         onDropped: Prop<((info: DropInfo) => void) | null>;
-        "droparea-id": import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "droparea-id": import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         orderable: false;
         direction: string;
     };
@@ -28,12 +28,12 @@ declare const _default: Omit<{
     _hideIndicator(): void;
 }, "events"> & {
     props?: {
-        _dropIndex: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _dropIndex: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly reactive: false;
             readonly defaultValue: -1;
         }>;
         onDropped: Prop<((info: DropInfo) => void) | null>;
-        "droparea-id": import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "droparea-id": import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         orderable: false;
         direction: string;
     } | undefined;

@@ -12,4 +12,4 @@ export function withClickOutside({ events, capture, defer }?: {
     events?: {} | undefined;
 };
 export default withClickOutside;
-import type View from "@bootstrapp/light";
+import type View from "@lightstart/light";

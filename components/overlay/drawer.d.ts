@@ -27,7 +27,7 @@ declare const _default: Omit<{
     style: boolean;
     props: {
         open: false;
-        position: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        position: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "right";
             readonly enum: readonly ["left", "right", "top", "bottom"];
         }>;
@@ -44,11 +44,11 @@ declare const _default: Omit<{
     openDrawer(): void;
     closeDrawer(): void;
     toggleDrawer(): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         open: false;
-        position: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        position: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "right";
             readonly enum: readonly ["left", "right", "top", "bottom"];
         }>;

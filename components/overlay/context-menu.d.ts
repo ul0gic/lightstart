@@ -14,7 +14,7 @@ declare const _default: Omit<{
             } | undefined;
             events?: {} | undefined;
         }) | ({
-            connected(this: import("@bootstrapp/light").default & {
+            connected(this: import("@lightstart/light").default & {
                 onClickOutside?: (e: Event) => void;
             }): void;
         } & {
@@ -48,7 +48,7 @@ declare const _default: Omit<{
         } | undefined;
         events?: {} | undefined;
     }, {
-        connected(this: import("@bootstrapp/light").default & {
+        connected(this: import("@lightstart/light").default & {
             onClickOutside?: (e: Event) => void;
         }): void;
     } & {
@@ -59,16 +59,16 @@ declare const _default: Omit<{
     style: boolean;
     props: {
         items: Prop<ContextMenuItem[]>;
-        target: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, null>;
+        target: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, null>;
         offset: number;
         position: string;
         _openSubmenu: Prop<string | null>;
         _closeTimer: Prop<ReturnType<typeof setTimeout> | null>;
     };
     events: {
-        select: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly item: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly target: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        select: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly item: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly target: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     };
     connected(): void;
@@ -99,23 +99,23 @@ declare const _default: Omit<{
     /** @param {HTMLElement} li */
     _hideSubmenu(li: HTMLElement): void;
     /** @param {ContextMenuItem} item */
-    _renderLeaf(item: ContextMenuItem): import("@bootstrapp/light/html").TemplateResult;
+    _renderLeaf(item: ContextMenuItem): import("@lightstart/light/html").TemplateResult;
     /** @param {ContextMenuItem} item @param {ContextMenuItem[]} children */
-    _renderParent(item: ContextMenuItem, children: ContextMenuItem[]): import("@bootstrapp/light/html").TemplateResult;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    _renderParent(item: ContextMenuItem, children: ContextMenuItem[]): import("@lightstart/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         items: Prop<ContextMenuItem[]>;
-        target: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, null>;
+        target: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, null>;
         offset: number;
         position: string;
         _openSubmenu: Prop<string | null>;
         _closeTimer: Prop<ReturnType<typeof setTimeout> | null>;
     } | undefined;
     events?: {
-        select: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly item: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly target: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        select: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly item: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly target: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     } | undefined;
     mixins?: [{
@@ -133,7 +133,7 @@ declare const _default: Omit<{
             } | undefined;
             events?: {} | undefined;
         }) | ({
-            connected(this: import("@bootstrapp/light").default & {
+            connected(this: import("@lightstart/light").default & {
                 onClickOutside?: (e: Event) => void;
             }): void;
         } & {
@@ -167,7 +167,7 @@ declare const _default: Omit<{
         } | undefined;
         events?: {} | undefined;
     }, {
-        connected(this: import("@bootstrapp/light").default & {
+        connected(this: import("@lightstart/light").default & {
             onClickOutside?: (e: Event) => void;
         }): void;
     } & {

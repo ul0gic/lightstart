@@ -10,19 +10,19 @@ declare const _default: Omit<{
         offset: number;
         _current: string;
         _observer: Prop<IntersectionObserver | null>;
-        _watched: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        _watched: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "";
             readonly reactive: false;
         }>;
     };
     events: {
-        "toc-change": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "toc-change": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
     };
     _shown(): TocItem[];
     _watch(): void;
     connected(): void;
     updated(): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         items: Prop<TocItem[]>;
@@ -33,13 +33,13 @@ declare const _default: Omit<{
         offset: number;
         _current: string;
         _observer: Prop<IntersectionObserver | null>;
-        _watched: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        _watched: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "";
             readonly reactive: false;
         }>;
     } | undefined;
     events?: {
-        "toc-change": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "toc-change": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
     } | undefined;
     mixins?: [] | undefined;
 };

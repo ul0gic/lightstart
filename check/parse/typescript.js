@@ -1,5 +1,5 @@
 /**
- * @bootstrapp/light/check/parse/typescript.js: the TypeScript compiler API the
+ * @lightstart/light/check/parse/typescript.js: the TypeScript compiler API the
  * parsers and rules read. `typescript` when it is version 6; otherwise
  * `@typescript/typescript6`, since TypeScript 7's `typescript` no longer
  * exports that API. Resolved without waiting, so `loadRulesSync` can load the

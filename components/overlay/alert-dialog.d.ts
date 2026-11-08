@@ -25,15 +25,15 @@ declare const _default: Omit<{
         confirmVariant: Prop<"default" | "danger">;
         showCancel: false;
         closeOnBackdropClick: false;
-        _dialogId: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        _dialogId: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";
         }>;
     };
     events: {
-        open: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        confirm: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        cancel: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        open: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        confirm: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        cancel: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, import("@lightstart/light/types").TypeOptionsOrDefault>;
     };
     style: boolean;
     /** @type {HTMLDialogElement | null} */
@@ -51,7 +51,7 @@ declare const _default: Omit<{
     handleBackdropClick(e: Event): void;
     /** @param {AlertVariant} variant */
     _getIcon(variant: AlertVariant): string | null;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         open: false;
@@ -63,15 +63,15 @@ declare const _default: Omit<{
         confirmVariant: Prop<"default" | "danger">;
         showCancel: false;
         closeOnBackdropClick: false;
-        _dialogId: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        _dialogId: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";
         }>;
     } | undefined;
     events?: {
-        open: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        confirm: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        cancel: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        open: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        confirm: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        cancel: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, import("@lightstart/light/types").TypeOptionsOrDefault>;
     } | undefined;
     mixins?: [{
         props: {

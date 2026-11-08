@@ -40,13 +40,13 @@ declare const _default: Omit<{
         disabled: false;
     };
     events: {
-        change: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly from: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly to: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        change: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly from: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly to: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
-        "month-change": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly month: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "month-change": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly month: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     };
     /** @returns {string} */
@@ -57,7 +57,7 @@ declare const _default: Omit<{
     _shift(n: number): void;
     /** @param {KeyboardEvent} e */
     _onKeydown(e: KeyboardEvent): Promise<void>;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         month: string;
@@ -77,13 +77,13 @@ declare const _default: Omit<{
         disabled: false;
     } | undefined;
     events?: {
-        change: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly from: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly to: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        change: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly from: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly to: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
-        "month-change": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly month: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "month-change": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly month: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     } | undefined;
     mixins?: [] | undefined;

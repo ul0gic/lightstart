@@ -2,13 +2,13 @@ declare const _default: Omit<{
     tag: string;
     style: boolean;
     props: {
-        pattern: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        pattern: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         random: false;
     };
     connected(): void;
 }, "events"> & {
     props?: {
-        pattern: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        pattern: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         random: false;
     } | undefined;
     events?: {} | undefined;

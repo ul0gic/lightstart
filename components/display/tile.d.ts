@@ -8,11 +8,11 @@ declare const _default: Omit<{
         label: string;
         meta: string;
         badge: string;
-        aspect: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        aspect: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "1/1";
             readonly enum: string[];
         }>;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["sm", "md", "lg", "fill"];
         }>;
@@ -22,7 +22,7 @@ declare const _default: Omit<{
         interactive: false;
     };
     events: {
-        select: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {}>;
+        select: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {}>;
     };
     connected(): void;
     /** @param {{ changedProps: Map<string, unknown> }} arg */
@@ -32,7 +32,7 @@ declare const _default: Omit<{
     _reflectInteractive(): void;
     /** @param {Event} e */
     _activate(e: Event): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         src: string;
@@ -41,11 +41,11 @@ declare const _default: Omit<{
         label: string;
         meta: string;
         badge: string;
-        aspect: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        aspect: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "1/1";
             readonly enum: string[];
         }>;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["sm", "md", "lg", "fill"];
         }>;
@@ -55,7 +55,7 @@ declare const _default: Omit<{
         interactive: false;
     } | undefined;
     events?: {
-        select: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {}>;
+        select: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {}>;
     } | undefined;
     mixins?: [] | undefined;
 };

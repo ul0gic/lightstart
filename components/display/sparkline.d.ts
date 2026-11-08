@@ -5,22 +5,22 @@ declare const _default: Omit<{
         data: Prop<SparklineDatum[]>;
         width: number;
         height: number;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "primary";
             readonly enum: readonly ["primary", "secondary", "success", "warning", "error"];
         }>;
         showArea: false;
         smooth: true;
-        label: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        _gradientId: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        _gradientId: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";
         }>;
     };
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
     _normalizeData(): number[];
     /** @param {string} areaPath */
-    _area(areaPath: string): import("@bootstrapp/light/html").TemplateResult;
+    _area(areaPath: string): import("@lightstart/light/html").TemplateResult;
     /** @param {{ x: number, y: number, value: number }[]} points */
     _createPath(points: {
         x: number;
@@ -47,14 +47,14 @@ declare const _default: Omit<{
         data: Prop<SparklineDatum[]>;
         width: number;
         height: number;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "primary";
             readonly enum: readonly ["primary", "secondary", "success", "warning", "error"];
         }>;
         showArea: false;
         smooth: true;
-        label: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        _gradientId: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        _gradientId: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";
         }>;

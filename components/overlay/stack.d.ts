@@ -1,5 +1,5 @@
 export namespace overlays {
-    let stack: import("@bootstrapp/light/signals").Signal<OverlayEntry[]>;
+    let stack: import("@lightstart/light/signals").Signal<OverlayEntry[]>;
     /**
      * @param {Element} host
      * @param {OverlayOptions} [options]

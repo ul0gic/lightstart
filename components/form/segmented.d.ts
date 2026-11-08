@@ -6,7 +6,7 @@ declare const _default: Omit<{
         values: Prop<string[]>;
         multiple: false;
         disabled: false;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["sm", "md", "lg"];
         }>;
@@ -15,9 +15,9 @@ declare const _default: Omit<{
     };
     style: boolean;
     events: {
-        change: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly values: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown[], import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        change: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly values: import("@lightstart/light/types").DeclaredTypeDefinition<unknown[], import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     };
     _options(): SegmentedOption[];
@@ -31,7 +31,7 @@ declare const _default: Omit<{
     _onKeydown(e: KeyboardEvent, options: {
         value: string;
     }[]): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         options: Prop<(string | SegmentedOption)[]>;
@@ -39,7 +39,7 @@ declare const _default: Omit<{
         values: Prop<string[]>;
         multiple: false;
         disabled: false;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["sm", "md", "lg"];
         }>;
@@ -47,9 +47,9 @@ declare const _default: Omit<{
         name: string;
     } | undefined;
     events?: {
-        change: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly values: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown[], import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        change: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly values: import("@lightstart/light/types").DeclaredTypeDefinition<unknown[], import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     } | undefined;
     mixins?: [] | undefined;

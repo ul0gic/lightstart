@@ -1,5 +1,5 @@
 /**
- * @bootstrapp/light/model/store: every model's reads and writes over the
+ * @lightstart/light/model/store: every model's reads and writes over the
  * adapter that holds it, in the page or in a worker. The write pipeline runs
  * once here for every adapter: hooks, id, relation stripping, defaults,
  * validation, file uploads, then the adapter's own insert/update/delete, then
@@ -10,18 +10,16 @@
  */
 
 import { MODEL_CHANGED } from "./events.js";
-import { newId } from "./config.js";
 import { decoratorsFor } from "./factory.js";
-import { ValidationError, validateRow } from "./validate.js";
 import { uploadFiles } from "./file-storage.js";
 import { loadRelationships, loadRelationshipsForMany } from "./relationship-loader.js";
-import { relationValueToId } from "./relationships.js";
 import { applyFields, validateQueryOptions } from "./query-builder.js";
-import { eachField, entryOf, schemaField } from "./fields.js";
+import { entryOf } from "./fields.js";
+import { forStorage, prepareAddRow, prepareEditRow, withId, withoutImmutable } from "./pipeline.js";
 
 export { createModelHandlers, storeRequest } from "./handlers.js";
 
-                                                                                                                                                                                
+                                                                                                                                                                    
 
 const isId = (value         )                           => typeof value === "string" || typeof value === "number";
 
@@ -30,39 +28,6 @@ const copy = (record                         )                          => Objec
 const callHook = (name                  , fn         , row            , ctx             )          => {
   if (typeof fn !== "function") throw new TypeError(`$hooks.${name} is not a function`);
   return (fn                                                  )(row, ctx);
-};
-
-const forStorage = (schema                         , row     )      => {
-  const relations = new Map                    ();
-  eachField(schema, (field, def) => {
-    if (def.relationship) relations.set(field, def);
-  });
-  return Object.fromEntries(Object.entries(row).flatMap(([field, value])                      => {
-    const def = relations.get(field);
-    if (def === undefined) return [[field, value]];
-    if (!def.belongs) return [];
-    if (value === undefined) return [[field, value]];
-    return [[field, def.relationship === "belongs_many" && Array.isArray(value) ? value.map(relationValueToId) : relationValueToId(value)]];
-  }));
-};
-
-const withDefaults = (schema                         , row     )      => {
-  const filled                      = [];
-  eachField(schema, (field, def) => {
-    if (row[field] !== undefined || def.defaultValue === undefined) return;
-    if (def.relationship && !def.belongs) return;
-    const value = def.defaultValue;
-    filled.push([field, typeof value === "function" ? (value                 )() : value && typeof value === "object" ? structuredClone(value) : value]);
-  });
-  return filled.length === 0 ? row : Object.fromEntries([...Object.entries(row), ...filled]);
-};
-
-const withoutImmutable = (schema                         , patch     )      => {
-  const immutable = new Set        ();
-  eachField(schema, (field, def) => {
-    if (def.immutable && field !== "id") immutable.add(field);
-  });
-  return Object.fromEntries(Object.entries(patch).filter(([field]) => !immutable.has(field)));
 };
 
 const at = (error         , index        )        => {
@@ -145,20 +110,11 @@ export function createStore({ models, databases = {}, defaultAdapter = "indexedd
 
   const prepareAdd = async (model        , data     , options              )               => {
     const schema = schemaOf(model);
-    let row = await runBefore(model, "beforeAdd", copy(data), context(model, "add", { importing: Boolean(options.importing) }));
-    if (row.id == null) {
-      const adapter = adapterFor(model);
-      const nextId = adapter.nextId;
-      if (typeof nextId === "function") row.id = nextId.call(adapter, model, row);
-      else {
-        const idField = schema ? schemaField(schema, "id") : undefined;
-        if (idField?.$type !== "number") row.id = newId();
-      }
-    }
-    row = withDefaults(schema, forStorage(schema, row));
-    const { valid, errors } = validateRow(models, model, row, { operation: "add" });
-    if (!valid) throw new ValidationError(model, errors);
-    return uploadFiles(schema, model, row);
+    const hooked = await runBefore(model, "beforeAdd", copy(data), context(model, "add", { importing: Boolean(options.importing) }));
+    const adapter = adapterFor(model);
+    const nextId = adapter.nextId;
+    const row = withId(schema, hooked, typeof nextId === "function" ? () => nextId.call(adapter, model, hooked) : null);
+    return uploadFiles(schema, model, prepareAddRow(models, model, row));
   };
 
   const store        = {
@@ -283,10 +239,7 @@ export function createStore({ models, databases = {}, defaultAdapter = "indexedd
       const changes = await runBefore(model, "beforeEdit", merged(forStorage(schema, withoutImmutable(schema, patch)), { id }), ctx);
       const current = await adapter.get(model, id);
       if (!current) throw new Error(`Record ${id} not found in model "${model}"`);
-      let row = forStorage(schema, merged(current, changes, { id }));
-      const { valid, errors } = validateRow(models, model, row, { operation: "edit" });
-      if (!valid) throw new ValidationError(model, errors);
-      row = await uploadFiles(schema, model, row);
+      const row = await uploadFiles(schema, model, prepareEditRow(models, model, current, changes, id));
       const stored = await adapter.update(model, row, { ...options, patch: without(changes, "id") });
       changed(model, "edit", stored);
       await runAfter(model, "afterEdit", stored, ctx);

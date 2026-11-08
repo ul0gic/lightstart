@@ -2,7 +2,7 @@ declare const _default: Omit<{
     tag: string;
     style: boolean;
     props: {
-        mode: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        mode: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "register";
             readonly enum: readonly ["login", "register"];
         }>;
@@ -44,13 +44,13 @@ declare const _default: Omit<{
     handleKeyPress(e: KeyboardEvent): void;
     /** @param {string} message */
     setError(message: string): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
-    renderTabs(): import("@bootstrapp/light/html").TemplateResult;
-    renderOAuthButtons(): import("@bootstrapp/light/html").TemplateResult;
-    renderGuestOption(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
+    renderTabs(): import("@lightstart/light/html").TemplateResult;
+    renderOAuthButtons(): import("@lightstart/light/html").TemplateResult;
+    renderGuestOption(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
-        mode: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        mode: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "register";
             readonly enum: readonly ["login", "register"];
         }>;

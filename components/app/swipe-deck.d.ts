@@ -2,7 +2,7 @@ declare const _default: Omit<{
     mixins: [{
         props: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;
@@ -11,7 +11,7 @@ declare const _default: Omit<{
     } & {
         props?: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;
@@ -30,11 +30,11 @@ declare const _default: Omit<{
         threshold: number;
         peek: number;
         labels: Prop<SwipeDeckLabels | null>;
-        _busy: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        _busy: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly reactive: false;
             readonly defaultValue: false;
         }>;
-        _tapOnControl: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        _tapOnControl: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly reactive: false;
             readonly defaultValue: false;
         }>;
@@ -43,29 +43,29 @@ declare const _default: Omit<{
         _history: Prop<SwipeDeckHistory[]>;
     };
     events: {
-        swipe: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+        swipe: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
             readonly props: {
-                readonly direction: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-                readonly index: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-                readonly item: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+                readonly direction: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+                readonly index: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
+                readonly item: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
             };
         }>;
-        select: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+        select: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
             readonly props: {
-                readonly index: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-                readonly item: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+                readonly index: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
+                readonly item: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
             };
         }>;
-        "index-change": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+        "index-change": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
             readonly props: {
-                readonly index: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+                readonly index: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
             };
         }>;
-        end: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {}>;
-        undo: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+        end: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {}>;
+        undo: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
             readonly props: {
-                readonly index: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-                readonly item: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+                readonly index: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
+                readonly item: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
             };
         }>;
     };
@@ -96,7 +96,7 @@ declare const _default: Omit<{
         open: () => void;
         undo: () => void;
     };
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         items: Prop<unknown[]>;
@@ -108,11 +108,11 @@ declare const _default: Omit<{
         threshold: number;
         peek: number;
         labels: Prop<SwipeDeckLabels | null>;
-        _busy: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        _busy: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly reactive: false;
             readonly defaultValue: false;
         }>;
-        _tapOnControl: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        _tapOnControl: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly reactive: false;
             readonly defaultValue: false;
         }>;
@@ -121,36 +121,36 @@ declare const _default: Omit<{
         _history: Prop<SwipeDeckHistory[]>;
     } | undefined;
     events?: {
-        swipe: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+        swipe: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
             readonly props: {
-                readonly direction: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-                readonly index: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-                readonly item: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+                readonly direction: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+                readonly index: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
+                readonly item: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
             };
         }>;
-        select: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+        select: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
             readonly props: {
-                readonly index: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-                readonly item: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+                readonly index: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
+                readonly item: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
             };
         }>;
-        "index-change": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+        "index-change": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
             readonly props: {
-                readonly index: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+                readonly index: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
             };
         }>;
-        end: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {}>;
-        undo: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+        end: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {}>;
+        undo: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
             readonly props: {
-                readonly index: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-                readonly item: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+                readonly index: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
+                readonly item: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
             };
         }>;
     } | undefined;
     mixins?: [{
         props: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;
@@ -159,7 +159,7 @@ declare const _default: Omit<{
     } & {
         props?: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;

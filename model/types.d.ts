@@ -1,6 +1,6 @@
 /**
- * @bootstrapp/light/model: type declarations. Public types are reachable via
- * `import("@bootstrapp/light/model").Foo`.
+ * @lightstart/light/model: type declarations. Public types are reachable via
+ * `import("@lightstart/light/model").Foo`.
  */
 import type { TypeDefinition, TypeDefinitionFields } from "../types/types.js";
 import type { MODEL_API } from "./index.js";
@@ -63,6 +63,8 @@ export interface HookContext {
     operation: "add" | "edit" | "remove";
     id?: unknown;
     importing?: boolean;
+    /** Who asked for the write, when a server knows: a backend's signed-in user. */
+    user?: unknown;
 }
 /**
  * What a write carries past the pipeline to the adapter. `importing` marks a
@@ -244,7 +246,7 @@ export type ModelRequest = (action: string, model: string, payload?: ModelPayloa
  * runs hooks, defaults, validation, uploads and change events around it.
  * `query` answers a page and the size of the whole match, and honours
  * `where`, `order`, `limit`, `offset` and `fields` itself (a local adapter
- * borrows `buildQueryResult` from `@bootstrapp/light/model/adapter`).
+ * borrows `buildQueryResult` from `@lightstart/light/model/adapter`).
  */
 export interface StorageAdapter {
     type?: string;

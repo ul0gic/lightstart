@@ -6,4 +6,4 @@ export function withResize<K extends string>(method: K): {
     events?: {} | undefined;
 };
 export default withResize;
-import type View from "@bootstrapp/light";
+import type View from "@lightstart/light";

@@ -2,7 +2,7 @@ declare const _default: Omit<{
     tag: string;
     icons: string[];
     props: {
-        layout: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        layout: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "auto";
             readonly enum: readonly ["auto", "mobile", "desktop"];
         }>;
@@ -12,18 +12,18 @@ declare const _default: Omit<{
         asideWidth: string;
         headerHeight: string;
         navOpen: false;
-        isMobile: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        isMobile: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly defaultValue: false;
             readonly internal: true;
         }>;
-        isWide: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        isWide: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly defaultValue: true;
             readonly internal: true;
         }>;
     };
     events: {
-        "nav-toggle": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        "layout-change": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "nav-toggle": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        "layout-change": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
     };
     style: boolean;
     /** @param {string} name */
@@ -33,13 +33,13 @@ declare const _default: Omit<{
     connected(): void;
     /** @param {string} bp */
     _checkMobile(bp: string): boolean;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
     _vars(): string;
-    renderMobile(): import("@bootstrapp/light/html").TemplateResult;
-    renderDesktop(): import("@bootstrapp/light/html").TemplateResult;
+    renderMobile(): import("@lightstart/light/html").TemplateResult;
+    renderDesktop(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
-        layout: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        layout: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "auto";
             readonly enum: readonly ["auto", "mobile", "desktop"];
         }>;
@@ -49,18 +49,18 @@ declare const _default: Omit<{
         asideWidth: string;
         headerHeight: string;
         navOpen: false;
-        isMobile: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        isMobile: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly defaultValue: false;
             readonly internal: true;
         }>;
-        isWide: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        isWide: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly defaultValue: true;
             readonly internal: true;
         }>;
     } | undefined;
     events?: {
-        "nav-toggle": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        "layout-change": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "nav-toggle": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        "layout-change": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
     } | undefined;
     mixins?: [] | undefined;
 };

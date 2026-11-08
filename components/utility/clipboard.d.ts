@@ -6,24 +6,24 @@ declare const _default: Omit<{
         text: string;
         label: string;
         copiedLabel: string;
-        iconOnly: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        iconOnly: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "sm";
             readonly enum: readonly ["xs", "sm", "md"];
         }>;
         timeout: number;
-        copied: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        _manual: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        copied: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        _manual: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly attribute: false;
             readonly defaultValue: false;
         }>;
-        _timer: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _timer: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly defaultValue: 0;
             readonly reactive: false;
         }>;
     };
     events: {
-        copy: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        copy: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
     };
     _copy(): Promise<void>;
     _copied(): void;
@@ -37,30 +37,30 @@ declare const _default: Omit<{
     _fieldCopy(e: ClipboardEvent): void;
     _closeField(): void;
     disconnected(): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         text: string;
         label: string;
         copiedLabel: string;
-        iconOnly: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        iconOnly: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "sm";
             readonly enum: readonly ["xs", "sm", "md"];
         }>;
         timeout: number;
-        copied: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        _manual: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        copied: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        _manual: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly attribute: false;
             readonly defaultValue: false;
         }>;
-        _timer: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _timer: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly defaultValue: 0;
             readonly reactive: false;
         }>;
     } | undefined;
     events?: {
-        copy: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        copy: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
     } | undefined;
     mixins?: [] | undefined;
 };

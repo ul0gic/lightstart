@@ -14,28 +14,28 @@ declare const _default: Omit<{
         headline: string;
         subheadline: string;
         ctas: Prop<HeroCta[]>;
-        decorations: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+        decorations: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
             readonly attribute: false;
             readonly defaultValue: null;
         }>;
-        image: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        image: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "";
             readonly fieldType: "file";
             readonly accept: "image/*";
         }>;
     };
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         eyebrow: Prop<HeroEyebrow>;
         headline: string;
         subheadline: string;
         ctas: Prop<HeroCta[]>;
-        decorations: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+        decorations: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
             readonly attribute: false;
             readonly defaultValue: null;
         }>;
-        image: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        image: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "";
             readonly fieldType: "file";
             readonly accept: "image/*";

@@ -18,17 +18,17 @@ declare const _default: Omit<{
         open: false;
         closeOnEscape: true;
         closeOnBackdropClick: true;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["sm", "md", "lg", "xl"];
         }>;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "media", "sheet"];
         }>;
         caption: string;
         dialog: Prop<HTMLDialogElement | null>;
-        _titleId: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        _titleId: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";
         }>;
@@ -44,23 +44,23 @@ declare const _default: Omit<{
     show(): void;
     /** @param {string} [returnValue] */
     close(returnValue?: string): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         open: false;
         closeOnEscape: true;
         closeOnBackdropClick: true;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["sm", "md", "lg", "xl"];
         }>;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "media", "sheet"];
         }>;
         caption: string;
         dialog: Prop<HTMLDialogElement | null>;
-        _titleId: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        _titleId: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";
         }>;

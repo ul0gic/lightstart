@@ -19,7 +19,7 @@ declare const _default: Omit<{
         footerCta: Prop<FooterCta | null>;
         sectionId: string;
     };
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         eyebrow: string;

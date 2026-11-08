@@ -8,14 +8,14 @@ declare const _default: Omit<{
         groups: Prop<string[]>;
         placeholder: string;
         shortcut: string;
-        open: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        hideTrigger: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        compact: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        open: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        hideTrigger: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        compact: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
         limit: number;
-        renderResult: import("@bootstrapp/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
+        renderResult: import("@lightstart/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
     };
     events: {
-        "command-select": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "command-select": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
     };
     _keys(): string[];
     connected(): void;
@@ -24,7 +24,7 @@ declare const _default: Omit<{
     _closed(e: Event): void;
     /** @param {CustomEvent<SearchDoc>} e */
     _select(e: CustomEvent<SearchDoc>): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         docs: Prop<SearchDoc[]>;
@@ -32,14 +32,14 @@ declare const _default: Omit<{
         groups: Prop<string[]>;
         placeholder: string;
         shortcut: string;
-        open: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        hideTrigger: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        compact: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        open: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        hideTrigger: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        compact: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
         limit: number;
-        renderResult: import("@bootstrapp/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
+        renderResult: import("@lightstart/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
     } | undefined;
     events?: {
-        "command-select": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "command-select": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
     } | undefined;
     mixins?: [] | undefined;
 };

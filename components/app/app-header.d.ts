@@ -2,7 +2,7 @@ declare const _default: Omit<{
     tag: string;
     props: {
         title: string;
-        fixed: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        fixed: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
         transparent: false;
         showBackButton: false;
         showShadow: true;
@@ -10,11 +10,11 @@ declare const _default: Omit<{
     };
     style: boolean;
     handleBackClick(): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         title: string;
-        fixed: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        fixed: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
         transparent: false;
         showBackButton: false;
         showShadow: true;

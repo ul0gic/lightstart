@@ -7,7 +7,7 @@ declare const _default: Omit<{
         loading: false;
         typeHandlers: Prop<FormTypeHandlers>;
         errors: Prop<Record<string, unknown>>;
-        layout: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        layout: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "grid";
             readonly enum: readonly ["grid", "stacked"];
         }>;
@@ -19,13 +19,13 @@ declare const _default: Omit<{
         _loads: Prop<Map<string, number>>;
     };
     events: {
-        "field-change": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly name: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly values: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "field-change": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly name: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly values: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
-        "form-invalid": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly errors: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "form-invalid": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly errors: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     };
     connected(): void;
@@ -158,7 +158,7 @@ declare const _default: Omit<{
      * @returns {Renderable}
      */
     renderField(field: FormField, value: unknown): Renderable;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         fields: Prop<FormField[]>;
@@ -166,7 +166,7 @@ declare const _default: Omit<{
         loading: false;
         typeHandlers: Prop<FormTypeHandlers>;
         errors: Prop<Record<string, unknown>>;
-        layout: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        layout: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "grid";
             readonly enum: readonly ["grid", "stacked"];
         }>;
@@ -178,13 +178,13 @@ declare const _default: Omit<{
         _loads: Prop<Map<string, number>>;
     } | undefined;
     events?: {
-        "field-change": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly name: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly values: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "field-change": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly name: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<unknown, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly values: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
-        "form-invalid": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly errors: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "form-invalid": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly errors: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     } | undefined;
     mixins?: [] | undefined;

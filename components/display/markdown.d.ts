@@ -7,36 +7,36 @@ declare const _default: Omit<{
     tag: string;
     style: boolean;
     props: {
-        content: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        anchors: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        onWikiLink: import("@bootstrapp/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
+        content: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        anchors: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        onWikiLink: import("@lightstart/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
         _marked: Prop<MarkedLike | null>;
         _headings: Prop<MarkdownHeading[]>;
-        _announced: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        _announced: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "";
             readonly reactive: false;
         }>;
     };
     events: {
-        "markdown-rendered": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "markdown-rendered": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
     };
     connected(): void;
     updated(): void;
-    render(): "" | import("@bootstrapp/light/html").Unsafe;
+    render(): "" | import("@lightstart/light/html").Unsafe;
 }, "events"> & {
     props?: {
-        content: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        anchors: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        onWikiLink: import("@bootstrapp/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
+        content: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        anchors: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        onWikiLink: import("@lightstart/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
         _marked: Prop<MarkedLike | null>;
         _headings: Prop<MarkdownHeading[]>;
-        _announced: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        _announced: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "";
             readonly reactive: false;
         }>;
     } | undefined;
     events?: {
-        "markdown-rendered": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "markdown-rendered": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
     } | undefined;
     mixins?: [] | undefined;
 };

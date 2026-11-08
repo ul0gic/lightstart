@@ -4,15 +4,15 @@ declare const _default: Omit<{
     props: {
         _parent: Prop<HTMLElement | null>;
         _showTimer: Prop<ReturnType<typeof setTimeout> | null>;
-        position: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        position: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "top";
             readonly enum: readonly ["top", "bottom", "left", "right"];
         }>;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "primary", "secondary", "success", "warning", "danger", "info"];
         }>;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["sm", "md", "lg"];
         }>;
@@ -27,15 +27,15 @@ declare const _default: Omit<{
     props?: {
         _parent: Prop<HTMLElement | null>;
         _showTimer: Prop<ReturnType<typeof setTimeout> | null>;
-        position: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        position: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "top";
             readonly enum: readonly ["top", "bottom", "left", "right"];
         }>;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "primary", "secondary", "success", "warning", "danger", "info"];
         }>;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["sm", "md", "lg"];
         }>;

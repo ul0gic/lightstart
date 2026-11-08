@@ -10,7 +10,7 @@ declare const _default: Omit<{
         href: string;
         actions: Prop<CommentActions | null>;
     };
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         author: string;

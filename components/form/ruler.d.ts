@@ -2,7 +2,7 @@ declare const _default: Omit<{
     mixins: [{
         props: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;
@@ -11,7 +11,7 @@ declare const _default: Omit<{
     } & {
         props?: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;
@@ -26,21 +26,21 @@ declare const _default: Omit<{
         step: number;
         disabled: false;
         label: string;
-        _base: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _base: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly reactive: false;
             readonly defaultValue: 0;
         }>;
-        _live: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _live: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly reactive: false;
             readonly defaultValue: -1;
         }>;
     };
     events: {
-        input: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
-        change: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        change: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     };
     style: boolean;
@@ -69,7 +69,7 @@ declare const _default: Omit<{
     _onWheel(e: WheelEvent): void;
     /** @param {KeyboardEvent} e */
     _onKey(e: KeyboardEvent): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         items: Prop<Array<string | number>>;
@@ -78,27 +78,27 @@ declare const _default: Omit<{
         step: number;
         disabled: false;
         label: string;
-        _base: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _base: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly reactive: false;
             readonly defaultValue: 0;
         }>;
-        _live: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _live: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly reactive: false;
             readonly defaultValue: -1;
         }>;
     } | undefined;
     events?: {
-        input: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
-        change: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly value: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        change: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly value: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     } | undefined;
     mixins?: [{
         props: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;
@@ -107,7 +107,7 @@ declare const _default: Omit<{
     } & {
         props?: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;

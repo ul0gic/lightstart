@@ -2,7 +2,7 @@ declare const _default: Omit<{
     tag: string;
     props: {
         title: string;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "unified", "hidden"];
         }>;
@@ -20,11 +20,11 @@ declare const _default: Omit<{
     handleMaximize(): void;
     handleClose(): void;
     drawsControls(): boolean;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         title: string;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "unified", "hidden"];
         }>;

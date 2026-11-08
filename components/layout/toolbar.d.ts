@@ -2,15 +2,15 @@ declare const _default: Omit<{
     tag: string;
     style: boolean;
     props: {
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "sm";
             readonly enum: readonly ["xs", "sm", "md"];
         }>;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "floating", "ghost"];
         }>;
-        align: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        align: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "start";
             readonly enum: readonly ["start", "center", "end", "between"];
         }>;
@@ -25,15 +25,15 @@ declare const _default: Omit<{
     }): void;
 }, "events"> & {
     props?: {
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "sm";
             readonly enum: readonly ["xs", "sm", "md"];
         }>;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "floating", "ghost"];
         }>;
-        align: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        align: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "start";
             readonly enum: readonly ["start", "center", "end", "between"];
         }>;

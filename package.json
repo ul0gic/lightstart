@@ -1,9 +1,30 @@
 {
-  "name": "@bootstrapp/light",
+  "name": "@lightstart/light",
   "version": "0.1.0",
   "description": "Light-DOM web components from object definitions, with reactive properties, a tagged-template renderer, signals, property types, a theme engine and a component library.",
   "type": "module",
   "license": "MIT",
+  "homepage": "https://lightstart.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alantriesagain/light.git",
+    "directory": "packages/light"
+  },
+  "bugs": {
+    "url": "https://github.com/alantriesagain/light/issues"
+  },
+  "keywords": [
+    "web-components",
+    "custom-elements",
+    "light-dom",
+    "signals",
+    "renderer",
+    "ui",
+    "framework"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": {
     "light": "./bin/light.js"
   },
@@ -18,6 +39,7 @@
       "default": "./dom/index.js"
     },
     "./markup": "./markup/index.js",
+    "./markup/core": "./markup/core.js",
     "./native/tui": "./native/tui/index.js",
     "./native/desktop": "./native/desktop/index.js",
     "./html": {
@@ -80,6 +102,8 @@
     "./model/adapter": "./model/adapter.js",
     "./model/indexeddb": "./model/indexeddb.js",
     "./model/jsonl": "./model/jsonl.js",
+    "./model/sql": "./model/sql.js",
+    "./model/sql-builder": "./model/sql-builder.js",
     "./model/binder": "./model/binder.js",
     "./model/slug": "./model/slug.js",
     "./model/events": "./model/events.js",
@@ -98,6 +122,8 @@
     "./*": "./*"
   },
   "peerDependencies": {
+    "@lightstart/server": "^0.1.0",
+    "@lightstart/sqlite": "^0.1.0",
     "@stylistic/eslint-plugin": "^2.13.0",
     "eslint": "^9.17.0",
     "eslint-plugin-lit": "^2.3.1",
@@ -105,6 +131,12 @@
     "typescript": "^6.0.3 || ^7.0.0"
   },
   "peerDependenciesMeta": {
+    "@lightstart/server": {
+      "optional": true
+    },
+    "@lightstart/sqlite": {
+      "optional": true
+    },
     "@stylistic/eslint-plugin": {
       "optional": true
     },

@@ -14,7 +14,7 @@ declare const _default: Omit<{
             } | undefined;
             events?: {} | undefined;
         }) | ({
-            connected(this: import("@bootstrapp/light").default & {
+            connected(this: import("@lightstart/light").default & {
                 onClickOutside?: (e: Event) => void;
             }): void;
         } & {
@@ -57,7 +57,7 @@ declare const _default: Omit<{
         search: string;
         category: string;
     };
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
     _getFilteredIcons(): string[];
     _getFilteredEmoji(): {
         char: string;
@@ -88,7 +88,7 @@ declare const _default: Omit<{
             } | undefined;
             events?: {} | undefined;
         }) | ({
-            connected(this: import("@bootstrapp/light").default & {
+            connected(this: import("@lightstart/light").default & {
                 onClickOutside?: (e: Event) => void;
             }): void;
         } & {

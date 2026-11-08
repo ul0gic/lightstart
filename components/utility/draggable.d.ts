@@ -2,10 +2,10 @@ declare const _default: Omit<{
     tag: string;
     style: boolean;
     props: {
-        "dragged-id": import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "dragged-id": import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         handle: string;
-        target: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        onDragged: import("@bootstrapp/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
+        target: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        onDragged: import("@lightstart/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
         _lastDownTarget: Prop<EventTarget | null>;
     };
     connected(): void;
@@ -27,10 +27,10 @@ declare const _default: Omit<{
     }, _event: DragEvent): void;
 }, "events"> & {
     props?: {
-        "dragged-id": import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "dragged-id": import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         handle: string;
-        target: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-        onDragged: import("@bootstrapp/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
+        target: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        onDragged: import("@lightstart/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
         _lastDownTarget: Prop<EventTarget | null>;
     } | undefined;
     events?: {} | undefined;

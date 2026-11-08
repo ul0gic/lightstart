@@ -1,20 +1,20 @@
 declare const _default: Omit<{
     tag: string;
     props: {
-        layout: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        layout: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "auto";
             readonly enum: readonly ["auto", "mobile", "desktop"];
         }>;
         useSafeArea: true;
         multiPane: false;
         currentRoute: string;
-        routes: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {}>;
+        routes: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {}>;
         height: string;
-        currentBreakpoint: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        currentBreakpoint: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "xs";
         }>;
-        isMobile: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        isMobile: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly reactive: false;
             readonly defaultValue: false;
         }>;
@@ -32,25 +32,25 @@ declare const _default: Omit<{
     navigate(path: string, params?: Record<string, string>): void;
     goBack(): void;
     scrollToTop(): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
-    renderMobileLayout(): import("@bootstrapp/light/html").TemplateResult;
-    renderDesktopLayout(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
+    renderMobileLayout(): import("@lightstart/light/html").TemplateResult;
+    renderDesktopLayout(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
-        layout: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        layout: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "auto";
             readonly enum: readonly ["auto", "mobile", "desktop"];
         }>;
         useSafeArea: true;
         multiPane: false;
         currentRoute: string;
-        routes: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {}>;
+        routes: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {}>;
         height: string;
-        currentBreakpoint: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        currentBreakpoint: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "xs";
         }>;
-        isMobile: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        isMobile: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly reactive: false;
             readonly defaultValue: false;
         }>;

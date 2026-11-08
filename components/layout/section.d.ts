@@ -1,25 +1,25 @@
 declare const _default: Omit<{
     tag: string;
     props: {
-        padding: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        padding: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["none", "sm", "md", "lg", "xl"];
         }>;
-        maxWidth: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        maxWidth: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "lg";
             readonly enum: readonly ["sm", "md", "lg", "xl", "2xl", "full"];
         }>;
         centered: false;
     };
     style: boolean;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
-        padding: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        padding: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["none", "sm", "md", "lg", "xl"];
         }>;
-        maxWidth: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        maxWidth: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "lg";
             readonly enum: readonly ["sm", "md", "lg", "xl", "2xl", "full"];
         }>;

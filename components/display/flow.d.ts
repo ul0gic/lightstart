@@ -7,9 +7,9 @@ declare const _default: Omit<{
         selected: string;
     };
     events: {
-        "flow-select": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly lane: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly step: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "flow-select": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly lane: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly step: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     };
     /**
@@ -22,8 +22,8 @@ declare const _default: Omit<{
      * @param {FlowStep} step
      * @param {boolean} after whether a step comes before this one in the lane
      */
-    _step(lane: FlowLane, step: FlowStep, after: boolean): import("@bootstrapp/light/html").TemplateResult;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    _step(lane: FlowLane, step: FlowStep, after: boolean): import("@lightstart/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         lanes: Prop<FlowLane[]>;
@@ -31,9 +31,9 @@ declare const _default: Omit<{
         selected: string;
     } | undefined;
     events?: {
-        "flow-select": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly lane: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly step: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "flow-select": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly lane: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly step: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     } | undefined;
     mixins?: [] | undefined;

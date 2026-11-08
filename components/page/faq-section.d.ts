@@ -19,7 +19,7 @@ declare const _default: Omit<{
     };
     /** @param {number} index */
     _toggle(index: number): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         eyebrow: string;

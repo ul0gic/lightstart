@@ -4,8 +4,7 @@ export function importmapFor(root: string): {
 };
 export const RUNNER_PATH: "/__light/runner";
 export function serve(root: string, port?: number): Promise<{
-    server: http.Server;
+    server: import("node:http").Server;
     url: string;
 }>;
 export function serveCommand(args: string[]): Promise<number>;
-import http from "node:http";

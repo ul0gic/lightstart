@@ -14,7 +14,7 @@ declare const _default: Omit<{
             } | undefined;
             events?: {} | undefined;
         }) | ({
-            connected(this: import("@bootstrapp/light").default & {
+            connected(this: import("@lightstart/light").default & {
                 onClickOutside?: (e: Event) => void;
             }): void;
         } & {
@@ -67,7 +67,7 @@ declare const _default: Omit<{
      * @param {MouseEvent} e
      */
     _pickItem(item: DropdownItem, e: MouseEvent): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         autoClose: true;
@@ -91,7 +91,7 @@ declare const _default: Omit<{
             } | undefined;
             events?: {} | undefined;
         }) | ({
-            connected(this: import("@bootstrapp/light").default & {
+            connected(this: import("@lightstart/light").default & {
                 onClickOutside?: (e: Event) => void;
             }): void;
         } & {
@@ -129,4 +129,4 @@ declare const _default: Omit<{
 export default _default;
 import type { Prop } from "../types.js";
 import type { DropdownItem } from "../types.js";
-import type { TemplateValue } from "@bootstrapp/light/html";
+import type { TemplateValue } from "@lightstart/light/html";

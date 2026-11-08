@@ -8,26 +8,26 @@ declare const _default: Omit<{
         label: string;
         sub: string;
         href: string;
-        ring: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        ring: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "";
             readonly enum: readonly ["", "muted", "primary", "secondary", "highlight", "bar"];
         }>;
         badgeIcon: string;
         badgeText: string;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["md", "lg"];
         }>;
         masked: false;
     };
     events: {
-        select: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly href: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        select: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly href: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     };
     /** @param {MouseEvent} e */
     _pick(e: MouseEvent): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         src: string;
@@ -36,21 +36,21 @@ declare const _default: Omit<{
         label: string;
         sub: string;
         href: string;
-        ring: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        ring: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "";
             readonly enum: readonly ["", "muted", "primary", "secondary", "highlight", "bar"];
         }>;
         badgeIcon: string;
         badgeText: string;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["md", "lg"];
         }>;
         masked: false;
     } | undefined;
     events?: {
-        select: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly href: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        select: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly href: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     } | undefined;
     mixins?: [] | undefined;

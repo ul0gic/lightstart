@@ -9,7 +9,7 @@ export function withPullToRefresh({ threshold, resistance, max, enabled, mouse, 
     mixins: ({
         props: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;
@@ -18,7 +18,7 @@ export function withPullToRefresh({ threshold, resistance, max, enabled, mouse, 
     } & {
         props?: {
             _drag: Prop<import("../types.js").DragState | null>;
-            _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+            _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
                 readonly reactive: false;
                 readonly defaultValue: 0;
             }>;
@@ -26,15 +26,15 @@ export function withPullToRefresh({ threshold, resistance, max, enabled, mouse, 
         events?: {} | undefined;
     })[];
     props: {
-        pullY: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        pullY: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly defaultValue: 0;
             readonly attribute: false;
         }>;
-        refreshing: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        refreshing: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly defaultValue: false;
             readonly attribute: false;
         }>;
-        _armed: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        _armed: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly reactive: false;
             readonly defaultValue: false;
         }>;
@@ -57,15 +57,15 @@ export function withPullToRefresh({ threshold, resistance, max, enabled, mouse, 
     }): Promise<void>;
 } & {
     props?: {
-        pullY: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        pullY: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly defaultValue: 0;
             readonly attribute: false;
         }>;
-        refreshing: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        refreshing: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly defaultValue: false;
             readonly attribute: false;
         }>;
-        _armed: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        _armed: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly reactive: false;
             readonly defaultValue: false;
         }>;

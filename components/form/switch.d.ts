@@ -7,11 +7,11 @@ declare const _default: Omit<{
         name: string;
         value: string;
         label: string;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["xs", "sm", "md", "lg", "xl"];
         }>;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "primary";
             readonly enum: readonly ["primary", "secondary", "success", "warning", "error"];
         }>;
@@ -21,7 +21,7 @@ declare const _default: Omit<{
     connected(): void;
     /** @param {Event} e */
     handleChange(e: Event): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         _internals: Prop<ElementInternals | null>;
@@ -30,11 +30,11 @@ declare const _default: Omit<{
         name: string;
         value: string;
         label: string;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["xs", "sm", "md", "lg", "xl"];
         }>;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "primary";
             readonly enum: readonly ["primary", "secondary", "success", "warning", "error"];
         }>;

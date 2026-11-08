@@ -3,7 +3,7 @@ declare const _default: Omit<{
     props: {
         timestamp: Prop<number | null>;
     };
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         timestamp: Prop<number | null>;

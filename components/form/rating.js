@@ -1,11 +1,11 @@
-import { html, nothing } from "@bootstrapp/light/html";
-import { defineComponent } from "@bootstrapp/light";
-import { withFormControl } from "@bootstrapp/light/components/mixins/form-control.js";
-import T from "@bootstrapp/light/types";
+import { html, nothing } from "@lightstart/light/html";
+import { defineComponent } from "@lightstart/light";
+import { withFormControl } from "@lightstart/light/components/mixins/form-control.js";
+import T from "@lightstart/light/types";
 import { nextIndex } from "../utils/roving.js";
 import { lcText } from "../utils/text.js";
 
-/** @import { TemplateValue } from "@bootstrapp/light/html" */
+/** @import { TemplateValue } from "@lightstart/light/html" */
 
 export default defineComponent({
   mixins: [withFormControl],

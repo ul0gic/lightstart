@@ -10,7 +10,7 @@
  * it keeps what was left of its time and gets it back when resumed.
  */
 
-import { signal } from "@bootstrapp/light/signals";
+import { signal } from "@lightstart/light/signals";
 
 /** @import { ToastItem, ToastQueue } from "../types.js" */
 

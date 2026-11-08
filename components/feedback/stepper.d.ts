@@ -4,32 +4,32 @@ declare const _default: Omit<{
     props: {
         steps: Prop<StepperStep[]>;
         current: string;
-        state: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        state: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "idle";
             readonly enum: readonly ["idle", "running", "done", "failed"];
         }>;
         error: string;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["sm", "md"];
         }>;
-        vertical: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        vertical: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
     };
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         steps: Prop<StepperStep[]>;
         current: string;
-        state: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        state: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "idle";
             readonly enum: readonly ["idle", "running", "done", "failed"];
         }>;
         error: string;
-        size: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["sm", "md"];
         }>;
-        vertical: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        vertical: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
     } | undefined;
     events?: {} | undefined;
     mixins?: [] | undefined;

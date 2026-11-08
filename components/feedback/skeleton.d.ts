@@ -1,7 +1,7 @@
 declare const _default: Omit<{
     tag: string;
     props: {
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "text";
             readonly enum: readonly ["text", "circle", "rect", "rounded"];
         }>;
@@ -11,10 +11,10 @@ declare const _default: Omit<{
         animated: true;
     };
     style: boolean;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "text";
             readonly enum: readonly ["text", "circle", "rect", "rounded"];
         }>;

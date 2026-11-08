@@ -7,7 +7,7 @@ export function withPointerDrag({ handle, enabled, capture, touchFallback, mouse
 }): {
     props: {
         _drag: Prop<DragState | null>;
-        _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly reactive: false;
             readonly defaultValue: 0;
         }>;
@@ -16,7 +16,7 @@ export function withPointerDrag({ handle, enabled, capture, touchFallback, mouse
 } & {
     props?: {
         _drag: Prop<DragState | null>;
-        _dragRaf: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
+        _dragRaf: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly reactive: false;
             readonly defaultValue: 0;
         }>;

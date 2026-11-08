@@ -2,11 +2,11 @@ declare const _default: Omit<{
     tag: string;
     style: boolean;
     props: {
-        _initialized: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        _initialized: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly reactive: false;
             readonly defaultValue: false;
         }>;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "bordered", "filled", "flush", "separated"];
         }>;
@@ -21,14 +21,14 @@ declare const _default: Omit<{
     _syncPanels(): void;
     /** @param {MouseEvent} e */
     _handleClick(e: MouseEvent): void;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
-        _initialized: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+        _initialized: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly reactive: false;
             readonly defaultValue: false;
         }>;
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "bordered", "filled", "flush", "separated"];
         }>;

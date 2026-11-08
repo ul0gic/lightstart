@@ -9,7 +9,7 @@ declare const _default: Omit<{
         pageSizes: Prop<number[]>;
         page: number;
         sortBy: string;
-        sortDir: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        sortDir: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "asc";
             readonly enum: readonly ["asc", "desc"];
         }>;
@@ -19,20 +19,20 @@ declare const _default: Omit<{
         emptyMessage: string;
         compact: false;
         total: number;
-        _queryKey: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        _queryKey: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";
         }>;
         _query: Prop<Record<string, unknown> | null>;
     };
     events: {
-        "page-change": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly page: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly pageSize: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "page-change": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly page: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly pageSize: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
-        sort: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly sortBy: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly sortDir: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        sort: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly sortBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly sortDir: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     };
     /** @param {{ changedProps: Map<string, unknown> }} detail */
@@ -50,8 +50,8 @@ declare const _default: Omit<{
         sortDir: string;
     }>): void;
     _pageQuery(): Record<string, unknown> | null;
-    _renderFooter(): "" | import("@bootstrapp/light/html").TemplateResult;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    _renderFooter(): "" | import("@lightstart/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         columns: Prop<(string | TableColumn)[]>;
@@ -61,7 +61,7 @@ declare const _default: Omit<{
         pageSizes: Prop<number[]>;
         page: number;
         sortBy: string;
-        sortDir: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        sortDir: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "asc";
             readonly enum: readonly ["asc", "desc"];
         }>;
@@ -71,20 +71,20 @@ declare const _default: Omit<{
         emptyMessage: string;
         compact: false;
         total: number;
-        _queryKey: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        _queryKey: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";
         }>;
         _query: Prop<Record<string, unknown> | null>;
     } | undefined;
     events?: {
-        "page-change": import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly page: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly pageSize: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        "page-change": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly page: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly pageSize: import("@lightstart/light/types").DeclaredTypeDefinition<number, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
-        sort: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
-            readonly sortBy: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
-            readonly sortDir: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        sort: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
+            readonly sortBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+            readonly sortDir: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     } | undefined;
     mixins?: [] | undefined;

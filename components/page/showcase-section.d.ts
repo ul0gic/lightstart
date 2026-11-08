@@ -10,7 +10,7 @@ declare const _default: Omit<{
         shadow: string[];
     };
     props: {
-        align: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        align: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "left";
             readonly enum: readonly ["left", "right"];
         }>;
@@ -22,10 +22,10 @@ declare const _default: Omit<{
         ctas: Prop<ShowcaseCta[]>;
         sectionId: string;
     };
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
-        align: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        align: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "left";
             readonly enum: readonly ["left", "right"];
         }>;

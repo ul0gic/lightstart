@@ -3,7 +3,7 @@ declare const _default: Omit<{
     icons: string[];
     style: boolean;
     props: {
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "success", "warning", "error", "info", "note", "tip"];
         }>;
@@ -12,10 +12,10 @@ declare const _default: Omit<{
     };
     /** @param {string} variant */
     _getIcon(variant: string): string;
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "default";
             readonly enum: readonly ["default", "success", "warning", "error", "info", "note", "tip"];
         }>;

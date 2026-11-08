@@ -9,7 +9,7 @@ declare const _default: Omit<{
         radius: string[];
     };
     props: {
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "light";
             readonly enum: readonly ["light", "dark"];
         }>;
@@ -19,10 +19,10 @@ declare const _default: Omit<{
         stats: Prop<StatItem[]>;
         sectionId: string;
     };
-    render(): import("@bootstrapp/light/html").TemplateResult;
+    render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
-        variant: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+        variant: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "light";
             readonly enum: readonly ["light", "dark"];
         }>;
