@@ -6,6 +6,8 @@ import { toasts } from "./toasts.js";
 
 /** @import { Prop, ToastItem } from "../types.ts" */
 
+const ALERT_VARIANTS = new Set(["error", "warning"]);
+
 export default defineComponent({
   tag: "lc-toast",
   icons: ["circle-check", "circle-x", "triangle-alert", "info", "bell"],
@@ -75,8 +77,8 @@ export default defineComponent({
             <div
               part="lc-toast-toast"
               class="toast toast-${toast.variant}"
-              role="alert"
-              aria-live="polite"
+              role=${ALERT_VARIANTS.has(toast.variant) ? "alert" : "status"}
+              aria-live=${ALERT_VARIANTS.has(toast.variant) ? "assertive" : "polite"}
               aria-atomic="true"
               @mouseenter=${() => toasts.pause(toast.id)}
               @focusin=${() => toasts.pause(toast.id)}
@@ -116,6 +118,10 @@ export default defineComponent({
  * @tag lc-toast
  *
  * Toast notifications for displaying temporary messages to users.
+ *
+ * An error or warning toast is an alert, read out at once (`role="alert"`);
+ * every other variant is a status, read once the screen reader is idle
+ * (`role="status"`).
  *
  * @example
  * // Basic toast (programmatic)
