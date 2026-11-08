@@ -41,5 +41,15 @@ export default {
         </lc-modal>
       `,
     },
+    {
+      title: "Named by its caption",
+      description: "With no header, the caption is what the dialog is called.",
+      render: () => html`
+        <lc-modal caption="Saturday, 7 November">
+          <lc-button slot="trigger" primary>Open the day</lc-button>
+          <p>Three entries, the last one at nine in the evening.</p>
+        </lc-modal>
+      `,
+    },
   ],
 };
