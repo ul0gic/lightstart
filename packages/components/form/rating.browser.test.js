@@ -10,7 +10,7 @@ const tick = () => new Promise((resolve) => setTimeout(resolve, 0));
 /** @type {Element[]} */
 const mounted = [];
 
-/** @typedef {HTMLElement & { value: number, max: number, readonly: boolean, disabled: boolean, clearable: boolean, label: string, change: ((n: number) => void) | null, $requestUpdate: () => Promise<unknown> }} Rating */
+/** @typedef {HTMLElement & { value: number, max: number, readonly: boolean, disabled: boolean, clearable: boolean, label: string, step: number, change: ((n: number) => void) | null, $requestUpdate: () => Promise<unknown> }} Rating */
 
 /** @param {Record<string, unknown>} [props] */
 const mount = async (props = {}) => {
@@ -150,5 +150,66 @@ describe("@lightstart/light - lc-rating", () => {
     press(stars(el)[2], "Backspace");
     press(stars(el)[2], "Delete");
     assert.deepEqual(asked, [3]);
+  });
+
+  it("rates in half stars at step 0.5: two radios a star, the arrows moving half a star and wrapping", async () => {
+    const el = await mount({ value: 3.5, step: 0.5 });
+    const radios = stars(el);
+    assert.equal(radios.length, 10);
+    assert.equal(el.querySelectorAll("[role=radiogroup]").length, 1);
+    assert.deepEqual(radios.slice(0, 3).map((r) => r.getAttribute("aria-label")), ["0.5 stars", "1 star", "1.5 stars"]);
+    assert.equal(radios[6].getAttribute("aria-label"), "3.5 stars");
+    assert.deepEqual(radios.map((r) => r.tabIndex), [-1, -1, -1, -1, -1, -1, 0, -1, -1, -1]);
+    assert.deepEqual(radios.map((r) => r.getAttribute("aria-checked") === "true"), radios.map((_, i) => i === 6));
+    assert.equal(el.querySelectorAll(".star-filled").length, 7);
+    const left = radios[6].getBoundingClientRect();
+    const right = radios[7].getBoundingClientRect();
+    assert.ok(left.right <= right.left + 0.5 && left.width > 0, "a star's lower half sits on its left");
+    const asked = await record(el);
+    press(stars(el)[6], "ArrowRight");
+    assert.equal(document.activeElement, stars(el)[7]);
+    press(stars(el)[7], "ArrowLeft");
+    press(stars(el)[6], "ArrowLeft");
+    press(stars(el)[5], " ");
+    press(stars(el)[0], "ArrowLeft");
+    assert.equal(document.activeElement, stars(el)[9]);
+    stars(el)[2].click();
+    assert.deepEqual(asked, [4, 3.5, 3, 3, 5, 1.5]);
+  });
+
+  it("jumps to the first and last value on Home and End, at either step", async () => {
+    for (const [step, last] of [[1, 5], [0.5, 5]]) {
+      const el = await mount({ value: 2, step });
+      const asked = await record(el);
+      const at = step === 1 ? 1 : 3;
+      press(stars(el)[at], "End");
+      assert.equal(document.activeElement, stars(el).at(-1));
+      press(stars(el).at(-1) ?? stars(el)[0], "Home");
+      assert.equal(document.activeElement, stars(el)[0]);
+      assert.deepEqual(asked, [last, step]);
+    }
+  });
+
+  it("rounds to the nearest step and clears from a half when clearable", async () => {
+    const whole = await mount({ value: 3.5 });
+    assert.equal(stars(whole)[3].getAttribute("aria-checked"), "true");
+    const half = await mount({ value: 3.3, step: 0.5, clearable: true });
+    assert.equal(stars(half)[6].getAttribute("aria-checked"), "true");
+    const asked = await record(half);
+    stars(half)[6].click();
+    press(stars(half)[6], "Backspace");
+    assert.deepEqual(asked, [0, 0]);
+  });
+
+  it("reads a half rating as half a star and names it by its value when readonly", async () => {
+    const el = await mount({ value: 3.5, step: 0.5, readonly: true });
+    assert.equal(el.querySelector("[role=img]")?.getAttribute("aria-label"), "3.5 of 5 stars");
+    assert.equal(el.querySelector("[role=radio], button, [tabindex]"), null);
+    const pairs = [...el.querySelectorAll(".lc-rating__pair")];
+    assert.equal(pairs.length, 5);
+    assert.deepEqual(pairs.map((p) => p.querySelectorAll(".star-filled").length), [2, 2, 2, 1, 0]);
+    const width = (/** @type {Element} */ p) => p.getBoundingClientRect().width;
+    const icon = /** @type {Element} */ (pairs[0].querySelector("lc-icon"));
+    assert.ok(Math.abs(width(pairs[3]) - icon.getBoundingClientRect().width) < 1, "a pair is one star wide");
   });
 });
