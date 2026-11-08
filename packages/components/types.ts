@@ -692,18 +692,19 @@ export interface WeekHoursEntry extends WeekHoursDay {
   days: number[];
 }
 
-/** form/crop-rect.js: the square of a picture a crop frame shows, in the picture's pixels. */
+/** form/crop-rect.js: the part of a picture a crop frame shows, in the picture's pixels; `size` is its width, its height `size / aspect`. */
 export interface CropRect {
   x: number;
   y: number;
   size: number;
 }
 
-/** form/crop-rect.js: a picture's size, and the smallest square a crop may zoom in to. */
+/** form/crop-rect.js: a picture's size, the narrowest rect a crop may zoom in to, and the frame's width over its height. */
 export interface CropBounds {
   width: number;
   height: number;
   minSize: number;
+  aspect: number;
 }
 
 /** form/crop-rect.js: a point of the frame, in screen pixels. */
