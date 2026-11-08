@@ -108,6 +108,30 @@ describe("@lightstart/light - lc-image-crop", () => {
     close(await pixel(blob, 412, 256), BLUE, "right of the middle");
   });
 
+  it("crops to an aspect: a 3:4 frame, and a 3:4 image", async () => {
+    const el = await mount({ shape: "square", aspect: "3:4" });
+    const box = el.querySelector(".image-crop-frame").getBoundingClientRect();
+    assert.ok(Math.abs(box.width / 3 * 4 - box.height) <= 1, `the frame is ${box.width} by ${box.height}`);
+    await el.load(await picture());
+    const blob = await el.toBlob();
+    const bitmap = await createImageBitmap(blob);
+    assert.ok(Math.abs(bitmap.width / 3 * 4 - bitmap.height) <= 1, `the image is ${bitmap.width} by ${bitmap.height}`);
+    assert.deepEqual([bitmap.width, bitmap.height], [512, 683]);
+    close(await pixel(blob, 100, 340), RED, "left of the middle");
+    close(await pixel(blob, 412, 340), BLUE, "right of the middle");
+  });
+
+  it("keeps the circle and the square square, and an aspect it cannot read", async () => {
+    for (const props of [{ shape: "circle" }, { shape: "square" }, { shape: "square", aspect: "tall" }, { aspect: "3:0" }]) {
+      const el = await mount(props);
+      const box = el.querySelector(".image-crop-frame").getBoundingClientRect();
+      assert.equal(box.width, box.height, `${JSON.stringify(props)} frame`);
+      await el.load(await picture());
+      const bitmap = await createImageBitmap(await el.toBlob());
+      assert.deepEqual([bitmap.width, bitmap.height], [512, 512], `${JSON.stringify(props)} image`);
+    }
+  });
+
   it("moves the picture with a drag, and stops at its edge", async () => {
     const el = await mount();
     await el.load(await picture());
