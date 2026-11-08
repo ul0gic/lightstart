@@ -63,12 +63,15 @@ export default defineComponent({
     if (!this._dialog)
       this._dialog = this.querySelector("dialog");
 
-    this._dialog?.showModal();
+    if (this._dialog?.open) return;
     this.open = true;
+    if (!this._dialog) return;
+    this._dialog.showModal();
     this.$emit("open");
   },
 
   close(confirmed = false) {
+    if (!this.open && !this._dialog?.open) return;
     this._dialog?.close(confirmed ? "confirm" : "cancel");
     this.open = false;
     this.$emit("close", { confirmed });
