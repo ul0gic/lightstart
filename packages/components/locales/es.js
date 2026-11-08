@@ -159,6 +159,12 @@ export default {
     edit: "Editar {label}",
     raise: "Subir {label}",
   },
+  "lc-rating": {
+    label: "Valoración",
+    one: "1 estrella",
+    many: "{count} estrellas",
+    value: "{value} de {max} estrellas",
+  },
   "lc-darkmode": {
     label: "Modo oscuro",
   },

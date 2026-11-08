@@ -662,7 +662,8 @@
     "style": "form/rating.css",
     "extends": null,
     "uses": [
-      "lc-icon"
+      "lc-icon",
+      "lc-label"
     ]
   },
   "lc-ruler": {
