@@ -1,4 +1,4 @@
-import { html } from "@lightstart/light/html";
+import { html, nothing } from "@lightstart/light/html";
 import T from "@lightstart/light/types";
 import { defineComponent } from "@lightstart/light";
 import { lcText } from "../utils/text.js";
@@ -69,15 +69,15 @@ export default defineComponent({
     const name = colName(column);
     const label = typeof column === "string" ? column : column.label || column.name || "";
     const sortable = this.sortable && (typeof column === "object" ? column.sortable !== false : true);
-    const ariaSort = !sortable
-      ? null
-      : this.sortBy === name
-        ? this.sortDir === "desc" ? "descending" : "ascending"
-        : "none";
+    const ariaSort = sortable && this.sortBy === name
+      ? this.sortDir === "desc" ? "descending" : "ascending"
+      : nothing;
     return html`
-      <th align=${colAlign(column) ?? null} aria-sort=${ariaSort ?? null}
+      <th align=${colAlign(column) ?? null} aria-sort=${ariaSort}
         @click=${sortable ? () => this.handleSort(name) : null}>
-        ${label}${sortable ? html`<lc-icon class="lc-table-sort" name="chevron-up" size="14"></lc-icon>` : ""}
+        ${sortable
+          ? html`<button type="button" class="lc-table-sort-button">${label}<lc-icon class="lc-table-sort" name="chevron-up" size="14" aria-hidden="true"></lc-icon></button>`
+          : label}
       </th>`;
   },
   render() {
@@ -93,7 +93,15 @@ export default defineComponent({
               const selectRow = this.selectRow;
               return html`
                 <tr class=${[selectRow ? "clickable" : "", this.isSelected?.(row) ? "is-selected" : ""].filter(Boolean).join(" ")}
-                  @click=${selectRow ? (e) => selectRow(row, e) : null}>
+                  tabindex=${selectRow ? "0" : nothing}
+                  @click=${selectRow ? (e) => selectRow(row, e) : null}
+                  @keydown=${selectRow
+                    ? (/** @type {KeyboardEvent} */ e) => {
+                        if (e.target !== e.currentTarget || (e.key !== "Enter" && e.key !== " ")) return;
+                        e.preventDefault();
+                        selectRow(row, e);
+                      }
+                    : null}>
                   ${this.columns.map(
                     (column) => html`<td align=${colAlign(column) ?? null}>${renderCell(row[colName(column)], column, row)}</td>`,
                   )}
