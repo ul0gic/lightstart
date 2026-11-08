@@ -356,7 +356,8 @@ once.
   rendered over; `dev` turns on diagnostics.
 - **Theme** (`@lightstart/light/theme`): `applyTheme(theme)` writes the tokens a
   stylesheet reads; `presets.js` lists the shipped themes; `color-scheme.js`
-  keeps the `dark` class and the reader's choice; `icons.js` says where an icon
+  keeps the `dark` class and the reader's choice, and `colorScheme.follow()`
+  forgets it and follows the OS again; `icons.js` says where an icon
   comes from (`configureIcons({ load: iconify("lucide") })`; nothing is fetched
   until a page asks).
 
