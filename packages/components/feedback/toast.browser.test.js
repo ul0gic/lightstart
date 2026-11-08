@@ -70,6 +70,23 @@ describe("@lightstart/light - lc-toast", () => {
     assert.equal((await shown(el)).length, 0);
   });
 
+  it("announces an error or warning as an alert and every other variant as a status", async () => {
+    const el = await mount();
+    for (const variant of ["error", "warning", "success", "info", "default"]) toasts.show({ message: variant, variant });
+    const roles = (await shown(el)).map((item) => [
+      item.textContent?.trim(),
+      item.getAttribute("role"),
+      item.getAttribute("aria-live"),
+    ]);
+    assert.deepEqual(roles, [
+      ["error", "alert", "assertive"],
+      ["warning", "alert", "assertive"],
+      ["success", "status", "polite"],
+      ["info", "status", "polite"],
+      ["default", "status", "polite"],
+    ]);
+  });
+
   it("keeps a hovered toast in place when the one before it goes", async () => {
     const el = await mount();
     toasts.show({ message: "First", duration: 60 });
