@@ -67,6 +67,15 @@ export default {
         </div>
       `,
     },
+    {
+      title: "Full width",
+      render: () => html`
+        <div style="width: 100%; max-width: 600px;">
+          <lc-input placeholder="Its own width"></lc-input>
+          <lc-input full-width placeholder="The container's width"></lc-input>
+        </div>
+      `,
+    },
   ],
 };
 
