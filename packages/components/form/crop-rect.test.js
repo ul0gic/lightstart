@@ -95,3 +95,35 @@ describe("drawing and encoding", () => {
     assert.deepEqual(halvingSteps(800, 512), [512]);
   });
 });
+
+describe("a frame of another shape", () => {
+  const TALL = boundsOf(1200, 800, 4, 3 / 4);
+
+  it("opens on the widest 3:4 rect in the middle, and zooms in to a quarter of its width", () => {
+    assert.deepEqual(coverRect(TALL), { x: 300, y: 0, size: 600 });
+    assert.deepEqual(coverRect(boundsOf(600, 900, 4, 3 / 4)), { x: 0, y: 50, size: 600 }, "600 wide is 800 tall");
+    assert.equal(TALL.minSize, 150);
+  });
+
+  it("keeps the rect inside the picture on both axes", () => {
+    assert.deepEqual(clampRect({ x: -50, y: 900, size: 300 }, TALL), { x: 0, y: 400, size: 300 }, "300 wide is 400 tall");
+    assert.equal(clampRect({ x: 0, y: 0, size: 5000 }, TALL).size, 600);
+    assert.equal(clampRect({ x: 0, y: 0, size: 10 }, TALL).size, 150);
+  });
+
+  it("zooms about the middle of the frame, and about a point of it", () => {
+    const start = coverRect(TALL);
+    assert.equal(zoomOf(start, TALL), 1);
+    assert.deepEqual(rectAtZoom(start, 2, TALL), { x: 450, y: 200, size: 300 });
+    const zoomed = zoomRectAt(start, 2, 100, 400, VIEW, TALL);
+    near(start.x + (100 / VIEW) * start.size, zoomed.x + (100 / VIEW) * zoomed.size, "x under the point");
+    near(start.y + (400 / VIEW) * start.size, zoomed.y + (400 / VIEW) * zoomed.size, "y under the point");
+  });
+
+  it("draws a 3:4 rect in whole pixels inside the picture", () => {
+    assert.deepEqual(sourceRect({ x: 299.6, y: -0.2, size: 600.4 }, TALL), { sx: 300, sy: 0, size: 600 }, "600 wide is 800 tall");
+    const low = sourceRect({ x: 0, y: 900, size: 333 }, TALL);
+    assert.deepEqual(low, { sx: 0, sy: 356, size: 333 });
+    assert.equal(low.sy + Math.round(low.size / TALL.aspect), 800, "333 wide is 444 tall, and ends at the picture's foot");
+  });
+});

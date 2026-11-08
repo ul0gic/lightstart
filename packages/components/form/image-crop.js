@@ -8,12 +8,26 @@ import { boundsOf, coverRect, keyIntent, panRect, pinchRect, rectAtZoom, wheelFa
 /** @import { CropBounds, CropPoint, CropRect, Prop } from "../types.ts" */
 
 /**
+ * The frame's width over its height from an `aspect` such as `3:4`; anything
+ * that is not two positive numbers is the square.
+ * @param {string} aspect
+ */
+const ratioOf = (aspect) => {
+  const match = /^(\d*\.?\d+):(\d*\.?\d+)$/.exec(aspect);
+  const w = Number(match?.[1]);
+  const h = Number(match?.[2]);
+  return w > 0 && h > 0 ? w / h : 1;
+};
+
+/**
  * `lc-image-crop`: pick a picture and choose the square of it to keep. The
  * picture moves under a fixed frame: drag it, pinch or scroll to zoom, use the
  * arrow keys and plus and minus, or the slider. A circle over the frame shows
  * what a round avatar keeps; the square is what `toBlob()` answers, an image
  * `outputSize` wide in `outputType`, stepped down in quality until it is at
- * most `maxBytes`.
+ * most `maxBytes`. An `aspect` such as `3:4` makes the frame, and the image,
+ * that shape instead: 3 wide to 4 tall. It takes `shape="square"`, since the
+ * circle stretches to a pill over a frame that is not square.
  *
  * `pick()` opens the file chooser and has to run inside the tap that asks for
  * it, which is what iOS requires. A file can also be dropped on the frame, or
@@ -29,6 +43,7 @@ export default defineComponent({
     accept: "image/*",
     capture: "",
     shape: T.string({ defaultValue: "circle", enum: ["circle", "square"] }),
+    aspect: "",
     outputSize: 512,
     outputType: "image/webp",
     quality: 0.9,
@@ -91,6 +106,10 @@ export default defineComponent({
   /** @param {{ changedProps: Map<string, unknown> }} update */
   updated({ changedProps }) {
     if (changedProps.has("status")) this._draw();
+    if (changedProps.has("aspect") && changedProps.get("aspect") !== undefined && this._picture) {
+      this._bounds = boundsOf(this._picture.width, this._picture.height, this.maxZoom, ratioOf(this.aspect));
+      this.reset();
+    }
     if (changedProps.has("src") && this.src && changedProps.get("src") !== undefined) return this.load(this.src);
     return undefined;
   },
@@ -130,7 +149,7 @@ export default defineComponent({
       }
       releasePicture(this._picture);
       this._picture = picture;
-      this._bounds = boundsOf(picture.width, picture.height, this.maxZoom);
+      this._bounds = boundsOf(picture.width, picture.height, this.maxZoom, ratioOf(this.aspect));
       this._rect = coverRect(this._bounds);
       this.zoom = 1;
       this.status = "ready";
@@ -147,7 +166,7 @@ export default defineComponent({
   },
 
   /**
-   * The square in the frame as an image, or null when there is no picture or
+   * What the frame shows as an image, or null when there is no picture or
    * no quality brings it under `maxBytes`.
    * @returns {Promise<Blob | null>}
    */
@@ -187,19 +206,21 @@ export default defineComponent({
 
   _draw() {
     const canvas = /** @type {HTMLCanvasElement | null} */ (this.querySelector(".image-crop-canvas"));
-    const view = this._view();
-    if (!canvas || !view) return;
-    const size = Math.round(view * (globalThis.devicePixelRatio || 1));
+    const frame = this._frame();
+    if (!canvas || !frame?.clientWidth) return;
+    const scale = globalThis.devicePixelRatio || 1;
+    const size = Math.round(frame.clientWidth * scale);
+    const tall = Math.round(frame.clientHeight * scale);
     if (canvas.width !== size) canvas.width = size;
-    if (canvas.height !== size) canvas.height = size;
+    if (canvas.height !== tall) canvas.height = tall;
     const context = canvas.getContext("2d");
     if (!context) return;
-    context.clearRect(0, 0, size, size);
-    const { _picture: picture, _rect: rect } = this;
-    if (!picture || !rect || this.status !== "ready") return;
+    context.clearRect(0, 0, size, tall);
+    const { _picture: picture, _rect: rect, _bounds: bounds } = this;
+    if (!picture || !rect || !bounds || this.status !== "ready") return;
     context.imageSmoothingEnabled = true;
     context.imageSmoothingQuality = "high";
-    context.drawImage(picture, rect.x, rect.y, rect.size, rect.size, 0, 0, size, size);
+    context.drawImage(picture, rect.x, rect.y, rect.size, rect.size / bounds.aspect, 0, 0, size, tall);
   },
 
   /** @param {PointerEvent} e */
@@ -259,7 +280,7 @@ export default defineComponent({
       return;
     }
     const view = this._view();
-    this._set(zoomRectAt(this._gesture.rect, scale / this._gesture.scale, view / 2, view / 2, view, this._bounds));
+    this._set(zoomRectAt(this._gesture.rect, scale / this._gesture.scale, view / 2, view / this._bounds.aspect / 2, view, this._bounds));
   },
 
   /** @param {KeyboardEvent} e */
@@ -270,7 +291,7 @@ export default defineComponent({
     e.preventDefault();
     const view = this._view();
     if ("pan" in intent) this._set(panRect(this._rect, intent.pan[0], intent.pan[1], view, this._bounds));
-    else if ("zoom" in intent) this._set(zoomRectAt(this._rect, intent.zoom, view / 2, view / 2, view, this._bounds));
+    else if ("zoom" in intent) this._set(zoomRectAt(this._rect, intent.zoom, view / 2, view / this._bounds.aspect / 2, view, this._bounds));
     else this.reset();
   },
 
@@ -318,6 +339,7 @@ export default defineComponent({
     const text = (/** @type {string} */ key) => lcText("lc-image-crop", key);
     return html`
       <div class="image-crop-frame" data-shape=${this.shape} data-status=${this.status} tabindex=${ready ? "0" : "-1"}
+        style=${`--lc-image-crop-aspect:${ratioOf(this.aspect)}`}
         aria-label=${text("frame")}
         @pointerdown=${(/** @type {PointerEvent} */ e) => this._pressed(e)}
         @keydown=${(/** @type {KeyboardEvent} */ e) => this._key(e)}
