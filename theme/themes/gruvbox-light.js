@@ -144,5 +144,11 @@ export default {
     },
 
     border: { color: "var(--color-surface, #504945)" },
+
+    lc: {
+      search: {
+        "active-result-background": "#504945",
+      },
+    },
   },
 };

@@ -171,6 +171,9 @@ export default {
       background: "#3c3836",
       "active-background": "#665c54",
     },
+    search: {
+      "active-result-background": "#504945",
+    },
     button: {
       background: "#3c3836",
       color: "#ebdbb2",

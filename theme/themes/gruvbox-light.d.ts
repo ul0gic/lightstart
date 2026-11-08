@@ -144,6 +144,11 @@ declare namespace _default {
             export { color_4 as color };
         }
         export { border_1 as border };
+        export namespace lc {
+            let search: {
+                "active-result-background": string;
+            };
+        }
     }
 }
 export default _default;

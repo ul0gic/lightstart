@@ -162,6 +162,9 @@ declare namespace _default {
             background: string;
             "active-background": string;
         };
+        export let search: {
+            "active-result-background": string;
+        };
         export let button: {
             background: string;
             color: string;
