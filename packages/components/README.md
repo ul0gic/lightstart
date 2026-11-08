@@ -343,7 +343,7 @@ A page without the framework defines these too, one level deep; follow the table
 | `lc-pull-indicator` | `lc-icon`, `lc-spinner` |
 | `lc-radio` |  |
 | `lc-radio-group` | `lc-radio` |
-| `lc-rating` | `lc-icon` |
+| `lc-rating` | `lc-icon`, `lc-label` |
 | `lc-ruler` |  |
 | `lc-scroller` | `lc-icon` |
 | `lc-search` | `lc-icon`, `lc-join`, `lc-label` |
