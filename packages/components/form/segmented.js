@@ -1,6 +1,7 @@
 import { html, nothing } from "@lightstart/light/html";
 import T from "@lightstart/light/types";
 import { defineComponent } from "@lightstart/light";
+import { nextIndex } from "../utils/roving.js";
 
 /** @import { Prop, SegmentedOption } from "../types.ts" */
 
@@ -50,12 +51,25 @@ export default defineComponent({
     this.$emit("change", { value, values });
   },
 
+  /** @param {KeyboardEvent} e @param {{ value: string }[]} options */
+  _onKeydown(e, options) {
+    if (this.multiple || this.disabled) return;
+    const current = Math.max(0, options.findIndex((option) => option.value === this.value));
+    const next = nextIndex(e.key, current, options.length, { wrap: true, orientation: "both" });
+    if (next === null) return;
+    e.preventDefault();
+    this._pick(options[next].value);
+    /** @type {HTMLElement | null} */ (this.querySelectorAll(".segmented-option")[next])?.focus();
+  },
+
   render() {
     const options = this._options();
     const multiple = this.multiple;
+    const stop = Math.max(0, options.findIndex((option) => option.value === this.value));
     return html`
-      <div class="segmented-track" role=${multiple ? "group" : "radiogroup"} aria-disabled=${this.disabled ? "true" : "false"}>
-        ${options.map((option) => {
+      <div class="segmented-track" role=${multiple ? "group" : "radiogroup"} aria-disabled=${this.disabled ? "true" : "false"}
+        @keydown=${(/** @type {KeyboardEvent} */ e) => this._onKeydown(e, options)}>
+        ${options.map((option, index) => {
           const on = this._isOn(option.value);
           return html`
           <button
@@ -63,6 +77,7 @@ export default defineComponent({
             role=${multiple ? nothing : "radio"}
             aria-checked=${multiple ? nothing : on ? "true" : "false"}
             aria-pressed=${multiple ? (on ? "true" : "false") : nothing}
+            tabindex=${multiple ? nothing : index === stop ? "0" : "-1"}
             class="segmented-option${on ? " is-selected" : ""}"
             ?disabled=${this.disabled}
             @click=${() => this._pick(option.value)}
