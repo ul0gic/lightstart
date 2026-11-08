@@ -38,6 +38,15 @@ const listen = (el) => {
   return seen;
 };
 
+/** @param {Element} el @param {string} key */
+const press = (el, key) => {
+  const target = el.contains(document.activeElement) ? /** @type {Element} */ (document.activeElement) : el.querySelector(".segmented-track");
+  return !target?.dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true }));
+};
+
+/** @param {Element} el */
+const tabStops = (el) => buttons(el).map((button) => button.getAttribute("tabindex"));
+
 describe("@lightstart/light - lc-segmented", () => {
   before(() => {
     if (!customElements.get("lc-segmented")) View.define("lc-segmented", segmentedDef);
@@ -109,5 +118,58 @@ describe("@lightstart/light - lc-segmented", () => {
     const el = await mount({ options: [{ value: "app", label: "App", count: 13 }, { value: "social", label: "Social", count: 0 }] });
     assert.deepEqual(buttons(el).map((button) => button.querySelector(".segmented-count")?.textContent ?? null), ["13", null]);
     assert.equal(buttons(el)[0].textContent?.replace(/\s+/g, ""), "App13");
+  });
+
+  it("leaves one tab stop, on the picked option or the first when none is picked", async () => {
+    const picked = await mount({ attrs: { value: "Wednesday" } });
+    assert.deepEqual(tabStops(picked), ["-1", "-1", "0", "-1"]);
+    const none = await mount();
+    assert.deepEqual(tabStops(none), ["0", "-1", "-1", "-1"]);
+  });
+
+  it("moves and picks with the arrow keys, wrapping at both ends, and focus follows", async () => {
+    const el = await mount({ attrs: { value: "Wednesday" } });
+    const seen = listen(el);
+    buttons(el)[2].focus();
+    /** @type {string[]} */
+    const focused = [];
+    for (const key of ["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "ArrowUp"]) {
+      assert.ok(press(el, key), `${key} is taken`);
+      await el.$requestUpdate();
+      focused.push(document.activeElement?.textContent?.trim() ?? "");
+    }
+    assert.deepEqual(seen, [{ value: "Thursday" }, { value: "Monday" }, { value: "Thursday" }, { value: "Wednesday" }, { value: "Tuesday" }]);
+    assert.deepEqual(focused, ["Thu", "Mon", "Thu", "Wed", "Tue"]);
+    assert.deepEqual(selected(el), ["Tue"]);
+    assert.deepEqual(tabStops(el), ["-1", "0", "-1", "-1"]);
+    assert.equal(press(el, "Home"), false, "a key that moves nothing is left to the page");
+  });
+
+  it("from no pick, the first arrow moves on from the first option", async () => {
+    const el = await mount();
+    const seen = listen(el);
+    buttons(el)[0].focus();
+    press(el, "ArrowRight");
+    await el.$requestUpdate();
+    assert.deepEqual(seen, [{ value: "Tuesday" }]);
+    assert.equal(document.activeElement, buttons(el)[1]);
+  });
+
+  it("with multiple or disabled, the arrow keys do nothing and multiple keeps every button in the tab order", async () => {
+    const many = await mount({ attrs: { multiple: "" }, values: ["Thursday"] });
+    const seenMany = listen(many);
+    assert.ok(tabStops(many).every((stop) => stop === null));
+    buttons(many)[0].focus();
+    assert.equal(press(many, "ArrowRight"), false);
+    await many.$requestUpdate();
+    assert.equal(many.querySelector(".segmented-track")?.getAttribute("role"), "group");
+    assert.deepEqual(buttons(many).map((button) => button.getAttribute("aria-pressed")), ["false", "false", "false", "true"]);
+    assert.deepEqual(seenMany, []);
+    const off = await mount({ attrs: { value: "Tuesday", disabled: "" } });
+    const seenOff = listen(off);
+    assert.equal(press(off, "ArrowRight"), false);
+    await off.$requestUpdate();
+    assert.equal(off.value, "Tuesday");
+    assert.deepEqual(seenOff, []);
   });
 });
