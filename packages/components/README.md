@@ -27,6 +27,15 @@ configureIcons({ load: iconify("lucide") });
 for (const component of [link, button, icon]) View.define(component);
 ```
 
+A page whose visitors should reach only its own origin bundles the icon set instead of `iconify`, any package in the `@iconify-json` shape:
+
+```js
+import { configureIcons, icon as iconOf } from "@lightstart/light/theme/icons.js";
+import lucide from "@iconify-json/lucide/icons.json" with { type: "json" };
+
+configureIcons({ load: async (name) => iconOf(lucide, name) });
+```
+
 ```css
 @import "@lightstart/light/theme/theme.css";
 @import "@lightstart/components/display/link.css";
@@ -36,7 +45,7 @@ for (const component of [link, button, icon]) View.define(component);
 
 A browser resolves the bare specifiers through an importmap (`"@lightstart/light/": "/node_modules/@lightstart/light/"` and `"@lightstart/components/": "/node_modules/@lightstart/components/"` cover every subpath); a bundler resolves them from `node_modules`.
 
-`applyTheme` writes the design tokens the stylesheets read; `configureIcons` says where `<lc-icon>` fetches an icon (the public Iconify API here; a page that has the icons in its own stylesheet leaves it unset). Four more hooks matter only when you have the thing they connect: `configureNavigation` from `@lightstart/light/navigation` for a router (links are plain anchors without one), `configureView({ translate })` for translations (the components speak English without one), `configureMarkdown` from `display/markdown.js` for where `marked` comes from (the bare `marked` specifier by default), and `configureHighlight` from `utils/highlight.js` for a tokenizer behind `<lc-code-block>` (plain lines without one).
+`applyTheme` writes the design tokens the stylesheets read, and links Google Fonts for a preset that names a Google family (`gruvbox-dark`'s Manrope; `configureTheme({ requestFont: () => {} })` stops it, `theme/README.md` › Fonts and icons). `configureIcons` says where `<lc-icon>` fetches an icon (the public Iconify API in the first example, which every visitor's browser calls; the bundled set in the second, which never leaves the origin; a page that has the icons in its own stylesheet leaves it unset). Four more hooks matter only when you have the thing they connect: `configureNavigation` from `@lightstart/light/navigation` for a router (links are plain anchors without one), `configureView({ translate })` for translations (the components speak English without one), `configureMarkdown` from `display/markdown.js` for where `marked` comes from (the bare `marked` specifier by default), and `configureHighlight` from `utils/highlight.js` for a tokenizer behind `<lc-code-block>` (plain lines without one).
 
 A component that draws other tags needs them defined too, or they stay inert; the table at the end lists what each one renders. `examples/starter` and `examples/indexeddb-explorer` are whole pages built this way.
 
