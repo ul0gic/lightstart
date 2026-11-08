@@ -181,9 +181,12 @@ export default defineComponent({
       ? html`<input type="hidden" name=${this.name} .value=${this.value == null ? "" : String(this.value)} />`
       : nothing;
     if (this.stepper) return html`${this._renderStepper()}${hidden}`;
+    const id = this.getInputId();
     return html`
+      ${this.label ? html`<lc-label for=${id} text=${this.label} ?required=${this.required}></lc-label>` : ""}
       <div class="number-input-wrapper">
         <input
+          id=${id}
           type="number"
           class="number-input"
           .value=${this.value == null ? "" : String(this.value)}
@@ -204,6 +207,7 @@ export default defineComponent({
                 <button
                   type="button"
                   class="number-input-button increment"
+                  aria-label=${lcText("lc-number-input", "raise", { label: this.label || "" })}
                   ?disabled=${this.disabled || this.readonly}
                   @click=${this.increment}
                   tabindex="-1"
@@ -213,6 +217,7 @@ export default defineComponent({
                 <button
                   type="button"
                   class="number-input-button decrement"
+                  aria-label=${lcText("lc-number-input", "lower", { label: this.label || "" })}
                   ?disabled=${this.disabled || this.readonly}
                   @click=${this.decrement}
                   tabindex="-1"

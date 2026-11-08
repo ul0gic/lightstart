@@ -9,7 +9,7 @@ export default {
     {
       title: "Basic",
       render: () => html`
-        <lc-number-input value="5"></lc-number-input>
+        <lc-number-input label="Quantity" value="5"></lc-number-input>
       `,
     },
     {
