@@ -165,6 +165,9 @@ export default {
     many: "{count} estrelas",
     value: "{value} de {max} estrelas",
   },
+  "lc-progress-bar": {
+    label: "Progresso",
+  },
   "lc-darkmode": {
     label: "Modo escuro",
   },
