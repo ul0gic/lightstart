@@ -327,7 +327,7 @@ A page without the framework defines these too, one level deep; follow the table
 | `lc-nav-item` | `lc-icon`, `lc-tooltip` |
 | `lc-nav-tree` | `lc-icon`, `lc-nav-item` |
 | `lc-navbar` | `lc-avatar`, `lc-button`, `lc-dropdown`, `lc-icon`, `lc-input` |
-| `lc-number-input` | `lc-icon` |
+| `lc-number-input` | `lc-icon`, `lc-label` |
 | `lc-page` |  |
 | `lc-page-header` | `lc-breadcrumbs`, `lc-button` |
 | `lc-pagination` | `lc-icon`, `lc-link` |
