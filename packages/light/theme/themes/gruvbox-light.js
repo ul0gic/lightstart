@@ -63,7 +63,7 @@ export default {
   text: {
     secondary: "#504945",
     color: "#3c3836",
-    muted: "#7c6f64",
+    muted: "#695d54",
     disabled: "#a89984",
 
     xs: "0.75rem",
@@ -121,5 +121,34 @@ export default {
   border: {
     width: "1px",
     color: "var(--color-surface, #d5c4a1)",
+  },
+
+  dark: {
+    text: {
+      color: "#ebdbb2",
+      secondary: "#d5c4a1",
+      muted: "#c5b8a0",
+      disabled: "#7c6f64",
+    },
+
+    canvas: { background: "var(--color-surface-dark)" },
+
+    color: {
+      surface: "#504945",
+      "surface-light": "#3c3836",
+      "surface-lighter": "#665c54",
+      "surface-dark": "#32302f",
+      "surface-darker": "#282828",
+      "surface-inverse": "#ebdbb2",
+      hover: "#d79921",
+    },
+
+    border: { color: "var(--color-surface, #504945)" },
+
+    lc: {
+      search: {
+        "active-result-background": "#504945",
+      },
+    },
   },
 };

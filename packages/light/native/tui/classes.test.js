@@ -54,7 +54,7 @@ configureClasses(new TerminalClasses(defaultTheme, "light"));
   renderer.start();
   renderer.renderFrame();
   const cell = renderer.back.w * 0 + 0;
-  eq("the painted screen carries the muted token, bold, on the canvas token", String(renderer.back.fg[cell]) + "/" + String(renderer.back.bg[cell]) + "/" + String((renderer.back.attrs[cell] & ATTR_BOLD) !== 0), String(hex(0x6b716b)) + "/" + String(hex(0xf3f4f2)) + "/true");
+  eq("the painted screen carries the muted token, bold, on the canvas token", String(renderer.back.fg[cell]) + "/" + String(renderer.back.bg[cell]) + "/" + String((renderer.back.attrs[cell] & ATTR_BOLD) !== 0), String(hex(0x656a65)) + "/" + String(hex(0xf3f4f2)) + "/true");
   renderer.stop();
 }
 
@@ -82,7 +82,7 @@ configureClasses(new TerminalClasses(defaultTheme, "light"));
   eq("an explicit color beats the class", String(inner.style.fg), String(1));
   color.value = nothing;
   render(view(), root);
-  eq("removed, the color comes back from the class", String(inner.style.fg), String(hex(0x6b716b)));
+  eq("removed, the color comes back from the class", String(inner.style.fg), String(hex(0x656a65)));
 }
 
 {
@@ -95,7 +95,7 @@ configureClasses(new TerminalClasses(defaultTheme, "light"));
   if (!(a instanceof TText) || !(a.next instanceof TText)) throw new Error("no texts");
   const b = a.next;
   const seen = () => String(a.style.fg) + "|" + String(a.style.has(ATTR_BOLD)) + "|" + String(b.style.has(ATTR_BOLD)) + "|" + String(outer.style.bg);
-  eq("before the focus, the base layer alone", seen(), String(hex(0x6b716b)) + "|false|false|-1");
+  eq("before the focus, the base layer alone", seen(), String(hex(0x656a65)) + "|false|false|-1");
   renderer.renderFrame();
   renderer.setFocus(a);
   eq("the focused element takes its focus: layer, its ancestor its focus-within: layer", seen(), String(hex(0x101210)) + "|true|false|" + String(hex(0xffffff)));
@@ -103,9 +103,9 @@ configureClasses(new TerminalClasses(defaultTheme, "light"));
   renderer.renderFrame();
   eq("the painted texts take the box's new background, their lines laid out again under it", String(renderer.back.bg[0]) + "|" + String(renderer.back.bg[renderer.back.w]), String(hex(0xffffff)) + "|" + String(hex(0xffffff)));
   renderer.setFocus(b);
-  eq("the focus moved: a is back to its base layer, b's explicit prop beats its focus: layer, the box keeps focus-within", seen(), String(hex(0x6b716b)) + "|false|false|" + String(hex(0xffffff)));
+  eq("the focus moved: a is back to its base layer, b's explicit prop beats its focus: layer, the box keeps focus-within", seen(), String(hex(0x656a65)) + "|false|false|" + String(hex(0xffffff)));
   renderer.setFocus(null);
-  eq("no focus: the box loses its focus-within: layer", seen(), String(hex(0x6b716b)) + "|false|false|-1");
+  eq("no focus: the box loses its focus-within: layer", seen(), String(hex(0x656a65)) + "|false|false|-1");
   renderer.setFocus(a);
   outer.remove(a);
   renderer.renderFrame();
@@ -117,7 +117,7 @@ configureClasses(new TerminalClasses(defaultTheme, "light"));
   const root = new TRoot();
   render(html`<box class="nope-xyz flex-1 md:p-4 hover:underline dark:text-primary text-muted"></box>`, root);
   const el = box(second(root));
-  eq("unknown classes, media queries and states are ignored without a throw; a dark variant on the light scheme too", String(el.flex) + "|" + String(el.padding) + "|" + String(el.style.has(ATTR_UNDERLINE)) + "|" + String(el.style.fg), "1|0|false|" + String(hex(0x6b716b)));
+  eq("unknown classes, media queries and states are ignored without a throw; a dark variant on the light scheme too", String(el.flex) + "|" + String(el.padding) + "|" + String(el.style.has(ATTR_UNDERLINE)) + "|" + String(el.style.fg), "1|0|false|" + String(hex(0x656a65)));
   configureClasses(new TerminalClasses(defaultTheme, "dark"));
   render(html`<box class="text-primary dark:text-muted"></box>`, root);
   const darkEl = box(second(root));
