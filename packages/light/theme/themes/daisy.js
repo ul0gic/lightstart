@@ -29,7 +29,7 @@ export default {
   text: {
     color: base.content,
     secondary: "#4b5563",
-    muted: "#6b7280",
+    muted: "#5f6572",
     disabled: "#9ca3af",
     xs: "0.75rem",
     sm: "0.875rem",
