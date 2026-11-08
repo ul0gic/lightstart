@@ -41,6 +41,37 @@
     .star-filled {
       color: var(--lc-rating-color, var(--color-primary, #fabd2f));
     }
+
+    .lc-rating__pair {
+      display: inline-flex;
+      transition: transform 0.1s ease;
+
+      &:hover {
+        transform: scale(1.15);
+      }
+
+      :where(lc-icon, .lc-icon) {
+        flex-shrink: 0;
+
+        &:hover {
+          transform: none;
+        }
+      }
+    }
+
+    .lc-rating__half {
+      display: inline-flex;
+      width: 0.625rem;
+      overflow: hidden;
+
+      & + .lc-rating__half :where(lc-icon, .lc-icon) {
+        margin-inline-start: -0.625rem;
+      }
+    }
+  }
+
+  &[readonly] .lc-rating__container .lc-rating__pair:hover {
+    transform: none;
   }
 
   &[readonly] .lc-rating__container :where(lc-icon, .lc-icon) {
