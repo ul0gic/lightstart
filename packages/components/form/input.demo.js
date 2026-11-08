@@ -76,6 +76,22 @@ export default {
         </div>
       `,
     },
+    {
+      title: "Error message",
+      description: "Drawn under the field as text and named to it, so a screen reader reads it with the field.",
+      render: () => html`
+        <div style="display: flex; flex-direction: column; width: 100%; max-width: 360px; gap: 0.5rem; align-items: flex-start;">
+          <lc-input label="Email" type="email" error-message="Enter an email address."></lc-input>
+          <lc-button
+            size="sm"
+            @click=${(/** @type {Event} */ e) => {
+              const input = /** @type {HTMLElement & { errorMessage: string }} */ (/** @type {HTMLElement} */ (e.currentTarget).parentElement?.querySelector("lc-input"));
+              input.errorMessage = input.errorMessage ? "" : "Enter an email address.";
+            }}
+          >Toggle the error</lc-button>
+        </div>
+      `,
+    },
   ],
 };
 

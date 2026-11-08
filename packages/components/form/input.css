@@ -106,6 +106,13 @@
     pointer-events: none;
   }
 
+  .input-error {
+    display: block;
+    color: var(--lc-input-error-color, color-mix(in srgb, var(--color-danger) 75%, var(--text-color)));
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+  }
+
   &[size="xs"] {
     --lc-input-height: 1.5rem;
     --lc-input-padding-y: 0.2rem;
@@ -155,7 +162,8 @@
     border-left: var(--lc-input-required-width, 3px) solid var(--lc-input-required-color, var(--color-warning));
   }
 
-  &[error] {
+  &[error],
+  &[error-message]:not([error-message=""]) {
     --lc-input-border-color: var(--color-danger);
     --lc-input-focus-border-color: var(--color-danger);
     --lc-input-focus-shadow: 0 0 0 3px rgba(251, 73, 52, 0.1);
