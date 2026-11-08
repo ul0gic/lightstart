@@ -32,7 +32,7 @@ test("lengths round to cells, half a rem or eight pixels each, at least one when
 test("colors resolve through the tokens of the scheme", () => {
   assert.equal(light.colorOf("var(--color-primary)"), "#101210");
   assert.equal(dark.colorOf("var(--color-primary)"), "#e9ebe8");
-  assert.equal(light.colorOf("var(--text-muted)"), "#6b716b");
+  assert.equal(light.colorOf("var(--text-muted)"), "#656a65");
   assert.equal(light.colorOf("color-mix(in srgb, var(--color-primary) 50%, transparent)"), "#101210");
   assert.equal(light.colorOf("var(--font-bold, 700)"), null);
   assert.equal(light.colorOf("var(--nope, #abcdef)"), "#abcdef");
@@ -70,11 +70,11 @@ test("variants: dark: in the dark scheme alone; media queries and the states a t
 });
 
 test("focus: and focus-within: are state layers over the base, the base first", () => {
-  assert.deepEqual(propsOf(light, "focus:font-bold text-muted focus:text-primary"), { fg: "#6b716b", "focus:bold": true, "focus:fg": "#101210" });
+  assert.deepEqual(propsOf(light, "focus:font-bold text-muted focus:text-primary"), { fg: "#656a65", "focus:bold": true, "focus:fg": "#101210" });
   assert.deepEqual(Object.keys(propsOf(light, "focus:font-bold text-muted focus:text-primary")), ["fg", "focus:fg", "focus:bold"]);
   assert.deepEqual(propsOf(light, "focus-within:bg-surface focus-visible:underline"), { "focus-within:bg": "#ffffff", "focus:underline": true, "focus:strike": false });
   assert.deepEqual(propsOf(light, "focus:p-4 focus:p-1"), { "focus:padding": 1 });
-  assert.deepEqual(propsOf(dark, "dark:focus:text-primary focus:dark:text-muted"), { "focus:fg": "#7f857e" });
+  assert.deepEqual(propsOf(dark, "dark:focus:text-primary focus:dark:text-muted"), { "focus:fg": "#878c86" });
   assert.deepEqual(propsOf(light, "dark:focus:text-primary"), {});
   assert.deepEqual(propsOf(light, "focus:focus-within:underline"), { [String(STATE_FOCUS | STATE_FOCUS_WITHIN) + ":underline"]: true, [String(STATE_FOCUS | STATE_FOCUS_WITHIN) + ":strike"]: false });
   assert.ok(!light.ignored.has("focus:font-bold") && !light.ignored.has("focus-within:bg-surface"));

@@ -35,8 +35,8 @@ test("collectClasses walks the tasks app's imports and answers exactly its nine 
 test("bakeTables compiles each string per scheme through the terminal styler, states kept, and names an ignored class", () => {
   const { tables, problems } = bakeTables(["text-muted", "flex-1 border focus-within:bg-surface"], defaultTheme, ["dark", "light"]);
   assert.deepEqual(problems, []);
-  assert.deepEqual(tables.get("dark"), [["text-muted", [["fg", "#7f857e", 0]]], ["flex-1 border focus-within:bg-surface", [["flex", 1, 0], ["border", true, 0], ["bg", "#171a17", STATE_FOCUS_WITHIN]]]]);
-  assert.deepEqual(tables.get("light")?.[0], ["text-muted", [["fg", "#6b716b", 0]]]);
+  assert.deepEqual(tables.get("dark"), [["text-muted", [["fg", "#878c86", 0]]], ["flex-1 border focus-within:bg-surface", [["flex", 1, 0], ["border", true, 0], ["bg", "#171a17", STATE_FOCUS_WITHIN]]]]);
+  assert.deepEqual(tables.get("light")?.[0], ["text-muted", [["fg", "#656a65", 0]]]);
   assert.deepEqual(bakeTables(["text-sm rounded"], defaultTheme, ["dark"]).problems, ['dark: the terminal ignores "text-sm"', 'dark: the terminal ignores "rounded"']);
 });
 

@@ -88,7 +88,7 @@ const cellOf = (text) => {
 };
 
 /** @param {number} cell @returns {string} the foreground, the bold and strike bits and the background of a painted cell */
-const paintOf = (cell) => `fg=${renderer.back.fg[cell] === (TRUECOLOR_FLAG | 0xe9ebe8) ? "primary" : renderer.back.fg[cell] === (TRUECOLOR_FLAG | 0x7f857e) ? "muted" : String(renderer.back.fg[cell])} bold=${(renderer.back.attrs[cell] & ATTR_BOLD) !== 0} strike=${(renderer.back.attrs[cell] & ATTR_STRIKE) !== 0} bg=${renderer.back.bg[cell] === (TRUECOLOR_FLAG | 0x171a17) ? "surface" : String(renderer.back.bg[cell])}`;
+const paintOf = (cell) => `fg=${renderer.back.fg[cell] === (TRUECOLOR_FLAG | 0xe9ebe8) ? "primary" : renderer.back.fg[cell] === (TRUECOLOR_FLAG | 0x878c86) ? "muted" : String(renderer.back.fg[cell])} bold=${(renderer.back.attrs[cell] & ATTR_BOLD) !== 0} strike=${(renderer.back.attrs[cell] & ATTR_STRIKE) !== 0} bg=${renderer.back.bg[cell] === (TRUECOLOR_FLAG | 0x171a17) ? "surface" : String(renderer.back.bg[cell])}`;
 
 /** @param {string} text the half of the screen a text is on: the left or the right column */
 const side = (text) => {

@@ -27,7 +27,7 @@ export default {
   text: {
     color: ink,
     secondary: "#4b5563",
-    muted: "#6b7280",
+    muted: "#666d7a",
     disabled: "#9ca3af",
     xs: "0.75rem",
     sm: "0.875rem",
