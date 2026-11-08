@@ -35,6 +35,18 @@ export default {
       `,
     },
     {
+      title: "Danger confirm",
+      render: () => html`
+        <lc-alert-dialog
+          title="Delete this file?"
+          message="This cannot be undone."
+          confirm-variant="danger"
+          show-cancel
+          confirm-text="Delete"
+        ></lc-alert-dialog>
+      `,
+    },
+    {
       title: "Info",
       render: () => html`
         <lc-alert-dialog
