@@ -91,6 +91,33 @@ rem is the same length on a phone as on a desktop; `line-height` 1.2; the
 selection tinted from the primary colour; a `rgba(0,0,0,.8)` dialog backdrop; a
 thin grey scrollbar).
 
+## Fonts and icons
+
+Two defaults leave the page's origin. A font named by a bare family, a string
+such as `gruvbox-dark`'s `"Manrope"` or a `{ family }` without `google: false`,
+is requested from Google Fonts: `applyTheme` links a `fonts.googleapis.com`
+stylesheet, which pulls the faces from `fonts.gstatic.com`. A generic family, a
+stack with a comma and `google: false` request nothing. A page that serves its
+own faces stops every request with a no-op, set before `applyTheme`:
+
+```javascript
+import { configureTheme } from "@lightstart/light/theme";
+
+configureTheme({ requestFont: () => {} });
+```
+
+`<lc-icon>` fetches nothing until `configureIcons` names a loader, and
+`iconify("lucide")` reads each icon from `api.iconify.design`. A set bundled
+with the page, any package in the `@iconify-json` shape, is read with `icon()`
+and never leaves the origin:
+
+```javascript
+import { configureIcons, icon } from "@lightstart/light/theme/icons.js";
+import lucide from "@iconify-json/lucide/icons.json" with { type: "json" };
+
+configureIcons({ load: async (name) => icon(lucide, name) });
+```
+
 ## Shape tokens
 
 Nine optional roles decide how the whole library is shaped, so a look that is
