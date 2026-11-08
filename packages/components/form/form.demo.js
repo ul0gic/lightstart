@@ -8,6 +8,18 @@ const fields = [
   { name: "url", label: "Stream URL", type: "url", visibleIf: "online" },
 ];
 const data = { title: "Lightning talks", kind: "Talk", capacity: 60, online: true, url: "" };
+const speakers = [
+  {
+    name: "speakers",
+    label: "Speakers",
+    type: "array",
+    itemFields: [
+      { name: "name", label: "Name", type: "text" },
+      { name: "topic", label: "Topic", type: "text" },
+    ],
+  },
+];
+const lineup = { speakers: [{ name: "Ada", topic: "Signals" }, { name: "Grace", topic: "Compilers" }, { name: "Linus", topic: "Patches" }] };
 
 export default {
   description: "Takes a field list and draws it: which control each field gets, how it validates, whether it is even on screen.",
@@ -35,6 +47,13 @@ export default {
       title: "With errors",
       render: () => html`
         <lc-form .fields=${fields} .data=${{}} .errors=${{ title: "A title is required" }}></lc-form>
+      `,
+    },
+    {
+      title: "A list",
+      description: "An array field draws one row per entry, each with buttons to move it or remove it, named by its position.",
+      render: () => html`
+        <lc-form .fields=${speakers} .data=${lineup}></lc-form>
       `,
     },
   ],

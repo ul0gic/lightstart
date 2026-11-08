@@ -187,6 +187,10 @@ export default {
   },
   "lc-field": {
     nothingYet: "Nada ainda.",
+    item: "item",
+    moveUp: "Mover {label} {position} para cima",
+    moveDown: "Mover {label} {position} para baixo",
+    remove: "Remover {label} {position}",
   },
   "lc-wizard": {
     next: "Próximo \u2192",
