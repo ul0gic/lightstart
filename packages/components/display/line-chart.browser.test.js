@@ -105,4 +105,19 @@ describe("@lightstart/light - lc-line-chart scale", () => {
     const plain = await mount({ data: WEIGHTS });
     assert.equal(plain.querySelector("line.line-reference"), null);
   });
+
+  it("is an image named after its kind or its label, with its data in a table only a screen reader sees", async () => {
+    const el = await mount(PROPS);
+    const svg = el.querySelector("svg");
+    assert.equal(svg.getAttribute("role"), "img");
+    assert.equal(svg.getAttribute("aria-label"), "Line chart");
+    const table = el.querySelector("table");
+    assert.equal(table.caption.textContent, "Line chart");
+    assert.deepEqual([...table.rows].map((row) => [...row.cells].map((cell) => cell.textContent)), [["a", "3"], ["b", "8"], ["c", "5"]]);
+    const box = table.parentElement.getBoundingClientRect();
+    assert.ok(box.width <= 1 && box.height <= 1, "and takes no room");
+    const named = await mount({ ...PROPS, label: "Signups" });
+    assert.equal(named.querySelector("svg").getAttribute("aria-label"), "Signups");
+    assert.equal(named.querySelector("caption").textContent, "Signups");
+  });
 });
