@@ -192,6 +192,10 @@ export default {
   },
   "lc-field": {
     nothingYet: "Nothing yet.",
+    item: "item",
+    moveUp: "Move {label} {position} up",
+    moveDown: "Move {label} {position} down",
+    remove: "Remove {label} {position}",
   },
   "lc-wizard": {
     next: "Next \u2192",
