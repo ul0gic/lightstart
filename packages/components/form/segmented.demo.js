@@ -10,6 +10,7 @@ export default {
   examples: [
     {
       title: "Basic",
+      description: "Tab lands on the picked segment, and the arrow keys move the pick along, wrapping at either end.",
       render: () => html`
         <lc-segmented .options=${["Day", "Week", "Month"]} value="Week"></lc-segmented>
       `,
