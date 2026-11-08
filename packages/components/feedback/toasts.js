@@ -6,7 +6,8 @@
  * How long an entry stays is the queue's business, not each caller's: an error
  * holds longer than the rest unless the call says otherwise. An entry shown
  * with `onTap` is a button: a tap takes it off and runs it, which is how a
- * toast about something opens that thing.
+ * toast about something opens that thing. An entry paused while someone reads
+ * it keeps what was left of its time and gets it back when resumed.
  */
 
 import { signal } from "@lightstart/light/signals";
@@ -16,9 +17,19 @@ import { signal } from "@lightstart/light/signals";
 const DEFAULT_DURATION = 3000;
 const ERROR_DURATION = 5000;
 
-/** @type {Map<string, ReturnType<typeof setTimeout>>} */
+/** @type {Map<string, { timer: ReturnType<typeof setTimeout>, due: number }>} */
 const timers = new Map();
+/** @type {Map<string, number>} */
+const left = new Map();
 let lastId = 0;
+
+/**
+ * @param {string} id
+ * @param {number} ms
+ */
+const start = (id, ms) => {
+  timers.set(id, { timer: setTimeout(() => toasts.hide(id), ms), due: Date.now() + ms });
+};
 
 /** @type {ToastQueue} */
 export const toasts = {
@@ -28,7 +39,7 @@ export const toasts = {
     const id = `t${(lastId += 1)}`;
     const ms = duration ?? (variant === "error" ? ERROR_DURATION : DEFAULT_DURATION);
     toasts.items.value = [...toasts.items.value, { id, title, message, variant, icon, duration: ms, closable, ...(onTap ? { onTap } : {}) }];
-    if (ms > 0) timers.set(id, setTimeout(() => toasts.hide(id), ms));
+    if (ms > 0) start(id, ms);
     return id;
   },
 
@@ -47,16 +58,42 @@ export const toasts = {
     entry?.onTap?.();
   },
 
+  /**
+   * Stops an entry's timer and keeps what was left of it; an entry with no timer
+   * running is untouched.
+   * @param {string} id
+   */
+  pause(id) {
+    const running = timers.get(id);
+    if (!running) return;
+    clearTimeout(running.timer);
+    timers.delete(id);
+    left.set(id, Math.max(0, running.due - Date.now()));
+  },
+
+  /**
+   * Starts a paused entry's timer again with what was left of it.
+   * @param {string} id
+   */
+  resume(id) {
+    const ms = left.get(id);
+    if (ms === undefined) return;
+    left.delete(id);
+    start(id, ms);
+  },
+
   /** @param {string} id */
   hide(id) {
-    clearTimeout(timers.get(id));
+    clearTimeout(timers.get(id)?.timer);
     timers.delete(id);
+    left.delete(id);
     toasts.items.value = toasts.items.value.filter((item) => item.id !== id);
   },
 
   hideAll() {
-    for (const timer of timers.values()) clearTimeout(timer);
+    for (const { timer } of timers.values()) clearTimeout(timer);
     timers.clear();
+    left.clear();
     toasts.items.value = [];
   },
 };
