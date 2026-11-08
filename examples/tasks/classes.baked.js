@@ -12,9 +12,9 @@ export const dark = [
   ["flex-1 overflow-y-auto", [["flex", 1, 0], ["scroll", true, 0]]],
   ["focus:font-bold", [["bold", true, 1]]],
   ["font-bold text-primary", [["fg", "#e9ebe8", 0], ["bold", true, 0]]],
-  ["text-muted", [["fg", "#7f857e", 0]]],
-  ["text-muted bg-surface", [["fg", "#7f857e", 0], ["bg", "#171a17", 0]]],
-  ["text-muted line-through focus:font-bold", [["underline", false, 0], ["strike", true, 0], ["fg", "#7f857e", 0], ["bold", true, 1]]],
+  ["text-muted", [["fg", "#878c86", 0]]],
+  ["text-muted bg-surface", [["fg", "#878c86", 0], ["bg", "#171a17", 0]]],
+  ["text-muted line-through focus:font-bold", [["underline", false, 0], ["strike", true, 0], ["fg", "#878c86", 0], ["bold", true, 1]]],
 ];
 
 /** @type {BakedEntry[]} */
@@ -25,7 +25,7 @@ export const light = [
   ["flex-1 overflow-y-auto", [["flex", 1, 0], ["scroll", true, 0]]],
   ["focus:font-bold", [["bold", true, 1]]],
   ["font-bold text-primary", [["fg", "#101210", 0], ["bold", true, 0]]],
-  ["text-muted", [["fg", "#6b716b", 0]]],
-  ["text-muted bg-surface", [["fg", "#6b716b", 0], ["bg", "#ffffff", 0]]],
-  ["text-muted line-through focus:font-bold", [["underline", false, 0], ["strike", true, 0], ["fg", "#6b716b", 0], ["bold", true, 1]]],
+  ["text-muted", [["fg", "#656a65", 0]]],
+  ["text-muted bg-surface", [["fg", "#656a65", 0], ["bg", "#ffffff", 0]]],
+  ["text-muted line-through focus:font-bold", [["underline", false, 0], ["strike", true, 0], ["fg", "#656a65", 0], ["bold", true, 1]]],
 ];

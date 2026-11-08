@@ -25,7 +25,7 @@ export default {
   text: {
     color: "#101210",
     secondary: "#3f443f",
-    muted: "#6b716b",
+    muted: "#656a65",
     disabled: "#a3a8a3",
     xs: "0.75rem",
     sm: "0.875rem",
@@ -145,7 +145,7 @@ export default {
     text: {
       color: "#e9ebe8",
       secondary: "#b3b8b2",
-      muted: "#7f857e",
+      muted: "#878c86",
       disabled: "#555a54",
     },
 
