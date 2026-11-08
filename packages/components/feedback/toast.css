@@ -97,7 +97,7 @@
 
   & [part~=lc-toast-message] {
     font-size: var(--lc-toast-message-font-size, var(--text-sm, 0.875rem));
-    color: var(--lc-toast-message-color, var(--color-secondary));
+    color: var(--lc-toast-message-color, var(--text-secondary));
     line-height: 1.5;
   }
 

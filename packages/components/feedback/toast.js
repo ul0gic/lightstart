@@ -1,4 +1,4 @@
-import { html } from "@lightstart/light/html";
+import { html, key } from "@lightstart/light/html";
 import T from "@lightstart/light/types";
 import { defineComponent } from "@lightstart/light";
 import { lcText } from "../utils/text.js";
@@ -39,6 +39,20 @@ export default defineComponent({
     return icons[/** @type {keyof typeof icons} */ (variant)] || icons.default;
   },
 
+  /**
+   * A toast waits while the pointer is over it or focus is inside it, and its
+   * timer runs again only once neither is.
+   * @param {MouseEvent | FocusEvent} event
+   * @param {string} id
+   */
+  _release(event, id) {
+    const toast = /** @type {HTMLElement} */ (event.currentTarget);
+    if (event.type === "focusout") {
+      if (toast.contains(/** @type {Node | null} */ (event.relatedTarget)) || toast.matches(":hover")) return;
+    } else if (toast.contains(document.activeElement)) return;
+    toasts.resume(id);
+  },
+
   /** @param {ToastItem} toast */
   _body(toast) {
     return html`
@@ -57,13 +71,17 @@ export default defineComponent({
     return html`
       <div part="lc-toast-container" class="toast-container ${this.position}">
         ${this.toasts.map(
-          (toast) => html`
+          (toast) => key(toast.id, html`
             <div
               part="lc-toast-toast"
               class="toast toast-${toast.variant}"
               role="alert"
               aria-live="polite"
               aria-atomic="true"
+              @mouseenter=${() => toasts.pause(toast.id)}
+              @focusin=${() => toasts.pause(toast.id)}
+              @mouseleave=${(/** @type {MouseEvent} */ e) => this._release(e, toast.id)}
+              @focusout=${(/** @type {FocusEvent} */ e) => this._release(e, toast.id)}
             >
               ${toast.onTap
                 ? html`<button type="button" part="lc-toast-body lc-toast-tap" class="toast-body" @click=${() => toasts.tap(toast.id)}>${this._body(toast)}</button>`
@@ -83,7 +101,7 @@ export default defineComponent({
                   : ""
               }
             </div>
-          `,
+          `),
         )}
       </div>
     `;
