@@ -21,7 +21,7 @@ export default {
     {
       title: "Vertical",
       render: () => html`
-        <lc-bar-chart .data=${revenue} height="180" show-values></lc-bar-chart>
+        <lc-bar-chart .data=${revenue} height="180" show-values label="Orders this week"></lc-bar-chart>
       `,
     },
     {

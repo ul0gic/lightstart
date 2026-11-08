@@ -14,7 +14,7 @@ export default {
     {
       title: "Basic",
       render: () => html`
-        <lc-pie-chart .data=${sources}></lc-pie-chart>
+        <lc-pie-chart .data=${sources} label="Traffic by source"></lc-pie-chart>
       `,
     },
     {

@@ -116,7 +116,7 @@
 
   & .bar-label {
     font-weight: 500;
-    color: var(--lc-bar-chart-label-color, var(--text-disabled, var(--text-muted)));
+    color: var(--lc-bar-chart-label-color, var(--text-muted));
   }
 
   & [data-state="current"] .bar-label {
@@ -229,5 +229,17 @@
       min-width: 0;
       text-align: center;
     }
+  }
+
+  & .bar-chart-data {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
   }
 }

@@ -53,4 +53,18 @@ describe("@lightstart/light - lc-pie-chart centre label", () => {
     const donut = await mount({ donut: true });
     assert.equal(donut.querySelector(".pie-center-text"), null);
   });
+
+  it("is an image named after its kind or its label, with each slice's value and share in a table only a screen reader sees", async () => {
+    const el = await mount({});
+    const svg = el.querySelector("svg");
+    assert.equal(svg.getAttribute("role"), "img");
+    assert.equal(svg.getAttribute("aria-label"), "Pie chart");
+    const table = el.querySelector("table");
+    assert.equal(table.caption.textContent, "Pie chart");
+    assert.deepEqual([...table.rows].map((row) => [...row.cells].map((cell) => cell.textContent)), [["A", "3", "75%"], ["B", "1", "25%"]]);
+    const box = table.parentElement.getBoundingClientRect();
+    assert.ok(box.width <= 1 && box.height <= 1, "and takes no room");
+    const named = await mount({ label: "Traffic by source" });
+    assert.equal(named.querySelector("svg").getAttribute("aria-label"), "Traffic by source");
+  });
 });

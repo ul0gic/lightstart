@@ -17,6 +17,7 @@ export default defineComponent({
 		showLegend: true,
 		centerLabel: T.string(),
 		centerSub: T.string(),
+		label: T.string(),
 	},
 
 	_colors: [
@@ -43,6 +44,7 @@ export default defineComponent({
 		const center = this.size / 2;
 		const radius = center - 10;
 		const innerRadius = this.donut ? radius - this.donutWidth : 0;
+		const name = this.label || lcText("lc-pie-chart", "name");
 
 		let currentAngle = -90;
 		const slices = this.data.map((item, i) => {
@@ -69,6 +71,8 @@ export default defineComponent({
 					width="${this.size}"
 					height="${this.size}"
 					viewBox="0 0 ${this.size} ${this.size}"
+					role="img"
+					aria-label=${name}
 				>
 					${slices.map((slice) => {
 						const path = this._createSlicePath(center, radius, innerRadius, slice.startAngle, slice.endAngle);
@@ -112,6 +116,14 @@ export default defineComponent({
 						`)}
 					</div>
 				` : ""}
+			</div>
+			<div class="pie-chart-data">
+				<table>
+					<caption>${name}</caption>
+					<tbody>
+						${slices.map((slice) => html`<tr><th scope="row">${slice.label}</th><td>${slice.value}</td><td>${Math.round(slice.percentage * 100)}%</td></tr>`)}
+					</tbody>
+				</table>
 			</div>
 		`;
 	},
