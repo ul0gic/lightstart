@@ -14,6 +14,18 @@ export default {
       `,
     },
     {
+      title: "Placeholder",
+      description: "A small data: or blob: URL drawn at once, and removed when the picture has loaded.",
+      render: () => html`
+        <lc-image
+          src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=600&amp;q=80"
+          alt="Rio de Janeiro from above"
+          placeholder="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 3 2%27%3E%3Crect width=%273%27 height=%272%27 fill=%27lightsteelblue%27/%3E%3C/svg%3E"
+          style="display: block; width: 240px; height: 160px; border-radius: var(--radius-md, 0.5rem)"
+        ></lc-image>
+      `,
+    },
+    {
       title: "Nothing to load",
       description: "A missing source still holds its space rather than collapsing.",
       render: () => html`
