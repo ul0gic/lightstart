@@ -71,5 +71,21 @@ export default {
         </form>
       `,
     },
+    {
+      title: "Error message",
+      description: "Drawn under the field as text and named to it, so a screen reader reads it with the field.",
+      render: () => html`
+        <div style="display: flex; flex-direction: column; width: 100%; max-width: 360px; gap: 0.5rem; align-items: flex-start;">
+          <lc-number-input label="Guests" min="1" error-message="At least one guest."></lc-number-input>
+          <lc-button
+            size="sm"
+            @click=${(/** @type {Event} */ e) => {
+              const input = /** @type {HTMLElement & { errorMessage: string }} */ (/** @type {HTMLElement} */ (e.currentTarget).parentElement?.querySelector("lc-number-input"));
+              input.errorMessage = input.errorMessage ? "" : "At least one guest.";
+            }}
+          >Toggle the error</lc-button>
+        </div>
+      `,
+    },
   ],
 };
