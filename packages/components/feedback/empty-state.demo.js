@@ -25,6 +25,25 @@ export default {
       `,
     },
     {
+      title: "With art",
+      render: () => html`
+        <lc-empty-state title="No files here" description="Drop files in to share them with your team.">
+          <svg slot="art" width="96" height="72" viewBox="0 0 96 72" aria-hidden="true">
+            <rect x="8" y="16" width="80" height="48" rx="6" fill="none" stroke="currentColor" stroke-width="2" opacity="0.4"></rect>
+            <path d="M8 24h32l6-8h-32z" fill="currentColor" opacity="0.15"></path>
+            <circle cx="48" cy="40" r="10" fill="currentColor" opacity="0.25"></circle>
+          </svg>
+          <lc-button size="sm">Upload files</lc-button>
+        </lc-empty-state>
+      `,
+    },
+    {
+      title: "Heading level",
+      render: () => html`
+        <lc-empty-state icon="search" title="No matches" heading-level="3" description="Try a shorter search."></lc-empty-state>
+      `,
+    },
+    {
       title: "Sizes",
       render: () => html`
         <lc-flex direction="column" gap="lg">
