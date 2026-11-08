@@ -182,6 +182,15 @@
     box-shadow: var(--lc-search-dropdown-shadow, var(--shadow-md, 0 4px 6px -1px rgb(0 0 0 / 0.1)));
   }
 
+  &[inline] .search-wrapper {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  &[inline] :is(.search-icon, .search-clear) {
+    grid-row: 1 / 2;
+  }
+
   &[inline] .search-dropdown {
     position: static;
     margin-top: var(--spacing-sm, 0.5rem);

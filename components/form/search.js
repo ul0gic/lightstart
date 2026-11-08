@@ -158,8 +158,10 @@ export default defineComponent({
   },
 
   _escape() {
-    if (this.inline) return;
-    if (this.open) return void (this.open = false);
+    if (this.inline) {
+      this.open = false;
+      if (this.active >= 0) return void (this.active = -1);
+    } else if (this.open) return void (this.open = false);
     if (this.collapsible) this.collapse();
   },
 
