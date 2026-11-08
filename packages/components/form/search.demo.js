@@ -7,6 +7,24 @@ const docs = [
   { id: "4", title: "Select", group: "Form", description: "A dropdown of options" },
 ];
 
+const places = [
+  { id: "p1", title: "Pão de Açúcar", group: "Places", hint: "Urca" },
+  { id: "p2", title: "Jardim Botânico", group: "Places", hint: "Gávea" },
+  { id: "p3", title: "Parque Lage", group: "Places", hint: "Jardim Botânico" },
+  { id: "p4", title: "Confeitaria Colombo", group: "Places", hint: "Centro" },
+];
+
+/** @param {string} text */
+const fold = (text) => text.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+
+/** @param {Event & { detail: string }} e */
+const lookUp = (e) => {
+  const query = fold(e.detail.trim());
+  /** @type {HTMLElement & { docs: typeof places }} */ (e.target).docs = query
+    ? places.filter((p) => fold(`${p.title} ${p.hint}`).includes(query))
+    : [];
+};
+
 export default {
   description: "A search box that opens a result list under it, grouped and keyboard-navigable.",
   preview: () => html`
@@ -31,6 +49,12 @@ export default {
       title: "Grouped results",
       render: () => html`
         <lc-search placeholder="Search" .docs=${docs} .groups=${["Display", "Form"]} open></lc-search>
+      `,
+    },
+    {
+      title: "Remote: the host does the matching, so typing acucar finds Pão de Açúcar",
+      render: () => html`
+        <lc-search label="Places in Rio" placeholder="Search places" remote inline @search-input=${lookUp}></lc-search>
       `,
     },
   ],
