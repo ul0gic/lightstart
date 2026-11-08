@@ -517,6 +517,10 @@ export interface ToastQueue {
     warning(message: string, options?: ToastOptions): string;
     info(message: string, options?: ToastOptions): string;
     tap(id: string): void;
+    /** Stops the entry's timer, keeping what was left of it. */
+    pause(id: string): void;
+    /** Restarts a paused entry's timer with what was left of it. */
+    resume(id: string): void;
     hide(id: string): void;
     hideAll(): void;
 }

@@ -279,6 +279,8 @@ registerFormFieldRenderer("array", (field, value, onChange, html) => {
     onChange(next);
   };
   const full = field.max != null && items.length >= Number(field.max);
+  const rowName = (/** @type {string} */ key, /** @type {number} */ index) =>
+    lcText("lc-field", key, { label: field.label || lcText("lc-field", "item"), position: index + 1 });
 
   return html`
     <fieldset class="lc-form-list">
@@ -304,10 +306,13 @@ registerFormFieldRenderer("array", (field, value, onChange, html) => {
           </div>
           <div class="lc-form-list-actions">
             <lc-button size="xs" ghost icon="chevron-up" ?disabled=${index === 0}
+              title=${rowName("moveUp", index)} aria-label=${rowName("moveUp", index)}
               @click=${() => move(index, -1)}></lc-button>
             <lc-button size="xs" ghost icon="chevron-down" ?disabled=${index === items.length - 1}
+              title=${rowName("moveDown", index)} aria-label=${rowName("moveDown", index)}
               @click=${() => move(index, 1)}></lc-button>
             <lc-button size="xs" ghost icon="x"
+              title=${rowName("remove", index)} aria-label=${rowName("remove", index)}
               @click=${() => onChange(items.filter((_, i) => i !== index))}></lc-button>
           </div>
         </div>

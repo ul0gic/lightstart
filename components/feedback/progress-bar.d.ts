@@ -14,6 +14,8 @@ declare const _default: Omit<{
         showLabel: false;
         striped: false;
         animated: false;
+        label: string;
+        indeterminate: false;
     };
     style: boolean;
     getPercentage(): number;
@@ -33,6 +35,8 @@ declare const _default: Omit<{
         showLabel: false;
         striped: false;
         animated: false;
+        label: string;
+        indeterminate: false;
     } | undefined;
     events?: {} | undefined;
     mixins?: [] | undefined;

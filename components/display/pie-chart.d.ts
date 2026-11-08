@@ -10,6 +10,7 @@ declare const _default: Omit<{
         showLegend: true;
         centerLabel: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
         centerSub: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        label: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
     };
     _colors: string[];
     render(): import("@bootstrapp/light/html").TemplateResult;
@@ -31,6 +32,7 @@ declare const _default: Omit<{
         showLegend: true;
         centerLabel: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
         centerSub: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        label: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
     } | undefined;
     events?: {} | undefined;
     mixins?: [] | undefined;

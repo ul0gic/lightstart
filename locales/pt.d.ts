@@ -22,6 +22,8 @@ declare const _default: {
     "lc-clipboard": {
         copy: string;
         copied: string;
+        field: string;
+        manual: string;
     };
     "lc-code-block": {
         showAll: string;
@@ -52,6 +54,20 @@ declare const _default: {
     };
     "lc-chart": {
         noData: string;
+    };
+    "lc-bar-chart": {
+        name: string;
+    };
+    "lc-line-chart": {
+        name: string;
+    };
+    "lc-pie-chart": {
+        name: string;
+    };
+    "lc-sparkline": {
+        name: string;
+        summary: string;
+        point: string;
     };
     "lc-pull-indicator": {
         pull: string;
@@ -164,6 +180,9 @@ declare const _default: {
         many: string;
         value: string;
     };
+    "lc-progress-bar": {
+        label: string;
+    };
     "lc-darkmode": {
         label: string;
     };
@@ -181,6 +200,10 @@ declare const _default: {
     };
     "lc-field": {
         nothingYet: string;
+        item: string;
+        moveUp: string;
+        moveDown: string;
+        remove: string;
     };
     "lc-wizard": {
         next: string;

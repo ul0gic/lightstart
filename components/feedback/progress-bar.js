@@ -1,6 +1,7 @@
-import { html } from "@bootstrapp/light/html";
+import { html, nothing } from "@bootstrapp/light/html";
 import T from "@bootstrapp/light/types";
 import { defineComponent } from "@bootstrapp/light";
+import { lcText } from "../utils/text.js";
 
 export default defineComponent({
   tag: "lc-progress-bar",
@@ -18,6 +19,8 @@ export default defineComponent({
     showLabel: false,
     striped: false,
     animated: false,
+    label: "",
+    indeterminate: false,
   },
   style: true,
 
@@ -27,6 +30,7 @@ export default defineComponent({
 
   render() {
     const percentage = this.getPercentage();
+    const { indeterminate } = this;
 
     return html`
       <div part="lc-progress-bar-container" class="progress-container">
@@ -34,17 +38,18 @@ export default defineComponent({
           part="lc-progress-bar-bar"
           class="progress-bar"
           role="progressbar"
-          aria-valuenow="${this.value}"
-          aria-valuemin="0"
-          aria-valuemax="${this.max}"
+          aria-label=${this.label || lcText("lc-progress-bar", "label")}
+          aria-valuenow=${indeterminate ? nothing : this.value}
+          aria-valuemin=${indeterminate ? nothing : "0"}
+          aria-valuemax=${indeterminate ? nothing : this.max}
         >
           <div
             part="lc-progress-bar-fill"
             class="progress-fill"
-            style="width: ${percentage}%"
+            style=${indeterminate ? nothing : `width: ${percentage}%`}
           >
             ${
-              this.showLabel
+              this.showLabel && !indeterminate
                 ? html`<span part="lc-progress-bar-label" class="progress-label"
                   >${Math.round(percentage)}%</span
                 >`
@@ -76,6 +81,18 @@ export default defineComponent({
  * // With label
  * ```html
  * <lc-progress-bar value="75" showLabel></lc-progress-bar>
+ * ```
+ *
+ * @example
+ * // Named for screen readers (the name is not drawn)
+ * ```html
+ * <lc-progress-bar value="40" label="Uploading photos"></lc-progress-bar>
+ * ```
+ *
+ * @example
+ * // Indeterminate, when there is no value to show
+ * ```html
+ * <lc-progress-bar indeterminate label="Loading results"></lc-progress-bar>
  * ```
  *
  * @example

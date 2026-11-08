@@ -22,6 +22,7 @@ export default defineComponent({
 		smooth: true,
 		fit: false,
 		reference: /** @type {Prop<number | null>} */ (T.number({ defaultValue: null })),
+		label: T.string(),
 		_gradientId: T.string({ reactive: false, defaultValue: "" }),
 	},
 
@@ -53,6 +54,7 @@ export default defineComponent({
 		const linePath = this._createPath(points);
 		const areaPath = this._createAreaPath(points, padding.top + chartHeight);
 		const referenceY = reference === null ? null : padding.top + chartHeight - ((reference - minValue) / range) * chartHeight;
+		const name = this.label || lcText("lc-line-chart", "name");
 
 		return html`
 			<div class="line-chart line-chart-${this.variant}" style="height: ${this.height}px">
@@ -60,6 +62,8 @@ export default defineComponent({
 					class="line-chart-svg"
 					viewBox="0 0 ${viewWidth} ${viewHeight}"
 					preserveAspectRatio="none"
+					role="img"
+					aria-label=${name}
 				>
 					${this.showArea ? this._area(areaPath) : ""}
 					${referenceY === null ? "" : svg`<line class="line-reference" x1="${padding.left}" x2="${viewWidth - padding.right}" y1="${referenceY}" y2="${referenceY}" stroke-dasharray="4 3"><title>${reference}</title></line>`}
@@ -98,6 +102,14 @@ export default defineComponent({
 						>${this._formatLabel(p.label)}</text>
 					`) : ""}
 				</svg>
+			</div>
+			<div class="line-chart-data">
+				<table>
+					<caption>${name}</caption>
+					<tbody>
+						${this.data.map((item) => html`<tr><th scope="row">${item.label}</th><td>${item.value}</td></tr>`)}
+					</tbody>
+				</table>
 			</div>
 		`;
 	},

@@ -77,16 +77,18 @@ declare const _default: Omit<{
     props: {
         value: number;
         max: number;
+        step: number;
         clearable: false;
         change: import("@bootstrapp/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
     };
-    /** @param {KeyboardEvent} e @param {number} index */
-    _onKeydown(e: KeyboardEvent, index: number): void;
+    /** @param {KeyboardEvent} e @param {number} index @param {number} perStar */
+    _onKeydown(e: KeyboardEvent, index: number, perStar: number): void;
     render(): import("@bootstrapp/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         value: number;
         max: number;
+        step: number;
         clearable: false;
         change: import("@bootstrapp/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
     } | undefined;

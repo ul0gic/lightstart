@@ -23,6 +23,8 @@ export default {
   "lc-clipboard": {
     copy: "Copiar",
     copied: "Copiado",
+    field: "Texto para copiar",
+    manual: "No se pudo copiar. El texto está seleccionado; pulsa {keys} para copiarlo.",
   },
   "lc-code-block": {
     showAll: "Mostrar las {count} líneas",
@@ -53,6 +55,20 @@ export default {
   },
   "lc-chart": {
     noData: "Sin datos",
+  },
+  "lc-bar-chart": {
+    name: "Gráfico de barras",
+  },
+  "lc-line-chart": {
+    name: "Gráfico de líneas",
+  },
+  "lc-pie-chart": {
+    name: "Gráfico circular",
+  },
+  "lc-sparkline": {
+    name: "Minigráfico",
+    summary: "De {first} a {last}, {count} puntos",
+    point: "1 punto: {value}",
   },
   "lc-pull-indicator": {
     pull: "Desliza para actualizar",
@@ -165,6 +181,9 @@ export default {
     many: "{count} estrellas",
     value: "{value} de {max} estrellas",
   },
+  "lc-progress-bar": {
+    label: "Progreso",
+  },
   "lc-darkmode": {
     label: "Modo oscuro",
   },
@@ -182,6 +201,10 @@ export default {
   },
   "lc-field": {
     nothingYet: "Nada todavía.",
+    item: "elemento",
+    moveUp: "Subir {label} {position}",
+    moveDown: "Bajar {label} {position}",
+    remove: "Quitar {label} {position}",
   },
   "lc-wizard": {
     next: "Siguiente →",

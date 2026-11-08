@@ -28,6 +28,8 @@ export default {
   "lc-clipboard": {
     copy: "Copy",
     copied: "Copied",
+    field: "Text to copy",
+    manual: "Couldn't copy. The text is selected; press {keys} to copy it.",
   },
   "lc-code-block": {
     showAll: "Show all {count} lines",
@@ -58,6 +60,20 @@ export default {
   },
   "lc-chart": {
     noData: "No data",
+  },
+  "lc-bar-chart": {
+    name: "Bar chart",
+  },
+  "lc-line-chart": {
+    name: "Line chart",
+  },
+  "lc-pie-chart": {
+    name: "Pie chart",
+  },
+  "lc-sparkline": {
+    name: "Sparkline",
+    summary: "From {first} to {last}, {count} points",
+    point: "1 point: {value}",
   },
   "lc-pull-indicator": {
     pull: "Pull to refresh",
@@ -170,6 +186,9 @@ export default {
     many: "{count} stars",
     value: "{value} of {max} stars",
   },
+  "lc-progress-bar": {
+    label: "Progress",
+  },
   "lc-darkmode": {
     label: "Dark mode",
   },
@@ -187,6 +206,10 @@ export default {
   },
   "lc-field": {
     nothingYet: "Nothing yet.",
+    item: "item",
+    moveUp: "Move {label} {position} up",
+    moveDown: "Move {label} {position} down",
+    remove: "Remove {label} {position}",
   },
   "lc-wizard": {
     next: "Next \u2192",

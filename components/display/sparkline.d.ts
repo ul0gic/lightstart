@@ -11,6 +11,7 @@ declare const _default: Omit<{
         }>;
         showArea: false;
         smooth: true;
+        label: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
         _gradientId: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";
@@ -52,6 +53,7 @@ declare const _default: Omit<{
         }>;
         showArea: false;
         smooth: true;
+        label: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
         _gradientId: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";

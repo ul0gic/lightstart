@@ -16,7 +16,10 @@ declare const _default: Omit<{
         showAxis: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
         formatValue: Prop<((value: number) => string) | null>;
         callout: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        label: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
     };
+    /** @param {string} name */
+    _table(name: string): import("@bootstrapp/light/html").TemplateResult;
     /** @param {number} value */
     _format(value: number): string;
     /**
@@ -41,6 +44,7 @@ declare const _default: Omit<{
         showAxis: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
         formatValue: Prop<((value: number) => string) | null>;
         callout: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        label: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
     } | undefined;
     events?: {} | undefined;
     mixins?: [] | undefined;

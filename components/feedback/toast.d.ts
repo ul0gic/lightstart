@@ -12,6 +12,13 @@ declare const _default: Omit<{
     connected(): void;
     /** @param {string} variant */
     _getIcon(variant: string): string;
+    /**
+     * A toast waits while the pointer is over it or focus is inside it, and its
+     * timer runs again only once neither is.
+     * @param {MouseEvent | FocusEvent} event
+     * @param {string} id
+     */
+    _release(event: MouseEvent | FocusEvent, id: string): void;
     /** @param {ToastItem} toast */
     _body(toast: ToastItem): import("@bootstrapp/light/html").TemplateResult;
     render(): "" | import("@bootstrapp/light/html").TemplateResult;

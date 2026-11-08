@@ -13,6 +13,10 @@ declare const _default: Omit<{
         }>;
         timeout: number;
         copied: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        _manual: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+            readonly attribute: false;
+            readonly defaultValue: false;
+        }>;
         _timer: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
             readonly defaultValue: 0;
             readonly reactive: false;
@@ -22,6 +26,16 @@ declare const _default: Omit<{
         copy: import("@bootstrapp/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
     };
     _copy(): Promise<void>;
+    _copied(): void;
+    /** @param {{ changedProps: Map<string, unknown> }} arg */
+    updated({ changedProps }: {
+        changedProps: Map<string, unknown>;
+    }): void;
+    /** @param {KeyboardEvent} e */
+    _fieldKeydown(e: KeyboardEvent): void;
+    /** @param {ClipboardEvent} e */
+    _fieldCopy(e: ClipboardEvent): void;
+    _closeField(): void;
     disconnected(): void;
     render(): import("@bootstrapp/light/html").TemplateResult;
 }, "events"> & {
@@ -36,6 +50,10 @@ declare const _default: Omit<{
         }>;
         timeout: number;
         copied: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
+        _manual: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+            readonly attribute: false;
+            readonly defaultValue: false;
+        }>;
         _timer: import("@bootstrapp/light/types").DeclaredTypeDefinition<number, {
             readonly defaultValue: 0;
             readonly reactive: false;
