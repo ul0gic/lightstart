@@ -35,6 +35,10 @@ export default defineComponent({
     this.$emit("change", { value: this.value });
   },
 
+  focusInput() {
+    /** @type {HTMLInputElement | null} */ (this.querySelector("input"))?.focus();
+  },
+
   render() {
     const id = this.getInputId();
     const field = html`<input
