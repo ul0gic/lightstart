@@ -108,3 +108,57 @@ describe("lc-number-input with a label", () => {
     assert.equal(el.value, 5);
   });
 });
+
+describe("lc-number-input error message", () => {
+  /** @type {HTMLElement[]} */
+  const mounted = [];
+
+  before(() => {
+    define("lc-label", labelDef);
+    define("lc-number-input", numberInputDef);
+  });
+
+  after(() => {
+    for (const node of mounted) node.remove();
+  });
+
+  /** @param {Record<string, string>} attrs */
+  const mount = async (attrs) => {
+    const node = document.createElement("lc-number-input");
+    for (const [name, value] of Object.entries(attrs)) node.setAttribute(name, value);
+    document.body.appendChild(node);
+    mounted.push(node);
+    await rendered(node);
+    return node;
+  };
+
+  it("draws the message under the field and names it to the field", async () => {
+    const node = await mount({ "error-message": "At least one guest." });
+    const message = node.querySelector(".input-error");
+    assert.equal(message.textContent, "At least one guest.");
+    const input = node.querySelector("input");
+    assert.equal(input.getAttribute("aria-invalid"), "true");
+    assert.equal(document.getElementById(input.getAttribute("aria-describedby")), message, "aria-describedby resolves to the message");
+  });
+
+  it("clearing the message removes it and both attributes", async () => {
+    const node = await mount({ "error-message": "At least one guest." });
+    node.errorMessage = "";
+    await rendered(node);
+    assert.equal(node.querySelector(".input-error"), null);
+    const input = node.querySelector("input");
+    assert.equal(input.hasAttribute("aria-invalid"), false);
+    assert.equal(input.hasAttribute("aria-describedby"), false);
+    node.errorMessage = "Too many.";
+    await rendered(node);
+    assert.equal(node.querySelector(".input-error").textContent, "Too many.");
+    assert.equal(node.getAttribute("error-message"), "Too many.", "the property reflects, so the error style follows it");
+  });
+
+  it("a message carrying markup shows its characters", async () => {
+    const node = await mount({ "error-message": "<b>x</b>" });
+    const message = node.querySelector(".input-error");
+    assert.equal(message.textContent, "<b>x</b>");
+    assert.equal(message.querySelector("b"), null);
+  });
+});
