@@ -4,7 +4,7 @@
   .image-crop-frame {
     position: relative;
     width: 100%;
-    aspect-ratio: 1;
+    aspect-ratio: var(--lc-image-crop-aspect, 1);
     overflow: hidden;
     border-radius: var(--lc-image-crop-radius, 1rem);
     background: var(--lc-image-crop-background, color-mix(in srgb, var(--text-color, #000) 6%, transparent));
