@@ -64,4 +64,18 @@ describe("@lightstart/light - lc-sparkline area", () => {
     const el = await mount(PROPS);
     assert.equal(el.querySelector("linearGradient"), null);
   });
+
+  it("is an image named after its kind or its label, followed by a sentence only a screen reader sees", async () => {
+    const el = await mount(PROPS);
+    const svg = el.querySelector("svg");
+    assert.equal(svg.getAttribute("role"), "img");
+    assert.equal(svg.getAttribute("aria-label"), "Sparkline");
+    const summary = el.querySelector(".sparkline-summary");
+    assert.equal(summary.textContent, "From 3 to 5, 3 points");
+    const box = summary.getBoundingClientRect();
+    assert.ok(box.width <= 1 && box.height <= 1, "and takes no room");
+    const single = await mount({ data: [7], label: "Visits" });
+    assert.equal(single.querySelector("svg").getAttribute("aria-label"), "Visits");
+    assert.equal(single.querySelector(".sparkline-summary").textContent, "1 point: 7");
+  });
 });
