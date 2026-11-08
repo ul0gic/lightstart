@@ -70,3 +70,29 @@ describe("@lightstart/light - lc-input", () => {
     assert.equal(field(el).value, "Again");
   });
 });
+
+describe("@lightstart/light - lc-input focusInput", () => {
+  before(() => {
+    if (!customElements.get("lc-input")) View.define("lc-input", inputDef);
+  });
+
+  afterEach(async () => {
+    for (const el of mounted.splice(0)) el.remove();
+    await tick();
+  });
+
+  it("puts the caret in its field when a page shortcut asks, and what is typed lands there", async () => {
+    const el = /** @type {HTMLElement & { value: string, focusInput(): void }} */ (await mount({ placeholder: "Search docs..." }));
+    /** @param {KeyboardEvent} e */
+    const shortcut = (e) => {
+      if (e.key === "/") el.focusInput();
+    };
+    document.addEventListener("keydown", shortcut);
+    document.body.dispatchEvent(new KeyboardEvent("keydown", { key: "/", bubbles: true }));
+    document.removeEventListener("keydown", shortcut);
+    assert.equal(document.activeElement, field(el));
+    document.execCommand("insertText", false, "button");
+    assert.equal(field(el).value, "button");
+    assert.equal(el.value, "button");
+  });
+});
