@@ -61,6 +61,20 @@ export default {
   "lc-chart": {
     noData: "No data",
   },
+  "lc-bar-chart": {
+    name: "Bar chart",
+  },
+  "lc-line-chart": {
+    name: "Line chart",
+  },
+  "lc-pie-chart": {
+    name: "Pie chart",
+  },
+  "lc-sparkline": {
+    name: "Sparkline",
+    summary: "From {first} to {last}, {count} points",
+    point: "1 point: {value}",
+  },
   "lc-pull-indicator": {
     pull: "Pull to refresh",
     release: "Release to refresh",

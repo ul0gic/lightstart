@@ -24,6 +24,20 @@ export default defineComponent({
     showAxis: T.boolean(),
     formatValue: /** @type {Prop<((value: number) => string) | null>} */ (T.object({ attribute: false, defaultValue: null })),
     callout: T.string(),
+    label: T.string(),
+  },
+
+  /** @param {string} name */
+  _table(name) {
+    return html`
+      <div class="bar-chart-data">
+        <table>
+          <caption>${name}</caption>
+          <tbody>
+            ${this.data.map((item) => html`<tr><th scope="row">${item.label}</th><td>${item.value || 0}</td></tr>`)}
+          </tbody>
+        </table>
+      </div>`;
   },
 
   /** @param {number} value */
@@ -69,20 +83,24 @@ export default defineComponent({
     const max = Math.max(...this.data.map((d) => d.value || 0), 1);
     const chartClass = `bar-chart bar-chart-${this.variant}${this.horizontal ? " is-horizontal" : ""}`;
     const roomy = this.callout && !this.horizontal && this.data[this.currentIndex] ? " has-callout" : "";
+    const name = this.label || lcText("lc-bar-chart", "name");
 
     if (!this.showAxis || this.horizontal)
       return html`
         <div
           class=${chartClass + roomy}
           style="height:${this.horizontal ? "auto" : `${this.height}px`};gap:${this.gap}px"
+          role="img"
+          aria-label=${name}
         >
           ${this._bars(max, this.showLabels)}
-        </div>`;
+        </div>
+        ${this._table(name)}`;
 
     const top = niceMax(max);
     const ticks = [0, 1, 2, 3, 4].map((step) => ({ value: (top * step) / 4, at: step * 25 }));
     return html`
-      <div class="bar-chart-frame${roomy}" style="height:${this.height}px">
+      <div class="bar-chart-frame${roomy}" style="height:${this.height}px" role="img" aria-label=${name}>
         <div class="bar-axis">
           ${ticks.map((tick) => html`<span class="bar-tick" style="bottom:${tick.at}%">${this._format(tick.value)}</span>`)}
         </div>
@@ -97,7 +115,8 @@ export default defineComponent({
         ? html`<div class="bar-chart-labels" style="gap:${this.gap}px">
             ${this.data.map((item, i) => html`<span class="bar-label" data-state=${i === this.currentIndex ? "current" : ""} title=${item.label}>${item.label}</span>`)}
           </div>`
-        : ""}`;
+        : ""}
+      ${this._table(name)}`;
   },
 });
 
@@ -121,9 +140,12 @@ export default defineComponent({
  * default. `callout` is a bubble over the `currentIndex` bar. Both are for the
  * vertical chart.
  *
+ * The drawing is an image named by `label`, or "Bar chart" without one, and
+ * the data follows it as a table only a screen reader sees.
+ *
  * @example
  * ```html
- * <lc-bar-chart .data=${weeks} .currentIndex=${weeks.length - 1} height="130"></lc-bar-chart>
+ * <lc-bar-chart .data=${weeks} .currentIndex=${weeks.length - 1} height="130" label="Sessions per week"></lc-bar-chart>
  * ```
  *
  * @example With an axis and a callout
