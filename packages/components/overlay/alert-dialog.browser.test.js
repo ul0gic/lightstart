@@ -9,12 +9,13 @@ const tick = () => new Promise((resolve) => setTimeout(resolve, 0));
 /** @type {Element[]} */
 const mounted = [];
 
-/** @param {Record<string, string>} attrs */
-const mount = async (attrs) => {
-  const host = /** @type {HTMLElement & { show(): void, $requestUpdate(): Promise<void> }} */ (
+/** @param {Record<string, string>} attrs @param {string[]} [seen] */
+const mount = async (attrs, seen = []) => {
+  const host = /** @type {HTMLElement & { open: boolean, show(): void, close(): void, $requestUpdate(): Promise<void> }} */ (
     document.createElement("lc-alert-dialog")
   );
   for (const [name, value] of Object.entries(attrs)) host.setAttribute(name, value);
+  for (const type of ["open", "close", "confirm", "cancel"]) host.addEventListener(type, () => seen.push(type));
   document.body.append(host);
   mounted.push(host);
   await tick();
@@ -87,5 +88,61 @@ describe("@lightstart/light - lc-alert-dialog", () => {
     const both = await mount({ title: "Delete?", variant: "error", "confirm-variant": "danger" });
     assert.equal(both.host.querySelector(".alert-dialog-icon lc-icon")?.getAttribute("name"), "circle-x");
     assert.equal(both.host.querySelector(".confirm")?.classList.contains("danger"), true);
+  });
+
+  it("emits open once on show() and close once on close()", async () => {
+    const seen = [];
+    const { host } = await mount({ title: "Saved" }, seen);
+    host.close();
+    await host.$requestUpdate();
+    assert.deepEqual(seen, ["open", "close"]);
+  });
+
+  it("opens and closes once through the open property", async () => {
+    const seen = [];
+    const { host, dialog } = await mount({ title: "Saved" }, seen);
+    host.close();
+    await host.$requestUpdate();
+    seen.length = 0;
+
+    host.open = true;
+    await host.$requestUpdate();
+    assert.equal(dialog.open, true);
+    host.open = false;
+    await host.$requestUpdate();
+    assert.equal(dialog.open, false);
+    assert.deepEqual(seen, ["open", "close"]);
+  });
+
+  it("emits close then cancel once on Escape and on the cancel button", async () => {
+    const seen = [];
+    const { host, dialog } = await mount({ title: "Leave?", "show-cancel": "" }, seen);
+    dialog.dispatchEvent(new Event("cancel", { cancelable: true }));
+    await host.$requestUpdate();
+    assert.deepEqual(seen, ["open", "close", "cancel"]);
+
+    seen.length = 0;
+    host.show();
+    await host.$requestUpdate();
+    /** @type {HTMLButtonElement} */ (host.querySelector(".cancel")).click();
+    await host.$requestUpdate();
+    assert.deepEqual(seen, ["open", "close", "cancel"]);
+  });
+
+  it("emits close then confirm once on the confirm button", async () => {
+    const seen = [];
+    const { host } = await mount({ title: "Delete?", "show-cancel": "" }, seen);
+    /** @type {HTMLButtonElement} */ (host.querySelector(".confirm")).click();
+    await host.$requestUpdate();
+    assert.deepEqual(seen, ["open", "close", "confirm"]);
+  });
+
+  it("emits close then cancel once on a backdrop click when close-on-backdrop-click is set", async () => {
+    const seen = [];
+    const { host, dialog } = await mount({ title: "Notice", "close-on-backdrop-click": "" }, seen);
+    dialog.click();
+    await host.$requestUpdate();
+    assert.equal(dialog.open, false);
+    assert.deepEqual(seen, ["open", "close", "cancel"]);
   });
 });
