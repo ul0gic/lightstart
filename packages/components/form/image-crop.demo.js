@@ -39,6 +39,11 @@ export default {
       render: () => html`<div style="width:280px"><lc-image-crop shape="square" maxZoom="8" src=${sample()}></lc-image-crop></div>`,
     },
     {
+      title: "A 3:4 portrait frame: toBlob() answers 512 by 683",
+      description: "A frame of another shape takes shape=\"square\": the circle stretches to a pill over a taller frame.",
+      render: () => html`<div style="width:240px"><lc-image-crop shape="square" aspect="3:4" src=${sample()}></lc-image-crop></div>`,
+    },
+    {
       title: "Taking the square: a 512px WebP of at most 150KB",
       render: () => html`
         <div style="width:280px;display:flex;flex-direction:column;gap:12px">

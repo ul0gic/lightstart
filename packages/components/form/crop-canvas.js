@@ -1,7 +1,7 @@
 /**
  * The canvas half of cropping a picture: opening it as a bitmap the way a
  * camera meant it (EXIF orientation applied), no larger than a canvas can
- * safely hold, and encoding the chosen square as a small square image.
+ * safely hold, and encoding the chosen rect as a small image of its shape.
  *
  * WebP is asked for first. A browser that cannot encode it hands back a PNG
  * under the same call, which is far heavier, so one probe decides and JPEG,
@@ -61,13 +61,14 @@ export const loadPicture = async (source) => {
 export const releasePicture = (picture) => picture?.close();
 
 /**
- * @param {number} size
+ * @param {number} width
+ * @param {number} height
  * @returns {[HTMLCanvasElement, CanvasRenderingContext2D]}
  */
-const canvasOf = (size) => {
+const canvasOf = (width, height) => {
   const canvas = document.createElement("canvas");
-  canvas.width = size;
-  canvas.height = size;
+  canvas.width = width;
+  canvas.height = height;
   const context = /** @type {CanvasRenderingContext2D} */ (canvas.getContext("2d"));
   context.imageSmoothingEnabled = true;
   context.imageSmoothingQuality = "high";
@@ -75,8 +76,9 @@ const canvasOf = (size) => {
 };
 
 /**
- * Draws the square `rect` of `picture` onto a canvas `size` wide, shrinking
- * through halvings so a large square comes out smooth.
+ * Draws the rect `rect` of `picture` onto a canvas `size` wide and
+ * `size / aspect` tall, shrinking through halvings so a large rect comes out
+ * smooth.
  * @param {ImageBitmap} picture
  * @param {CropRect} rect
  * @param {CropBounds} bounds
@@ -89,28 +91,31 @@ export const drawSquare = (picture, rect, bounds, size, ground = "") => {
   let from = picture;
   let fromX = sx;
   let fromY = sy;
-  let fromSize = source;
+  let fromWidth = source;
+  let fromHeight = Math.round(source / bounds.aspect);
   const steps = source > size ? halvingSteps(source, size) : [size];
   /** @type {HTMLCanvasElement} */
   let canvas = document.createElement("canvas");
   for (const [i, step] of steps.entries()) {
-    const [next, context] = canvasOf(step);
+    const tall = Math.round(step / bounds.aspect);
+    const [next, context] = canvasOf(step, tall);
     if (ground && i === steps.length - 1) {
       context.fillStyle = ground;
-      context.fillRect(0, 0, step, step);
+      context.fillRect(0, 0, step, tall);
     }
-    context.drawImage(from, fromX, fromY, fromSize, fromSize, 0, 0, step, step);
+    context.drawImage(from, fromX, fromY, fromWidth, fromHeight, 0, 0, step, tall);
     from = next;
     fromX = 0;
     fromY = 0;
-    fromSize = step;
+    fromWidth = step;
+    fromHeight = tall;
     canvas = next;
   }
   return canvas;
 };
 
 /**
- * The square `rect` of `picture` as an image `size` pixels wide, at the best
+ * The rect `rect` of `picture` as an image `size` pixels wide, at the best
  * quality that comes in at `maxBytes` or under; null when none does.
  * @param {ImageBitmap} picture
  * @param {CropRect} rect
