@@ -96,3 +96,53 @@ describe("@lightstart/light - lc-input focusInput", () => {
     assert.equal(el.value, "button");
   });
 });
+
+describe("@lightstart/light - lc-input full width", () => {
+  before(() => {
+    if (!customElements.get("lc-input")) View.define("lc-input", inputDef);
+    const sheet = document.createElement("link");
+    sheet.rel = "stylesheet";
+    sheet.href = new URL("./input.css", import.meta.url).href;
+    document.head.append(sheet);
+    return new Promise((resolve) => { sheet.onload = () => resolve(undefined); sheet.onerror = () => resolve(undefined); });
+  });
+
+  afterEach(async () => {
+    for (const el of mounted.splice(0)) el.remove();
+    await tick();
+  });
+
+  /** @param {number} width @param {(el: HTMLElement & { fullWidth: boolean }) => void} [setup] */
+  const mountIn = async (width, setup) => {
+    const el = /** @type {HTMLElement & { fullWidth: boolean, $requestUpdate: () => Promise<unknown> }} */ (document.createElement("lc-input"));
+    setup?.(el);
+    const host = document.createElement("div");
+    host.style.width = `${width}px`;
+    host.append(el);
+    document.body.append(host);
+    mounted.push(host);
+    await tick();
+    await el.$requestUpdate();
+    return el;
+  };
+
+  it("fills its container when fullWidth is set", async () => {
+    const el = await mountIn(600, (el) => { el.fullWidth = true; });
+    assert.ok(el.hasAttribute("full-width"), "the prop reflects as full-width");
+    assert.ok(Math.abs(el.getBoundingClientRect().width - 600) <= 1, `measured ${el.getBoundingClientRect().width}`);
+  });
+
+  it("fills its container from the full-width attribute", async () => {
+    const el = await mountIn(600, (el) => el.setAttribute("full-width", ""));
+    assert.equal(el.fullWidth, true);
+    assert.ok(Math.abs(el.getBoundingClientRect().width - 600) <= 1, `measured ${el.getBoundingClientRect().width}`);
+  });
+
+  it("keeps its own width without it", async () => {
+    const el = await mountIn(600);
+    const wide = await mountIn(1000);
+    assert.equal(getComputedStyle(el).display, "inline-block");
+    assert.ok(el.getBoundingClientRect().width < 600, `measured ${el.getBoundingClientRect().width}`);
+    assert.equal(el.getBoundingClientRect().width, wide.getBoundingClientRect().width, "its width follows its content, not the container");
+  });
+});
