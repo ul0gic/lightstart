@@ -91,7 +91,7 @@
   .alert-dialog-message {
     margin: 0;
     font-size: var(--lc-alert-dialog-message-font-size, var(--text-sm, 0.875rem));
-    color: var(--lc-alert-dialog-message-color, var(--color-secondary));
+    color: var(--lc-alert-dialog-message-color, var(--text-secondary));
     line-height: var(--leading-normal, 1.5);
   }
 
@@ -128,6 +128,17 @@
       &:hover {
         background-color: var(--color-hover);
         border-color: var(--color-hover);
+      }
+
+      &.danger {
+        background-color: var(--color-danger);
+        border-color: var(--color-danger);
+        color: var(--color-on-danger, var(--color-inverse));
+
+        &:hover {
+          background-color: var(--color-danger);
+          opacity: 0.9;
+        }
       }
     }
   }

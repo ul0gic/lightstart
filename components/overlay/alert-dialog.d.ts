@@ -22,8 +22,13 @@ declare const _default: Omit<{
         variant: Prop<AlertVariant>;
         confirmText: string;
         cancelText: string;
+        confirmVariant: Prop<"default" | "danger">;
         showCancel: false;
         closeOnBackdropClick: false;
+        _dialogId: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+            readonly reactive: false;
+            readonly defaultValue: "";
+        }>;
     };
     events: {
         open: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
@@ -55,8 +60,13 @@ declare const _default: Omit<{
         variant: Prop<AlertVariant>;
         confirmText: string;
         cancelText: string;
+        confirmVariant: Prop<"default" | "danger">;
         showCancel: false;
         closeOnBackdropClick: false;
+        _dialogId: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, {
+            readonly reactive: false;
+            readonly defaultValue: "";
+        }>;
     } | undefined;
     events?: {
         open: import("@bootstrapp/light/types").DeclaredTypeDefinition<unknown, import("@bootstrapp/light/types").TypeOptionsOrDefault>;

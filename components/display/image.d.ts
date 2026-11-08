@@ -1,21 +1,29 @@
-export function createBase64Style(url: string, className: string): Promise<void>;
 declare const _default: Omit<{
     tag: string;
-    class: string;
     props: {
         src: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
         alt: string;
+        placeholder: string;
+        _loaded: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+            readonly attribute: false;
+            readonly defaultValue: false;
+        }>;
     };
-    connected(): void;
+    style: boolean;
     /** @param {{ changedProps: Map<string, unknown> }} arg */
-    updated({ changedProps }: {
+    willUpdate({ changedProps }: {
         changedProps: Map<string, unknown>;
     }): void;
-    applySrc(): void;
+    render(): import("@bootstrapp/light/html").TemplateResult;
 }, "events"> & {
     props?: {
         src: import("@bootstrapp/light/types").DeclaredTypeDefinition<string, import("@bootstrapp/light/types").TypeOptionsOrDefault>;
         alt: string;
+        placeholder: string;
+        _loaded: import("@bootstrapp/light/types").DeclaredTypeDefinition<boolean, {
+            readonly attribute: false;
+            readonly defaultValue: false;
+        }>;
     } | undefined;
     events?: {} | undefined;
     mixins?: [] | undefined;

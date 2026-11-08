@@ -12,6 +12,7 @@ export namespace colorScheme {
      * @param {boolean} on
      */
     function choose(on: boolean): void;
+    function follow(): void;
     function toggle(): void;
 }
 export default colorScheme;

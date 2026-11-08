@@ -10,7 +10,9 @@
  * stored value means the reader chose, so persisting an OS-derived one would
  * stop the page following the OS from the next visit on. The choice is stored
  * under `darkmode` as `"true"` or `"false"`, the literal a pre-paint script
- * can read before any module loads.
+ * can read before any module loads. `follow()` forgets the choice and hands
+ * the scheme back to the OS, whatever mode the page started with; a page that
+ * starts `"system"` goes on following it on later visits.
  */
 
 import { signal } from "../signals/index.js";
@@ -35,6 +37,14 @@ const apply = () => {
   globalThis.document?.documentElement.classList.toggle("dark", colorScheme.dark.value);
 };
 
+const trackSystem = () => {
+  stopFollowing ??= env.subscribe(({ prefersDark }) => {
+    if (!colorScheme.followsSystem || colorScheme.dark.value === prefersDark) return;
+    colorScheme.dark.value = prefersDark;
+    apply();
+  });
+};
+
 export const colorScheme = {
   dark: signal(false),
   followsSystem: false,
@@ -49,12 +59,7 @@ export const colorScheme = {
     colorScheme.followsSystem = mode === "system" && stored === null;
     colorScheme.dark.value = colorScheme.followsSystem ? env.prefersDark : stored === null ? mode === "dark" : stored;
     apply();
-    if (colorScheme.followsSystem)
-      stopFollowing = env.subscribe(({ prefersDark }) => {
-        if (!colorScheme.followsSystem || colorScheme.dark.value === prefersDark) return;
-        colorScheme.dark.value = prefersDark;
-        apply();
-      });
+    if (colorScheme.followsSystem) trackSystem();
   },
   /**
    * Record the reader's choice; from here the page stops following the OS,
@@ -66,6 +71,13 @@ export const colorScheme = {
     try { globalThis.localStorage?.setItem(STORAGE_KEY, String(on)); } catch {}
     colorScheme.dark.value = on;
     apply();
+  },
+  follow() {
+    try { globalThis.localStorage?.removeItem(STORAGE_KEY); } catch {}
+    colorScheme.followsSystem = true;
+    colorScheme.dark.value = env.prefersDark;
+    apply();
+    trackSystem();
   },
   toggle() {
     colorScheme.choose(!colorScheme.dark.value);

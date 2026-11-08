@@ -1,7 +1,8 @@
-import { html } from "@bootstrapp/light/html";
+import { html, nothing } from "@bootstrapp/light/html";
 import T from "@bootstrapp/light/types";
 import { defineComponent } from "@bootstrapp/light";
 import { lcText } from "../utils/text.js";
+import { uniqueId } from "../utils/id.js";
 import { withOverlay } from "@bootstrapp/light/components/mixins/overlay.js";
 
 /** @import { AlertVariant, Prop } from "../types.js" */
@@ -22,8 +23,12 @@ export default defineComponent({
     ),
     confirmText: "",
     cancelText: "",
+    confirmVariant: /** @type {Prop<"default" | "danger">} */ (
+      T.string({ defaultValue: "default", enum: ["default", "danger"] })
+    ),
     showCancel: false,
     closeOnBackdropClick: false,
+    _dialogId: T.string({ reactive: false, defaultValue: "" }),
   },
 
   events: {
@@ -37,6 +42,7 @@ export default defineComponent({
   _dialog: null,
 
   connected() {
+    this._dialogId ||= uniqueId("lc-alert-dialog-");
     this._dialog = this.querySelector("dialog");
     if (this.open)
       this.show();
@@ -99,10 +105,15 @@ export default defineComponent({
 
   render() {
     const icon = this._getIcon(this.variant);
+    const titleId = `${this._dialogId}-title`;
+    const messageId = `${this._dialogId}-message`;
 
     return html`
       <dialog
         class="alert-dialog"
+        role="alertdialog"
+        aria-labelledby=${this.title ? titleId : messageId}
+        aria-describedby=${this.title ? messageId : nothing}
         @click=${this.handleBackdropClick}
         @cancel=${(e) => {
           e.preventDefault();
@@ -121,9 +132,9 @@ export default defineComponent({
           }
 
           <div class="alert-dialog-body">
-            ${this.title ? html`<h3 class="alert-dialog-title">${this.title}</h3>` : ""}
+            ${this.title ? html`<h3 class="alert-dialog-title" id=${titleId}>${this.title}</h3>` : ""}
 
-            <div class="alert-dialog-message">
+            <div class="alert-dialog-message" id=${messageId}>
               ${this.message ? html`<p>${this.message}</p>` : ""}
               <slot></slot>
             </div>
@@ -133,13 +144,17 @@ export default defineComponent({
             ${
               this.showCancel
                 ? html`
-                  <button class="alert-dialog-button cancel" @click=${this.cancel}>
+                  <button class="alert-dialog-button cancel" autofocus @click=${this.cancel}>
                     ${this.cancelText || lcText("lc-alert-dialog", "cancel")}
                   </button>
                 `
                 : ""
             }
-            <button class="alert-dialog-button confirm" @click=${this.confirm}>
+            <button
+              class="alert-dialog-button confirm ${this.confirmVariant === "danger" ? "danger" : ""}"
+              ?autofocus=${!this.showCancel}
+              @click=${this.confirm}
+            >
               ${this.confirmText || lcText("lc-alert-dialog", "confirm")}
             </button>
           </div>
@@ -186,6 +201,18 @@ export default defineComponent({
  * <lc-button onclick="this.previousElementSibling.show()">
  *   Delete
  * </lc-button>
+ * ```
+ *
+ * @example
+ * // Destructive confirmation: a danger confirm button, no status icon
+ * ```html
+ * <lc-alert-dialog
+ *   title="Remove Member"
+ *   message="They will lose access to this workspace."
+ *   confirm-variant="danger"
+ *   show-cancel
+ *   confirm-text="Remove"
+ * ></lc-alert-dialog>
  * ```
  *
  * @example
