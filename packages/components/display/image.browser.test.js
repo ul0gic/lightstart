@@ -1,80 +1,86 @@
 import assert from "node:assert/strict";
-import { afterEach, describe, it } from "node:test";
-import { createBase64Style } from "./image.js";
+import { afterEach, before, describe, it } from "node:test";
+import View from "@lightstart/light";
 
-const PIXEL = Uint8Array.from(atob(
-  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
-), (c) => c.charCodeAt(0));
+const { default: imageDef } = await import("./image.js");
 
-const realFetch = globalThis.fetch;
+const PIXEL = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
+const PLACEHOLDER = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3Crect width='3' height='2' fill='gray'/%3E%3C/svg%3E";
 
-/** @type {string[]} */
-let asked = [];
-
-/**
- * Intercept only the probe urls. The harness posts console output through
- * fetch, and a console.error inside the code under test would otherwise be
- * counted as one of its own requests.
- *
- * @param {(url: string) => Response | Promise<Response>} handler
- */
-const stubFetch = (handler) => {
-  asked = [];
-  globalThis.fetch = /** @type {typeof fetch} */ (async (input, init) => {
-    const url = String(input);
-    if (!url.startsWith("/probe-")) return realFetch(input, init);
-    asked.push(url);
-    return handler(url);
-  });
+const tick = () => new Promise((resolve) => setTimeout(resolve, 0));
+/** @param {() => unknown} fn */
+const until = async (fn, ms = 3000) => {
+  const start = Date.now();
+  while (Date.now() - start < ms) {
+    if (fn()) return true;
+    await tick();
+  }
+  return false;
 };
 
-const ok = () => new Response(PIXEL, { status: 200, headers: { "content-type": "image/png" } });
-const fail = () => new Response("nope", { status: 500 });
+/** @type {Element[]} */
+const mounted = [];
 
-let seq = 0;
-const freshUrl = () => `/probe-${++seq}.png`;
+/** @param {Record<string, string>} [attrs] */
+const mount = async (attrs = {}) => {
+  const el = /** @type {HTMLElement & { src: string, $requestUpdate: () => Promise<unknown> }} */ (document.createElement("lc-image"));
+  for (const [name, value] of Object.entries(attrs)) el.setAttribute(name, value);
+  document.body.prepend(el);
+  mounted.push(el);
+  await tick();
+  await el.$requestUpdate();
+  return el;
+};
 
-describe("@lightstart/light - lc-image style cache", () => {
-  afterEach(() => {
-    globalThis.fetch = realFetch;
+/** @param {Element} el */
+const placeholderOf = (el) => el.querySelector('img[aria-hidden="true"]');
+
+describe("@lightstart/light - lc-image", () => {
+  before(() => {
+    if (!customElements.get("lc-image")) View.define("lc-image", imageDef);
   });
 
-  it("fetches a url once and reuses the result", async () => {
-    stubFetch(ok);
-    const url = freshUrl();
-
-    await createBase64Style(url, "a1");
-    await createBase64Style(url, "a2");
-
-    assert.deepEqual(asked, [url], "the second caller waited on the first fetch");
+  afterEach(async () => {
+    for (const el of mounted.splice(0)) el.remove();
+    await tick();
   });
 
-  it("tries again after a failure instead of caching it forever", async () => {
-    let attempts = 0;
-    stubFetch(() => (++attempts === 1 ? fail() : ok()));
-    const url = freshUrl();
-
-    await createBase64Style(url, "b1");
-    assert.equal(attempts, 1, "the first attempt failed");
-
-    await createBase64Style(url, "b2");
-    assert.equal(attempts, 2, "so the next caller asked again rather than inheriting the failure");
+  it("draws a real img that loads lazily and is named by alt, and asks nothing of a style-src policy", async () => {
+    const src = `/lc-image-pixel-${Date.now()}.gif`;
+    const el = await mount({ src, alt: "A single pixel" });
+    const img = el.querySelector("img");
+    assert.equal(img?.getAttribute("src"), src);
+    assert.equal(img?.getAttribute("alt"), "A single pixel");
+    assert.equal(img?.getAttribute("loading"), "lazy");
+    assert.equal(img?.getAttribute("decoding"), "async");
+    await tick();
+    assert.equal(document.getElementById("lc-image-styles"), null, "no style element is injected");
+    const fetched = performance.getEntriesByType("resource").filter((e) => e.name.endsWith(src)).map((e) => /** @type {PerformanceResourceTiming} */ (e).initiatorType);
+    assert.ok(!fetched.includes("fetch"), "the picture is never fetched by script");
   });
 
-  it("caches once it finally succeeds", async () => {
-    let attempts = 0;
-    stubFetch(() => (++attempts === 1 ? fail() : ok()));
-    const url = freshUrl();
-
-    await createBase64Style(url, "c1");
-    await createBase64Style(url, "c2");
-    await createBase64Style(url, "c3");
-
-    assert.equal(attempts, 2, "one failure, one success, then the cache answers");
+  it("with no alt the picture is decorative, and with no src there is nothing to draw", async () => {
+    const plain = await mount({ src: PIXEL });
+    assert.equal(plain.querySelector("img")?.getAttribute("alt"), "");
+    const empty = await mount();
+    assert.equal(empty.querySelector("img"), null);
   });
 
-  it("never rejects, so one broken image cannot take a render down", async () => {
-    stubFetch(fail);
-    await createBase64Style(freshUrl(), "d1");
+  it("keeps the placeholder while the picture cannot load, drops it once one does, and shows it again for a new source", async () => {
+    const el = await mount({ src: `/lc-image-missing-${Date.now()}.png`, placeholder: PLACEHOLDER, alt: "Missing" });
+    const ph = placeholderOf(el);
+    assert.equal(ph?.getAttribute("src"), PLACEHOLDER);
+    assert.equal(ph?.getAttribute("alt"), "");
+    assert.ok(await until(() => { const img = el.querySelector("img:not([aria-hidden])"); return img?.complete && img.naturalWidth === 0; }), "the missing picture failed");
+    await tick();
+    assert.ok(placeholderOf(el), "a failed picture keeps its placeholder");
+
+    el.src = PIXEL;
+    assert.ok(await until(() => placeholderOf(el) === null), "the placeholder goes once the picture has loaded");
+    assert.equal(el.querySelector("img")?.getAttribute("src"), PIXEL);
+
+    el.src = `/lc-image-missing-${Date.now()}-b.png`;
+    await el.$requestUpdate();
+    assert.ok(placeholderOf(el), "a new source starts from the placeholder again");
   });
 });
