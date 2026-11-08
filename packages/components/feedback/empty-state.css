@@ -16,6 +16,15 @@
     box-shadow: var(--lc-empty-state-shadow, none);
   }
 
+  & [part~=lc-empty-state-art] {
+    display: flex;
+    justify-content: center;
+
+    &:has(> slot:empty) {
+      display: none;
+    }
+  }
+
   & [part~=lc-empty-state-icon] {
     color: var(--lc-empty-state-icon-color, var(--color-surface-dark, currentColor));
     opacity: 0.5;
@@ -23,6 +32,8 @@
   }
 
   & [part~=lc-empty-state-title] {
+    margin: 0;
+    font-family: var(--lc-empty-state-title-font-family, var(--font-heading, var(--font-family-base)));
     font-size: var(--lc-empty-state-title-size, var(--text-base, 0.95rem));
     font-weight: var(--lc-empty-state-title-font-weight, var(--font-semibold, 600));
   }
