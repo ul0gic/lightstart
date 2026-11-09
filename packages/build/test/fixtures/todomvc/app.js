@@ -183,7 +183,7 @@ View.define("todo-app", {
                 </ul>
                 ${completedCount > 0
                   ? html`
-                      <button
+                      <button type="button"
                         class="clear-completed"
                         @click=${() => this.clearCompleted()}
                       >
@@ -249,7 +249,7 @@ View.define("todo-item", {
             @change=${() => this.$emit("toggle")}
           />
           <label @dblclick=${() => this.startEditing()}>${todo.title}</label>
-          <button class="destroy" @click=${() => this.$emit("destroy")}></button>
+          <button type="button" class="destroy" @click=${() => this.$emit("destroy")}></button>
         </div>
         ${editing
           ? html`
