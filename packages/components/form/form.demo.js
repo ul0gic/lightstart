@@ -19,6 +19,10 @@ const speakers = [
     ],
   },
 ];
+const helped = [
+  { name: "title", label: "Title", type: "text", required: true, help: "Shown on the schedule, so keep it short." },
+  { name: "kind", label: "Kind", type: "select", options: ["Talk", "Workshop", "Social"], help: "Workshops get a longer slot." },
+];
 const lineup = { speakers: [{ name: "Ada", topic: "Signals" }, { name: "Grace", topic: "Compilers" }, { name: "Linus", topic: "Patches" }] };
 
 export default {
@@ -47,6 +51,13 @@ export default {
       title: "With errors",
       render: () => html`
         <lc-form .fields=${fields} .data=${{}} .errors=${{ title: "A title is required" }}></lc-form>
+      `,
+    },
+    {
+      title: "With help text",
+      description: "A field's `help` is drawn under its control and named to it, so a screen reader reads it with the field.",
+      render: () => html`
+        <lc-form .fields=${helped} .data=${{}}></lc-form>
       `,
     },
     {
