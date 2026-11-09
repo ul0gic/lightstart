@@ -132,3 +132,67 @@ describe("@lightstart/light - lc-table", () => {
     assert.equal(el.querySelector("tbody tr")?.hasAttribute("tabindex"), false);
   });
 });
+
+describe("@lightstart/light - lc-table scroll region", () => {
+  before(async () => {
+    if (!customElements.get("lc-table")) View.define("lc-table", tableDef);
+    const style = document.createElement("style");
+    style.textContent = await (await fetch(new URL("./table.css", import.meta.url))).text();
+    document.head.append(style);
+  });
+
+  afterEach(() => { for (const el of mounted.splice(0)) el.remove(); });
+
+  const frame = () => new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
+  const columns = ["region", "january", "february", "march", "april", "may", "june", "july"];
+
+  /**
+   * @param {string[]} names
+   * @param {string} width
+   */
+  const mount = async (names, width) => {
+    const el = /** @type {HTMLElement & Record<string, unknown> & { $requestUpdate: () => Promise<unknown> }} */ (document.createElement("lc-table"));
+    el.columns = names;
+    el.rows = [Object.fromEntries(names.map((name) => [name, `${name} figure`]))];
+    el.style.width = width;
+    document.body.append(el);
+    mounted.push(el);
+    await tick();
+    await el.$requestUpdate();
+    return el;
+  };
+
+  /** @param {HTMLElement & { $requestUpdate: () => Promise<unknown> }} el */
+  const regionOf = async (el) => {
+    await frame();
+    await frame();
+    await el.$requestUpdate();
+    const scroll = el.querySelector(".lc-table-scroll");
+    return ["tabindex", "role", "aria-label"].map((name) => scroll?.getAttribute(name) ?? null);
+  };
+
+  it("leaves a table that fits out of the tab order, with no role or name", async () => {
+    const el = await mount(["name"], "300px");
+    assert.deepEqual(await regionOf(el), [null, null, null]);
+  });
+
+  it("makes an overflowing wrapper a region Tab reaches, named by label or the locale word, and drops it once it fits", async () => {
+    const el = await mount(columns, "200px");
+    assert.deepEqual(await regionOf(el), ["0", "region", "Scrollable table"]);
+
+    el.label = "Monthly totals";
+    assert.deepEqual(await regionOf(el), ["0", "region", "Monthly totals"]);
+
+    el.style.width = "4000px";
+    assert.deepEqual(await regionOf(el), [null, null, null]);
+  });
+
+  it("reads the overflow again when the columns change", async () => {
+    const el = await mount(["name"], "300px");
+    assert.deepEqual(await regionOf(el), [null, null, null]);
+    el.columns = columns;
+    assert.deepEqual(await regionOf(el), ["0", "region", "Scrollable table"]);
+    el.columns = ["name"];
+    assert.deepEqual(await regionOf(el), [null, null, null]);
+  });
+});
