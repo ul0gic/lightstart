@@ -77,5 +77,11 @@ export default {
         <lc-search label="Places" placeholder="Search places" remote inline @search-input=${lookUpSlowly}></lc-search>
       `,
     },
+    {
+      title: "As a form field with an error: the message is named to the field",
+      render: () => html`
+        <lc-search label="Component" placeholder="Search components" .docs=${docs} error-message="Choose a component."></lc-search>
+      `,
+    },
   ],
 };
