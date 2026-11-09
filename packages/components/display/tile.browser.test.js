@@ -62,6 +62,44 @@ describe("@lightstart/light - lc-tile", () => {
     assert.equal(el.hasAttribute("tabindex"), false, "and leaves the tab order");
   });
 
+  it("takes Enter, Space and a click on the host itself, and leaves a control inside it alone", async () => {
+    const el = await mount({ label: "Quote card", interactive: "" });
+    const action = document.createElement("button");
+    action.slot = "actions";
+    action.textContent = "More";
+    el.append(action);
+    await el.$requestUpdate();
+    /** @type {number} */
+    let selected = 0;
+    el.addEventListener("select", () => selected++);
+    const enter = new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true });
+    const space = new KeyboardEvent("keydown", { key: " ", bubbles: true, cancelable: true });
+    el.dispatchEvent(enter);
+    el.dispatchEvent(space);
+    el.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    assert.equal(selected, 3);
+    assert.equal(space.defaultPrevented, true, "Space does not scroll the page");
+    const key = new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true });
+    action.dispatchEvent(key);
+    action.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    assert.equal(selected, 3, "the action does not select the tile");
+    assert.equal(key.defaultPrevented, false, "and keeps its own Enter");
+  });
+
+  it("is no button without interactive, and a key or click on it does nothing", async () => {
+    const el = await mount({ label: "Quote card" });
+    /** @type {number} */
+    let selected = 0;
+    el.addEventListener("select", () => selected++);
+    const space = new KeyboardEvent("keydown", { key: " ", bubbles: true, cancelable: true });
+    el.dispatchEvent(space);
+    el.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    assert.equal(selected, 0);
+    assert.equal(space.defaultPrevented, false);
+    assert.equal(el.hasAttribute("role"), false);
+    assert.equal(el.hasAttribute("tabindex"), false);
+  });
+
   it("shimmers while loading and shows the icon when there is no image", async () => {
     const el = await mount({ icon: "music", label: "song.mp3", loading: "" });
     assert.ok(el.querySelector(".shimmer"));

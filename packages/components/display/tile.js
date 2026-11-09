@@ -27,6 +27,10 @@ export default defineComponent({
   connected() {
     this._reflectInteractive();
   },
+  firstUpdated() {
+    this.addEventListener("click", (e) => this._activate(e));
+    this.addEventListener("keydown", (e) => this._activate(e));
+  },
   /** @param {{ changedProps: Map<string, unknown> }} arg */
   updated({ changedProps }) {
     if (changedProps.has("interactive") || changedProps.has("disabled")) this._reflectInteractive();
@@ -40,9 +44,15 @@ export default defineComponent({
       this.removeAttribute("tabindex");
     }
   },
-  /** @param {Event} e */
+  /**
+   * The host is the button, so a click anywhere on the tile and a key on the
+   * focused host both land here. A control inside the tile keeps its own.
+   * @param {Event} e
+   */
   _activate(e) {
     if (!this.interactive || this.disabled) return;
+    const control = e.target instanceof Element ? e.target.closest("button, a, input, textarea, select") : null;
+    if (control && this.contains(control)) return;
     if (e instanceof KeyboardEvent) {
       if (e.key !== "Enter" && e.key !== " ") return;
       e.preventDefault();
@@ -58,14 +68,14 @@ export default defineComponent({
           ? html`<lc-icon part="lc-tile-icon" class="icon" name=${this.icon} size="lg"></lc-icon>`
           : nothing;
     return html`
-      <div part="lc-tile-media" class="media" style="--lc-tile-aspect: ${this.aspect === "auto" ? "auto" : this.aspect.replace("/", " / ")}" @click=${this._activate} @keydown=${this._activate}>
+      <div part="lc-tile-media" class="media" style="--lc-tile-aspect: ${this.aspect === "auto" ? "auto" : this.aspect.replace("/", " / ")}">
         <slot name="media">${media}</slot>
         <slot name="badge">${this.badge && !this.loading ? html`<span part="lc-tile-badge" class="badge">${this.badge}</span>` : nothing}</slot>
         <div part="lc-tile-actions" class="actions"><slot name="actions"></slot></div>
       </div>
       <slot name="footer">
         ${this.label || this.meta
-          ? html`<div part="lc-tile-footer" class="footer" @click=${this._activate}>${this.label ? html`<span part="lc-tile-label" class="label">${this.label}</span>` : nothing}${this.meta ? html`<span part="lc-tile-meta" class="meta">${this.meta}</span>` : nothing}</div>`
+          ? html`<div part="lc-tile-footer" class="footer">${this.label ? html`<span part="lc-tile-label" class="label">${this.label}</span>` : nothing}${this.meta ? html`<span part="lc-tile-meta" class="meta">${this.meta}</span>` : nothing}</div>`
           : nothing}
       </slot>
     `;
