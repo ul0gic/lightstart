@@ -155,3 +155,57 @@ describe("lc-select with a long list: the highlighted option stays visible", () 
       el.remove();
     });
 });
+
+describe("lc-select typed into: a combobox over a listbox", () => {
+  for (const [name, props] of [["searchable", {}], ["tags", { multiple: true }]])
+    it(`${name}: the field names its list, follows the highlight, and closes when focus leaves`, async () => {
+      const after = document.createElement("button");
+      const el = document.createElement("lc-select");
+      Object.assign(el, { label: "Language", searchable: true, value: props.multiple ? ["v1"] : "v1", options: Array.from({ length: 5 }, (_, i) => ({ value: `v${i}`, label: `Option ${i}` })), ...props });
+      document.body.append(el, after);
+      await waitFor(() => el.querySelector(".select-search-input"), "the field");
+      const field = el.querySelector(".select-search-input");
+      assert.equal(field.getAttribute("role"), "combobox");
+      assert.equal(field.getAttribute("aria-expanded"), "false");
+      assert.equal(field.hasAttribute("aria-controls"), false, "a closed field points at no list");
+
+      field.focus();
+      await waitFor(() => el.querySelector(".select-dropdown"), "the list");
+      const list = el.querySelector(".select-dropdown");
+      assert.equal(list.getAttribute("role"), "listbox");
+      assert.equal(list.getAttribute("aria-label"), "Language");
+      assert.equal(field.getAttribute("aria-expanded"), "true");
+      assert.equal(field.getAttribute("aria-controls"), list.id);
+      const options = [...list.querySelectorAll('[role="option"]')];
+      assert.equal(options.length, 5);
+      assert.equal(new Set(options.map((option) => option.id)).size, 5, "every option has its own id");
+      assert.deepEqual(options.map((option) => option.getAttribute("aria-selected")), ["false", "true", "false", "false", "false"]);
+
+      field.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }));
+      await waitFor(() => el.querySelector(".highlighted"), "a highlighted option");
+      assert.equal(field.getAttribute("aria-activedescendant"), el.querySelector(".highlighted").id);
+
+      after.focus();
+      await waitFor(() => !el.querySelector(".select-dropdown"), "the list to close when focus leaves");
+      assert.equal(field.getAttribute("aria-expanded"), "false");
+      assert.equal(field.hasAttribute("aria-activedescendant"), false);
+      el.remove();
+      after.remove();
+    });
+
+  it("no match: the list says so and is no listbox of options", async () => {
+    const el = document.createElement("lc-select");
+    Object.assign(el, { label: "Language", searchable: true, options: [{ value: "a", label: "Alpha" }] });
+    document.body.appendChild(el);
+    await waitFor(() => el.querySelector(".select-search-input"), "the field");
+    const field = el.querySelector(".select-search-input");
+    field.focus();
+    field.value = "zzz";
+    field.dispatchEvent(new InputEvent("input", { bubbles: true }));
+    await waitFor(() => el.querySelector(".select-no-results"), "the no-results row");
+    assert.equal(el.querySelector(".select-dropdown").hasAttribute("role"), false);
+    assert.equal(el.querySelectorAll('[role="option"]').length, 0);
+    assert.equal(field.hasAttribute("aria-activedescendant"), false);
+    el.remove();
+  });
+});
