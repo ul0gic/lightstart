@@ -147,13 +147,13 @@ export default defineComponent({
             ${
               this.showCancel
                 ? html`
-                  <button class="alert-dialog-button cancel" autofocus @click=${this.cancel}>
+                  <button type="button" class="alert-dialog-button cancel" autofocus @click=${this.cancel}>
                     ${this.cancelText || lcText("lc-alert-dialog", "cancel")}
                   </button>
                 `
                 : ""
             }
-            <button
+            <button type="button"
               class="alert-dialog-button confirm ${this.confirmVariant === "danger" ? "danger" : ""}"
               ?autofocus=${!this.showCancel}
               @click=${this.confirm}

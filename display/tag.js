@@ -63,7 +63,7 @@ export default defineComponent({
         ${
           this.closable
             ? html`
-              <button
+              <button type="button"
                 part="lc-tag-close"
                 class="tag-close"
                 @click=${this.handleClose}

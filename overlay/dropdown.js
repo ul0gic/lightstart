@@ -100,7 +100,7 @@ export default defineComponent({
         if (item.divider) return html`<hr />`;
         if (item.header != null) return html`<div class="dropdown-header">${item.header}</div>`;
         return html`
-          <button
+          <button type="button"
             class="lc-dropdown-item ${item.danger ? "is-danger" : ""}"
             role="menuitem"
             ?disabled=${item.disabled}

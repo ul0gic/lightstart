@@ -100,7 +100,7 @@ export default defineComponent({
       <dialog part="lc-modal-dialog" aria-labelledby=${labelledBy}>
         <div part="lc-modal-header" class="modal-header">
           <slot name="header" id=${this._titleId}></slot>
-          <button
+          <button type="button"
             part="lc-modal-close-button"
             class="modal-close-button"
             @click=${() => this.close()}

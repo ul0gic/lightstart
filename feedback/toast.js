@@ -91,7 +91,7 @@ export default defineComponent({
               ${
                 toast.closable
                   ? html`
-                    <button
+                    <button type="button"
                       part="lc-toast-close"
                       class="toast-close"
                       @click=${() => toasts.hide(toast.id)}

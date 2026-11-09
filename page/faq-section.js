@@ -59,7 +59,7 @@ export default defineComponent({
               const isOpen = openItems.includes(index);
               return html`
                 <div class="faq-item">
-                  <button
+                  <button type="button"
                     class="faq-toggle"
                     @click=${() => this._toggle(index)}
                   >

@@ -427,7 +427,7 @@ export default defineComponent({
       <div class="view-toggle" part="lc-calendar-view-toggle">
         ${["list", "week", "month"].map(
           (mode) => html`
-            <button
+            <button type="button"
               @click=${() => this.handleViewToggle(mode)}
               class="toggle-btn ${this.viewMode === mode ? "active" : ""}"
               part="lc-calendar-toggle-btn ${this.viewMode === mode ? "lc-calendar-toggle-btn-active" : ""}"
@@ -452,13 +452,13 @@ export default defineComponent({
       <div class="week-view" part="lc-calendar-week-view">
         ${this.showNavigation ? html`
           <div class="grid-header" part="lc-calendar-header">
-            <button @click=${() => this.handleWeekNav(-1)} class="nav-btn" part="lc-calendar-nav-btn lc-calendar-nav-btn-prev">
+            <button type="button" @click=${() => this.handleWeekNav(-1)} class="nav-btn" part="lc-calendar-nav-btn lc-calendar-nav-btn-prev">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                 <polyline points="15 18 9 12 15 6"></polyline>
               </svg>
             </button>
             <h2 class="month-label" part="lc-calendar-month-label lc-calendar-week-label">${range}</h2>
-            <button @click=${() => this.handleWeekNav(1)} class="nav-btn" part="lc-calendar-nav-btn lc-calendar-nav-btn-next">
+            <button type="button" @click=${() => this.handleWeekNav(1)} class="nav-btn" part="lc-calendar-nav-btn lc-calendar-nav-btn-next">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
@@ -589,7 +589,7 @@ export default defineComponent({
       <div class="grid-view" part="lc-calendar-grid-view">
         ${this.showNavigation ? html`
           <div class="grid-header" part="lc-calendar-header">
-            <button
+            <button type="button"
               @click=${() => this.handleNav(-1)}
               class="nav-btn"
               part="lc-calendar-nav-btn lc-calendar-nav-btn-prev"
@@ -599,7 +599,7 @@ export default defineComponent({
               </svg>
             </button>
             <h2 class="month-label" part="lc-calendar-month-label">${monthYearLabel}</h2>
-            <button
+            <button type="button"
               @click=${() => this.handleNav(1)}
               class="nav-btn"
               part="lc-calendar-nav-btn lc-calendar-nav-btn-next"
@@ -612,7 +612,7 @@ export default defineComponent({
         ` : null}
 
         ${this.showTodayButton ? html`
-          <button
+          <button type="button"
             @click=${this.handleTodayClick.bind(this)}
             class="today-btn"
             part="lc-calendar-today-btn"
@@ -698,7 +698,7 @@ export default defineComponent({
       <div class="day-panel" part="lc-calendar-panel" style="animation: slideUp 0.3s ease-out;">
         <div class="panel-header" part="lc-calendar-panel-header">
           <h3 class="panel-title" part="lc-calendar-panel-title">${dateLabel}</h3>
-          <button
+          <button type="button"
             @click=${this.handleClosePanel.bind(this)}
             class="panel-close"
             part="lc-calendar-panel-close"
