@@ -19,6 +19,7 @@ export default defineComponent({
   props: {
     placeholder: "",
     label: "",
+    errorMessage: T.string(),
     query: "",
     open: false,
     active: -1,
@@ -264,6 +265,8 @@ export default defineComponent({
           aria-controls=${listbox}
           aria-expanded=${shown ? "true" : "false"}
           aria-activedescendant=${shown && this.active >= 0 && this.active < this._flat().length ? `${this._id}-option-${this.active}` : nothing}
+          aria-invalid=${this.errorMessage ? "true" : nothing}
+          aria-describedby=${this.errorMessage ? `${this._id}-error` : nothing}
           @input=${(e) => this._onInput(e)}
           @focus=${() => this._onFocus()}
           @keydown=${(/** @type {KeyboardEvent} */ e) => this._onKeydown(e)}
@@ -315,7 +318,8 @@ export default defineComponent({
     const label = this.label && !collapsed
       ? html`<lc-label id="${this._id}-label" for="${this._id}-input" text=${this.label}></lc-label>`
       : nothing;
-    if (!this.leading && !this.trailing) return html`${label}${body}`;
+    const error = this.errorMessage ? html`<span class="search-error" id="${this._id}-error">${this.errorMessage}</span>` : nothing;
+    if (!this.leading && !this.trailing) return html`${label}${body}${error}`;
     return html`
       ${label}
       <lc-join class="search-join" @click=${collapsed ? () => this.expand() : null}>
@@ -323,6 +327,7 @@ export default defineComponent({
         ${body}
         ${this.trailing ? html`<div class="search-aside" part="lc-search-trailing"><div class="search-aside-body">${this.trailing()}</div></div>` : nothing}
       </lc-join>
+      ${error}
     `;
   },
 });
@@ -347,7 +352,8 @@ export default defineComponent({
  * The field is an ARIA combobox and the results a listbox of options, the
  * active one followed by `aria-activedescendant` while focus stays in the
  * field. `label` draws a visible label that names both; without one the
- * placeholder names the list.
+ * placeholder names the list. `errorMessage` draws a message under the field
+ * and names it to the field, which is then `aria-invalid`, as `lc-input` does.
  *
  * With `remote` the host does the matching: `docs` are its results for the
  * query, kept in the order given (still grouped by `group`) and capped at
