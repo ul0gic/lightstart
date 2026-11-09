@@ -89,8 +89,8 @@ export default defineComponent({
             ?disabled=${item.disabled}
             @click=${(/** @type {MouseEvent} */ e) => this._pickItem(item, e)}
           >
-            ${hasChecks ? html`<span class="lc-dropdown-check">${item.checked ? html`<lc-icon name="check" size="12"></lc-icon>` : ""}</span>` : ""}
-            ${item.icon ? html`<lc-icon name=${item.icon} size="13"></lc-icon>` : ""}
+            ${hasChecks ? html`<span class="lc-dropdown-check">${item.checked ? html`<lc-icon name="check"></lc-icon>` : ""}</span>` : ""}
+            ${item.icon ? html`<lc-icon name=${item.icon}></lc-icon>` : ""}
             <span class="lc-dropdown-label">${item.label}</span>
           </button>
         `;
@@ -123,6 +123,12 @@ export default defineComponent({
  * Keyboard while open: Escape closes (refocuses trigger), ArrowDown/ArrowUp
  * focus the first/last row then cycle, Enter activates the focused row.
  * Mouse interaction never shows a focus ring (focus-visible only).
+ *
+ * Structured rows size from `--lc-dropdown-item-font-size` (12px),
+ * `--lc-dropdown-item-padding` (5px 10px), `--lc-dropdown-item-gap` (7px),
+ * `--lc-dropdown-icon-size` (13px) and `--lc-dropdown-check-size` (12px);
+ * group headers from `--lc-dropdown-header-font-size` (9px). A theme sets
+ * them as `lc.dropdown["item-font-size"]` and so on.
  *
  * @example Structured items with a programmatic trigger
  * ```js

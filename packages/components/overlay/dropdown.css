@@ -120,7 +120,7 @@
   > .dropdown-header,
   > [role="heading"] {
     padding: 10px 10px 2px;
-    font-size: 9px;
+    font-size: var(--lc-dropdown-header-font-size, 9px);
     font-weight: var(--font-bold, 700);
     color: var(--lc-dropdown-text-muted, var(--text-muted, #a89984));
     text-transform: uppercase;
@@ -135,14 +135,14 @@
   > button.lc-dropdown-item {
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: var(--lc-dropdown-item-gap, 7px);
     width: 100%;
-    padding: 5px 10px;
+    padding: var(--lc-dropdown-item-padding, 5px 10px);
     border: none;
     background: transparent;
     text-align: left;
     font-family: inherit;
-    font-size: 12px;
+    font-size: var(--lc-dropdown-item-font-size, 12px);
     line-height: 1.4;
     color: var(--lc-dropdown-color, var(--text-color));
   }
@@ -163,12 +163,20 @@
     flex-shrink: 0;
   }
 
+  > button.lc-dropdown-item > lc-icon {
+    --lc-icon-size: var(--lc-dropdown-icon-size, 13px);
+  }
+
   .lc-dropdown-check {
-    width: 14px;
+    min-width: 14px;
     display: inline-flex;
     justify-content: center;
     flex-shrink: 0;
     color: var(--color-primary);
+
+    lc-icon {
+      --lc-icon-size: var(--lc-dropdown-check-size, 12px);
+    }
   }
 
   .lc-dropdown-label {
