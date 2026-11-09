@@ -2,9 +2,12 @@ import { html } from "@lightstart/light/html";
 import T from "@lightstart/light/types";
 import { defineComponent } from "@lightstart/light";
 import { withPopover } from "@lightstart/components/mixins/popover.js";
+import { overlays } from "./stack.js";
 import { nextIndex } from "../utils/roving.js";
 /** @import { Prop, DropdownItem } from "../types.ts" */
 /** @import { TemplateValue } from "@lightstart/light/html" */
+
+const KEYS = new Set(["ArrowDown", "ArrowUp", "Home", "End"]);
 
 export default defineComponent({
   mixins: [withPopover],
@@ -23,7 +26,13 @@ export default defineComponent({
 
     const onMenuClick = /** @type {EventListener} */ ((e) => this._handleMenuClick(/** @type {MouseEvent} */ (e)));
     const onKeydown = /** @type {EventListener} */ ((e) => this._handleKeydown(/** @type {KeyboardEvent} */ (e)));
-    const onOpen = () => document.addEventListener("keydown", onKeydown, true);
+    const onOpen = () => {
+      document.addEventListener("keydown", onKeydown, true);
+      const trigger = this._triggerElement;
+      if (!(trigger instanceof Element)) return;
+      trigger.setAttribute("aria-haspopup", "menu");
+      if (this.id) trigger.setAttribute("aria-controls", this.id);
+    };
     const onClose = () => document.removeEventListener("keydown", onKeydown, true);
 
     this.addEventListener("click", onMenuClick);
@@ -44,13 +53,21 @@ export default defineComponent({
   /** @param {KeyboardEvent} e */
   _handleKeydown(e) {
     if (!this.open) return;
-    if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+    if (e.key === "Tab") {
+      const trigger = this._triggerElement;
+      if (trigger instanceof HTMLElement && this.contains(document.activeElement)) trigger.focus();
+      this._close();
+      overlays.close(this._overlayId);
+      this._overlayId = null;
+      return;
+    }
+    if (!KEYS.has(e.key)) return;
     const rows = this._rows();
     if (!rows.length) return;
     e.preventDefault();
     const active = document.activeElement;
     const index = active instanceof HTMLElement ? rows.indexOf(active) : -1;
-    const next = nextIndex(e.key, index, rows.length, { wrap: true });
+    const next = nextIndex(e.key, index, rows.length, { wrap: true, homeEnd: true });
     if (next !== null) rows[next].focus();
   },
 
@@ -121,7 +138,10 @@ export default defineComponent({
  *   `{ divider: true }`, or `{ header: "Group label" }`
  *
  * Keyboard while open: Escape closes (refocuses trigger), ArrowDown/ArrowUp
- * focus the first/last row then cycle, Enter activates the focused row.
+ * focus the first/last row then cycle, Home/End focus the first/last row,
+ * Enter activates the focused row, Tab closes it and moves on from the
+ * trigger (Shift+Tab backwards). The trigger carries `aria-haspopup="menu"`,
+ * `aria-expanded`, and `aria-controls` when the menu has an id.
  * Mouse interaction never shows a focus ring (focus-visible only).
  *
  * Structured rows size from `--lc-dropdown-item-font-size` (12px),
