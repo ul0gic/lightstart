@@ -7,6 +7,25 @@ import { lcText } from "../utils/text.js";
 
 const IMAGE_URL = /\.(png|jpe?g|gif|webp|avif|svg)(\?|#|$)/i;
 
+/**
+ * Whether a file passes an `accept` list as the picker reads one: `.ext` by the
+ * end of its name, `type/*` by its MIME major type, anything else as its exact
+ * MIME type. The picker's "All files" lets anything through, and a drop never asks.
+ * @param {File} file
+ * @param {string | null} accept
+ */
+const accepts = (file, accept) => {
+  const tokens = (accept ?? "").split(",").map((token) => token.trim().toLowerCase()).filter(Boolean);
+  if (tokens.length === 0) return true;
+  const name = file.name.toLowerCase();
+  const type = file.type.toLowerCase();
+  return tokens.some((token) => {
+    if (token.startsWith(".")) return name.endsWith(token);
+    const [major, minor] = token.split("/");
+    return minor === "*" ? type.startsWith(`${major}/`) : type === token;
+  });
+};
+
 export default defineComponent({
   tag: "lc-file-upload",
   props: {
@@ -127,7 +146,14 @@ export default defineComponent({
     this.error = "";
 
     if (!this.multiple && files.length > 1) {
-      this.error = "Only one file is allowed";
+      this.error = lcText("lc-file-upload", "oneFile");
+      this.$emit("error", { error: this.error });
+      return;
+    }
+
+    const refused = files.find((f) => !accepts(f, this.accept));
+    if (refused) {
+      this.error = lcText("lc-file-upload", "notAccepted", { name: refused.name });
       this.$emit("error", { error: this.error });
       return;
     }
@@ -136,7 +162,7 @@ export default defineComponent({
     if (maxSize) {
       const oversized = files.find((f) => f.size > maxSize);
       if (oversized) {
-        this.error = `File ${oversized.name} exceeds maximum size of ${formatBytes(maxSize)}`;
+        this.error = lcText("lc-file-upload", "tooLarge", { name: oversized.name, size: formatBytes(maxSize) });
         this.$emit("error", { error: this.error });
         return;
       }
@@ -223,8 +249,7 @@ export default defineComponent({
             <p class="file-dropzone-text">
               <strong>${lcText("lc-file-upload", "click")}</strong> ${lcText("lc-file-upload", "drag")}
             </p>
-            ${this.accept ? html`<p class="file-dropzone-hint">${this.accept}</p>` : ""}
-            ${this.maxSize ? html`<p class="file-dropzone-hint">Max size: ${formatBytes(this.maxSize)}</p>` : ""}
+            ${this.maxSize ? html`<p class="file-dropzone-hint">${lcText("lc-file-upload", "maxSize", { size: formatBytes(this.maxSize) })}</p>` : ""}
           </div>
         </label>
 
@@ -253,6 +278,7 @@ export default defineComponent({
               <button
                 type="button"
                 class="file-remove"
+                aria-label=${lcText("lc-file-upload", "remove", { name })}
                 @click=${() => this.removeFile(index)}
                 ?disabled=${this.disabled}
               >
