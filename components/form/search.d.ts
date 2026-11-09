@@ -30,6 +30,7 @@ declare const _default: Omit<{
         active: number;
         limit: number;
         remote: false;
+        loading: false;
         docs: Prop<SearchDoc[]>;
         suggestions: Prop<SearchDoc[]>;
         groups: Prop<string[]>;
@@ -102,6 +103,7 @@ declare const _default: Omit<{
         active: number;
         limit: number;
         remote: false;
+        loading: false;
         docs: Prop<SearchDoc[]>;
         suggestions: Prop<SearchDoc[]>;
         groups: Prop<string[]>;

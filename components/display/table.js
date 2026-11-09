@@ -1,6 +1,7 @@
 import { html, nothing } from "@lightstart/light/html";
 import T from "@lightstart/light/types";
 import { defineComponent } from "@lightstart/light";
+import { withResize } from "@lightstart/light/components/mixins/resize.js";
 import { lcText } from "../utils/text.js";
 import { columnName } from "../utils/table-rows.js";
 
@@ -39,6 +40,7 @@ const renderCell = (value, column, row) => {
 };
 
 export default defineComponent({
+  mixins: [withResize("_syncOverflow")],
   tag: "lc-table",
   style: true,
   dataQuery: true,
@@ -51,6 +53,16 @@ export default defineComponent({
     sortBy: T.string(),
     sortDir: "asc",
     emptyMessage: "",
+    label: T.string(),
+    _overflow: T.boolean({ attribute: false, defaultValue: false }),
+  },
+  updated() {
+    this._syncOverflow();
+  },
+  _syncOverflow() {
+    const scroll = this.querySelector(".lc-table-scroll");
+    if (!scroll) return;
+    this._overflow = scroll.scrollWidth > scroll.clientWidth + 1 || scroll.scrollHeight > scroll.clientHeight + 1;
   },
   /** @param {string} name */
   handleSort(name) {
@@ -83,7 +95,8 @@ export default defineComponent({
   render() {
     const hasRows = this.rows.length > 0;
     return html`
-      <div class="lc-table-scroll">
+      <div class="lc-table-scroll" tabindex=${this._overflow ? "0" : nothing} role=${this._overflow ? "region" : nothing}
+        aria-label=${this._overflow ? this.label || lcText("lc-table", "region") : nothing}>
         <table>
           <thead>
             <tr>${this.columns.map((column) => this.renderHead(column))}</tr>

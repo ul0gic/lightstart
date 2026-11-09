@@ -85,6 +85,7 @@ declare const _default: Omit<{
         display: string;
         editing: false;
         errorMessage: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        ariaLabel: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
     };
     style: boolean;
     connected(): void;
@@ -123,6 +124,7 @@ declare const _default: Omit<{
         display: string;
         editing: false;
         errorMessage: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        ariaLabel: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
     } | undefined;
     events?: {} | undefined;
     mixins?: [{

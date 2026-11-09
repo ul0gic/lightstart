@@ -149,6 +149,13 @@ declare const _default: Omit<{
     /** @param {Event} e */
     _handleSubmit(e: Event): void;
     /**
+     * Enter in a field clicks the form's default button, and once a form holds
+     * two text fields the platform submits on Enter only when it has one. The
+     * key goes through `submit()`, so it is refused for the same reasons a call is.
+     * @param {Event} e
+     */
+    _submitImplicitly(e: Event): void;
+    /**
      * The control for one field: the form's own `typeHandlers` escape hatch
      * first, then whatever the registry holds for the field's `cmsType` or its
      * `type`, then a text input.

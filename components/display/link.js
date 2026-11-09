@@ -110,11 +110,6 @@ export default defineComponent({
       if (handled) return;
     }
 
-    if (!this.href && this.type === "submit") {
-      this.closest("form")?.requestSubmit();
-      return;
-    }
-
     if (this.confirmation && this.type !== "submit" && !globalThis.confirm(this.confirmation)) {
       e.preventDefault();
       e.stopPropagation();
@@ -158,7 +153,7 @@ export default defineComponent({
           aria-current=${this.active ? "true" : nothing}
           aria-disabled=${this.disabled ? "true" : "false"}
           ?disabled=${this.disabled}
-          type="button"
+          type=${this.type === "submit" ? "submit" : "button"}
           tabindex=${innerTabindex}
         >
           ${content}

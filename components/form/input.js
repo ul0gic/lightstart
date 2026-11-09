@@ -18,6 +18,7 @@ export default defineComponent({
     max: /** @type {Prop<string | number | null>} */ (T.any({ defaultValue: null })),
     step: /** @type {Prop<string | number | null>} */ (T.any({ defaultValue: null })),
     prefix: "",
+    hint: T.string(),
     errorMessage: T.string(),
   },
   style: true,
@@ -42,6 +43,7 @@ export default defineComponent({
 
   render() {
     const id = this.getInputId();
+    const describedBy = [this.hint && `${id}-hint`, this.errorMessage && `${id}-error`].filter(Boolean).join(" ");
     const field = html`<input
         id=${id}
         name=${this.name ?? id}
@@ -57,7 +59,7 @@ export default defineComponent({
         ?readonly=${this.readonly}
         ?required=${this.required}
         aria-invalid=${this.errorMessage ? "true" : nothing}
-        aria-describedby=${this.errorMessage ? `${id}-error` : nothing}
+        aria-describedby=${describedBy || nothing}
         @input=${this.handleInput.bind(this)}
         @change=${this.handleChange.bind(this)}
       />`;
@@ -66,6 +68,7 @@ export default defineComponent({
       ${this.prefix
         ? html`<span class="input-affixed" style=${`--lc-input-prefix-chars:${[...this.prefix].length}`}><span class="input-prefix" aria-hidden="true">${this.prefix}</span>${field}</span>`
         : field}
+      ${this.hint ? html`<span class="input-hint" id=${`${id}-hint`}>${this.hint}</span>` : ""}
       ${this.errorMessage ? html`<span class="input-error" id=${`${id}-error`}>${this.errorMessage}</span>` : ""}
     `;
   },
@@ -148,5 +151,11 @@ export default defineComponent({
  * // With an error message, drawn under the field and named to it
  * ```html
  * <lc-input label="Email" type="email" error-message="Enter an email address."></lc-input>
+ * ```
+ *
+ * @example
+ * // With a hint, drawn under the field and named to it, before any error message
+ * ```html
+ * <lc-input label="Username" hint="Letters and numbers only."></lc-input>
  * ```
  */

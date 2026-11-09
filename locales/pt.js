@@ -81,6 +81,7 @@ export default {
   },
   "lc-table": {
     noData: "Sem dados",
+    region: "Tabela rolável",
   },
   "lc-async": {
     failed: "Algo deu errado.",
@@ -129,6 +130,11 @@ export default {
   "lc-file-upload": {
     click: "Clique para enviar",
     drag: "ou arraste e solte",
+    oneFile: "Só é permitido um arquivo",
+    notAccepted: "O arquivo {name} não é de um tipo aceito",
+    tooLarge: "O arquivo {name} excede o tamanho máximo de {size}",
+    maxSize: "Tamanho máximo: {size}",
+    remove: "Remover {name}",
   },
   "lc-pricing-card": {
     popular: "Mais escolhido",
@@ -172,7 +178,8 @@ export default {
   },
   "lc-number-input": {
     lower: "Diminuir {label}",
-    edit: "Editar {label}",
+    edit: "{value}, editar {label}",
+    editEmpty: "Editar {label}",
     raise: "Aumentar {label}",
   },
   "lc-rating": {

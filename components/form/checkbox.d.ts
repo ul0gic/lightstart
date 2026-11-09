@@ -84,6 +84,7 @@ declare const _default: Omit<{
             readonly defaultValue: "square";
             readonly enum: readonly ["square", "round"];
         }>;
+        ariaLabel: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
     };
     style: boolean;
     connected(): void;
@@ -107,6 +108,7 @@ declare const _default: Omit<{
             readonly defaultValue: "square";
             readonly enum: readonly ["square", "round"];
         }>;
+        ariaLabel: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
     } | undefined;
     events?: {} | undefined;
     mixins?: [{

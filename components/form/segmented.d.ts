@@ -12,6 +12,7 @@ declare const _default: Omit<{
         }>;
         block: false;
         name: string;
+        label: string;
     };
     style: boolean;
     events: {
@@ -45,6 +46,7 @@ declare const _default: Omit<{
         }>;
         block: false;
         name: string;
+        label: string;
     } | undefined;
     events?: {
         change: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {

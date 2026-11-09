@@ -83,6 +83,7 @@ declare const _default: Omit<{
         max: Prop<string | number | null>;
         step: Prop<string | number | null>;
         prefix: string;
+        hint: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         errorMessage: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
     };
     style: boolean;
@@ -103,6 +104,7 @@ declare const _default: Omit<{
         max: Prop<string | number | null>;
         step: Prop<string | number | null>;
         prefix: string;
+        hint: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         errorMessage: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
     } | undefined;
     events?: {} | undefined;

@@ -485,6 +485,17 @@ export default defineComponent({
   },
 
   /**
+   * Enter in a field clicks the form's default button, and once a form holds
+   * two text fields the platform submits on Enter only when it has one. The
+   * key goes through `submit()`, so it is refused for the same reasons a call is.
+   * @param {Event} e
+   */
+  _submitImplicitly(e) {
+    e.preventDefault();
+    this.submit();
+  },
+
+  /**
    * The control for one field: the form's own `typeHandlers` escape hatch
    * first, then whatever the registry holds for the field's `cmsType` or its
    * `type`, then a text input.
@@ -520,11 +531,12 @@ export default defineComponent({
             <div class="form-field ${field.class || ""} ${error ? "has-error" : ""}">
               ${field.label && !drawsOwnLabel(field) ? html`<lc-label text=${field.label} ?required=${field.required}></lc-label>` : ""}
               ${this.renderField(ownsError ? { ...field, errorMessage: error ?? "" } : field, value)}
-              ${hint ? html`<small class="form-hint">${hint}</small>` : ""}
+              ${hint && !ownsError ? html`<small class="form-hint">${hint}</small>` : ""}
               ${error && !ownsError ? html`<span class="form-error">${error}</span>` : ""}
             </div>
           `;
         })}
+        <button type="submit" hidden @click=${this._submitImplicitly}></button>
       </form>
     `;
   },

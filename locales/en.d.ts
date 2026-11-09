@@ -80,6 +80,7 @@ declare const _default: {
     };
     "lc-table": {
         noData: string;
+        region: string;
     };
     "lc-async": {
         failed: string;
@@ -128,6 +129,11 @@ declare const _default: {
     "lc-file-upload": {
         click: string;
         drag: string;
+        oneFile: string;
+        notAccepted: string;
+        tooLarge: string;
+        maxSize: string;
+        remove: string;
     };
     "lc-pricing-card": {
         popular: string;
@@ -172,6 +178,7 @@ declare const _default: {
     "lc-number-input": {
         lower: string;
         edit: string;
+        editEmpty: string;
         raise: string;
     };
     "lc-rating": {

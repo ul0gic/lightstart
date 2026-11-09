@@ -24,6 +24,7 @@ export default defineComponent({
     display: "",
     editing: false,
     errorMessage: T.string(),
+    ariaLabel: T.string(),
   },
   style: true,
 
@@ -128,6 +129,8 @@ export default defineComponent({
     const current = this.value ?? 0;
     const atMin = this.min !== null && current <= this.min;
     const atMax = this.max !== null && current >= this.max;
+    const name = this.ariaLabel || this.label || "";
+    const reading = `${this.value ?? ""}${this.unit || ""}`;
     return html`
       <div class="stepper-row">
         ${this.label ? html`<span class="stepper-label">${this.label}</span>` : ""}
@@ -135,7 +138,7 @@ export default defineComponent({
           <button
             type="button"
             class="stepper-button"
-            aria-label=${lcText("lc-number-input", "lower", { label: this.label })}
+            aria-label=${lcText("lc-number-input", "lower", { label: name })}
             ?disabled=${this.disabled || this.readonly || atMin}
             @click=${this.decrement}
             @pointerdown=${() => this._holdStart(-1)}
@@ -166,7 +169,9 @@ export default defineComponent({
                     type="button"
                     class="stepper-read"
                     style="font:inherit;color:inherit;background:transparent;border:none;padding:0;cursor:text"
-                    aria-label=${lcText("lc-number-input", "edit", { label: this.label })}
+                    aria-label=${reading
+                      ? lcText("lc-number-input", "edit", { value: reading, label: name })
+                      : lcText("lc-number-input", "editEmpty", { label: name })}
                     ?disabled=${this.disabled || this.readonly}
                     @click=${() => this._startEdit()}
                   >${this.value}${this.unit ? html`<span class="stepper-unit">${this.unit}</span>` : ""}</button>`}
@@ -174,7 +179,7 @@ export default defineComponent({
           <button
             type="button"
             class="stepper-button"
-            aria-label=${lcText("lc-number-input", "raise", { label: this.label })}
+            aria-label=${lcText("lc-number-input", "raise", { label: name })}
             ?disabled=${this.disabled || this.readonly || atMax}
             @click=${this.increment}
             @pointerdown=${() => this._holdStart(1)}
@@ -192,6 +197,7 @@ export default defineComponent({
   render() {
     if (this.stepper) return this._renderStepper();
     const id = this.getInputId();
+    const name = this.ariaLabel || this.label || "";
     return html`
       ${this.label ? html`<lc-label for=${id} text=${this.label} ?required=${this.required}></lc-label>` : ""}
       <div class="number-input-wrapper">
@@ -207,6 +213,7 @@ export default defineComponent({
           ?disabled=${this.disabled}
           ?readonly=${this.readonly}
           ?required=${this.required}
+          aria-label=${this.ariaLabel || nothing}
           aria-invalid=${this.errorMessage ? "true" : nothing}
           aria-describedby=${this.errorMessage ? `${this.getInputId()}-error` : nothing}
           @input=${this.handleInput.bind(this)}
@@ -219,7 +226,7 @@ export default defineComponent({
                 <button
                   type="button"
                   class="number-input-button increment"
-                  aria-label=${lcText("lc-number-input", "raise", { label: this.label || "" })}
+                  aria-label=${lcText("lc-number-input", "raise", { label: name })}
                   ?disabled=${this.disabled || this.readonly}
                   @click=${this.increment}
                   tabindex="-1"
@@ -229,7 +236,7 @@ export default defineComponent({
                 <button
                   type="button"
                   class="number-input-button decrement"
-                  aria-label=${lcText("lc-number-input", "lower", { label: this.label || "" })}
+                  aria-label=${lcText("lc-number-input", "lower", { label: name })}
                   ?disabled=${this.disabled || this.readonly}
                   @click=${this.decrement}
                   tabindex="-1"
@@ -271,6 +278,12 @@ export default defineComponent({
  * ```html
  * <lc-number-input stepper size="lg" label="Reps" value="8" min="0"></lc-number-input>
  * <lc-number-input stepper label="Weight" unit="kg" value="60" step="2.5" min="0"></lc-number-input>
+ * ```
+ *
+ * @example
+ * // Named by aria-label, with no label drawn; the buttons take the same name
+ * ```html
+ * <lc-number-input stepper aria-label="Servings" value="2" min="1"></lc-number-input>
  * ```
  *
  * @example
