@@ -204,7 +204,7 @@
         return html`
           <h3>${this.name}</h3>
           <p>Counter: <strong>${this.counter}</strong></p>
-          <button @click=${() => this.increment()}>Increment Counter</button>
+          <button type="button" @click=${() => this.increment()}>Increment Counter</button>
         `;
       }
     });
