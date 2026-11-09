@@ -25,6 +25,20 @@ const lookUp = (e) => {
     : [];
 };
 
+/** @type {ReturnType<typeof setTimeout> | undefined} */
+let pending;
+
+/** @param {Event & { detail: string }} e */
+const lookUpSlowly = (e) => {
+  const search = /** @type {HTMLElement & { loading: boolean }} */ (e.target);
+  search.loading = true;
+  clearTimeout(pending);
+  pending = setTimeout(() => {
+    lookUp(e);
+    search.loading = false;
+  }, 600);
+};
+
 export default {
   description: "A search box that opens a result list under it, grouped and keyboard-navigable.",
   preview: () => html`
@@ -55,6 +69,12 @@ export default {
       title: "Remote: the host does the matching, so typing acucar finds Pão de Açúcar",
       render: () => html`
         <lc-search label="Places in Rio" placeholder="Search places" remote inline @search-input=${lookUp}></lc-search>
+      `,
+    },
+    {
+      title: "Remote and still looking: no empty body until the answer arrives",
+      render: () => html`
+        <lc-search label="Places" placeholder="Search places" remote inline @search-input=${lookUpSlowly}></lc-search>
       `,
     },
   ],
