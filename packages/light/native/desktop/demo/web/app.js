@@ -79,8 +79,8 @@ View.define("demo-page", {
       <p>ticks from the backend: <output>${this.ticks}</output></p>
       <p>ping: <output>${this.pong}</output></p>
       <p>
-        <button @click=${this.add}>add 100</button>
-        <button @click=${() => desktop.call.quit()}>quit</button>
+        <button type="button" @click=${this.add}>add 100</button>
+        <button type="button" @click=${() => desktop.call.quit()}>quit</button>
         <output>${this.sum}</output>
       </p>`;
   },
