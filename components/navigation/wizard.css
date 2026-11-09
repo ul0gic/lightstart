@@ -11,6 +11,13 @@
     justify-content: center;
     padding: 1rem;
     backdrop-filter: blur(4px);
+    animation: lc-wizard-fade-in 0.2s ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    & [part~=lc-wizard-overlay] {
+      animation: none;
+    }
   }
 
   & [part~=lc-wizard-container] {
@@ -117,5 +124,14 @@
     &:active {
       opacity: 0.8;
     }
+  }
+}
+
+@keyframes lc-wizard-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
