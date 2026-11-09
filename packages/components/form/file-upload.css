@@ -76,7 +76,7 @@
   .file-upload-error {
     padding: var(--spacing-sm, 0.5rem) var(--spacing-md, 0.75rem);
     background-color: var(--color-danger);
-    color: var(--color-danger);
+    color: var(--color-on-danger, var(--color-inverse));
     border-radius: var(--radius-md);
     font-size: var(--text-sm, 0.875rem);
   }
@@ -127,7 +127,7 @@
 
   .file-size {
     font-size: var(--text-xs, 0.75rem);
-    color: var(--text-muted);
+    color: var(--text-secondary);
   }
 
   .file-remove {
