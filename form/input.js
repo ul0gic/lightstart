@@ -46,7 +46,7 @@ export default defineComponent({
     const describedBy = [this.hint && `${id}-hint`, this.errorMessage && `${id}-error`].filter(Boolean).join(" ");
     const field = html`<input
         id=${id}
-        name=${this.name ?? id}
+        name=${this.name ?? (this.id || id)}
         class="input"
         type=${this.type}
         inputmode=${this.inputmode || nothing}

@@ -36,7 +36,7 @@ export const withFormControl = defineMixin({
   },
 
   getInputId() {
-    if (this.id) return this.id;
+    if (this.id) return `${this.id}-input`;
     if (!this._inputId) this._inputId = uniqueId(ID_PREFIX);
     return this._inputId;
   },
