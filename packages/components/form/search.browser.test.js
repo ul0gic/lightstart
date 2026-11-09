@@ -670,4 +670,30 @@ describe("@lightstart/light - lc-search", () => {
 
     assert.ok(icon.left > box.left + box.width / 2, "the icon sits in the right half");
   });
+
+  it("draws an error message under the field and names it to the field", async () => {
+    const el = await mount({ label: "Component" });
+    el.style.setProperty("--color-danger", "rgb(200, 0, 0)");
+    const input = el.querySelector("input");
+    assert.equal(input.hasAttribute("aria-invalid"), false);
+    assert.equal(input.hasAttribute("aria-describedby"), false);
+    assert.equal(el.querySelector(".search-error"), null);
+    const plain = getComputedStyle(input).borderColor;
+
+    el.setAttribute("error-message", "Choose a component.");
+    await el.$requestUpdate();
+    const message = el.querySelector(".search-error");
+    assert.equal(message.textContent.trim(), "Choose a component.");
+    assert.equal(input.getAttribute("aria-invalid"), "true");
+    assert.equal(input.getAttribute("aria-describedby"), message.id);
+    assert.equal(input.getAttribute("role"), "combobox", "it is still the combobox");
+    assert.notEqual(plain, "rgb(200, 0, 0)");
+    assert.equal(getComputedStyle(input).borderColor, "rgb(200, 0, 0)", "the border takes the danger colour");
+
+    el.removeAttribute("error-message");
+    await el.$requestUpdate();
+    assert.equal(el.querySelector(".search-error"), null);
+    assert.equal(input.hasAttribute("aria-invalid"), false);
+    assert.equal(input.hasAttribute("aria-describedby"), false);
+  });
 });
