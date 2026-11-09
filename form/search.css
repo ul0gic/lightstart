@@ -256,6 +256,18 @@
     font-size: var(--lc-search-empty-size, var(--text-sm, 0.875rem));
     color: var(--lc-search-empty-color, var(--text-muted));
   }
+
+  .search-error {
+    display: block;
+    color: var(--lc-search-error-color, var(--lc-input-error-color, color-mix(in srgb, var(--color-danger) 75%, var(--text-color))));
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+  }
+
+  &[error-message]:not([error-message=""]) {
+    --lc-search-border-color: var(--color-danger);
+    --lc-search-focus-border-color: var(--color-danger);
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {

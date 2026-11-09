@@ -25,6 +25,7 @@ declare const _default: Omit<{
     props: {
         placeholder: string;
         label: string;
+        errorMessage: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         query: string;
         open: false;
         active: number;
@@ -100,6 +101,7 @@ declare const _default: Omit<{
     props?: {
         placeholder: string;
         label: string;
+        errorMessage: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         query: string;
         open: false;
         active: number;

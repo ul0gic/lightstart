@@ -106,6 +106,8 @@ declare const _default: Omit<{
     formStateRestoreCallback(state: string): void;
     reportValidity(): boolean;
     connected(): void;
+    /** @param {FocusEvent} e */
+    _onFocusOut(e: FocusEvent): void;
     /**
      * The current value as the list it is when `multiple`, so every read has
      * one shape whichever mode the element is in.
@@ -132,6 +134,12 @@ declare const _default: Omit<{
     onClickOutside(): void;
     /** @returns {string} */
     readonly selectId: string;
+    /** @returns {string} */
+    readonly listId: string;
+    /** @param {number} index @returns {string} */
+    _optionId(index: number): string;
+    /** @param {SelectOption[]} filtered @returns {string} */
+    _activeId(filtered: SelectOption[]): string;
     /**
      * @param {SelectOption} option
      * @returns {string}

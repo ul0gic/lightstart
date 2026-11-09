@@ -57,6 +57,16 @@ export default defineComponent({
   },
   connected() {
     this._defaultValue = this.multiple ? [...this.selected] : String(this.value ?? "");
+    const onFocusOut = /** @type {EventListener} */ ((e) => this._onFocusOut(/** @type {FocusEvent} */ (e)));
+    this.addEventListener("focusout", onFocusOut);
+    this.$own(() => this.removeEventListener("focusout", onFocusOut));
+  },
+
+  /** @param {FocusEvent} e */
+  _onFocusOut(e) {
+    if (!this.open || this.contains(/** @type {Node | null} */ (e.relatedTarget))) return;
+    this.open = false;
+    this.search = "";
   },
 
   /**
@@ -108,6 +118,21 @@ export default defineComponent({
   /** @returns {string} */
   get selectId() {
     return this.getInputId();
+  },
+
+  /** @returns {string} */
+  get listId() {
+    return `${this.selectId}-list`;
+  },
+
+  /** @param {number} index @returns {string} */
+  _optionId(index) {
+    return `${this.selectId}-option-${index}`;
+  },
+
+  /** @param {SelectOption[]} filtered @returns {string} */
+  _activeId(filtered) {
+    return this.open && filtered[this.highlightIndex] ? this._optionId(this.highlightIndex) : "";
   },
 
   /**
@@ -302,6 +327,11 @@ export default defineComponent({
           ?disabled=${disabled}
           placeholder=${placeholder || lcText("lc-select", "add")}
           autocomplete="off"
+          role="combobox"
+          aria-autocomplete="list"
+          aria-expanded=${this.open ? "true" : "false"}
+          aria-controls=${this.open ? this.listId : nothing}
+          aria-activedescendant=${this._activeId(filtered) || nothing}
           @focus=${this._onSearchFocus}
           @input=${this._onSearchInput}
           @change=${(/** @type {Event} */ e) => e.stopPropagation()}
@@ -309,13 +339,14 @@ export default defineComponent({
           class="select-search-input select-tags-input"
         />`}
         ${this.open && !full ? html`
-          <div class="select-dropdown" role="listbox" aria-label=${label || nothing} tabindex="-1">
+          <div class="select-dropdown" id=${this.listId} role=${filtered.length ? "listbox" : nothing} aria-label=${filtered.length && label ? label : nothing} tabindex="-1">
             ${filtered.length === 0
               ? html`<div class="select-option select-no-results">${lcText("lc-select", "noResults")}</div>`
               : filtered.map((option, i) => {
                 const leading = this._getLeading(option);
                 return html`<div
                   role="option"
+                  id=${this._optionId(i)}
                   data-value=${String(this._getValue(option))}
                   aria-selected=${this.isSelected(this._getValue(option)) ? "true" : "false"}
                   class="select-option ${i === this.highlightIndex ? "highlighted" : ""} ${this.isSelected(this._getValue(option)) ? "selected" : ""}"
@@ -344,6 +375,11 @@ export default defineComponent({
           ?disabled=${disabled}
           placeholder=${placeholder || lcText("lc-select", "search")}
           autocomplete="off"
+          role="combobox"
+          aria-autocomplete="list"
+          aria-expanded=${this.open ? "true" : "false"}
+          aria-controls=${this.open ? this.listId : nothing}
+          aria-activedescendant=${this._activeId(filtered) || nothing}
           @focus=${this._onSearchFocus}
           @input=${this._onSearchInput}
           @change=${(e) => e.stopPropagation()}
@@ -353,12 +389,15 @@ export default defineComponent({
         <lc-icon name="chevron-down" class="select-arrow select-arrow-toggle"
           @mousedown=${this._toggleDropdown}></lc-icon>
         ${this.open ? html`
-          <div class="select-dropdown" tabindex="-1">
+          <div class="select-dropdown" id=${this.listId} role=${filtered.length ? "listbox" : nothing} aria-label=${filtered.length && label ? label : nothing} tabindex="-1">
             ${filtered.length === 0
               ? html`<div class="select-option select-no-results">${lcText("lc-select", "noResults")}</div>`
               : filtered.map(
                   (option, i) => html`
                 <div
+                  role="option"
+                  id=${this._optionId(i)}
+                  aria-selected=${this.isSelected(this._getValue(option)) ? "true" : "false"}
                   class="select-option ${i === this.highlightIndex ? "highlighted" : ""} ${this.isSelected(this._getValue(option)) ? "selected" : ""}"
                   @mousedown=${(e) => {
                     e.preventDefault();
@@ -438,6 +477,10 @@ export default defineComponent({
  * the last off) and at most `max` of them, counted beside the label. An option
  * may carry `leading`, a flag or an emoji drawn before its label everywhere it
  * shows.
+ *
+ * A field you type into is an ARIA combobox and its list a listbox of options,
+ * the highlighted one followed by `aria-activedescendant` while focus stays in
+ * the field; the list closes when focus leaves the component.
  *
  * @example Basic Select
  * ```html
