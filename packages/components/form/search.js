@@ -24,6 +24,7 @@ export default defineComponent({
     active: -1,
     limit: 8,
     remote: false,
+    loading: false,
     docs: /** @type {Prop<SearchDoc[]>} */ (T.array({ defaultValue: [], attribute: false })),
     suggestions: /** @type {Prop<SearchDoc[]>} */ (T.array({ defaultValue: [], attribute: false })),
     groups: /** @type {Prop<string[]>} */ (T.array({ defaultValue: [] })),
@@ -74,7 +75,7 @@ export default defineComponent({
 
   _showPanel() {
     if (this.inline) return !!this.query.trim() || this._flat().length > 0;
-    return this.open && (!!this.query.trim() || this._flat().length > 0);
+    return this.open && (this._flat().length > 0 || (!!this.query.trim() && !this.loading));
   },
 
   focusInput() {
@@ -277,9 +278,10 @@ export default defineComponent({
               role=${grouped.length ? "listbox" : nothing}
               aria-labelledby=${grouped.length && this.label ? `${this._id}-label` : nothing}
               aria-label=${grouped.length && !this.label ? placeholder : nothing}
+              aria-busy=${this.loading ? "true" : nothing}
             >
               ${grouped.length === 0
-                ? html`<div class="search-empty">${lcText("lc-search", "noResults")}</div>`
+                ? this.loading ? nothing : html`<div class="search-empty">${lcText("lc-search", "noResults")}</div>`
                 : grouped.map(
                     (g) => html`
                       <div class="search-group-label">${g.group}</div>
@@ -339,6 +341,8 @@ export default defineComponent({
  * With `remote` the host does the matching: `docs` are its results for the
  * query, kept in the order given (still grouped by `group`) and capped at
  * `limit` overall, and a `search-input` listener is where to fetch the next set.
+ * While `loading` is set the list keeps the results it has, draws no empty
+ * body, and carries `aria-busy`; a dropdown with nothing yet to show stays shut.
  *
  * `leading` and `trailing` put content beside the field, at which point the
  * component wraps itself in a `lc-join` and the three read as one control.
@@ -387,7 +391,11 @@ export default defineComponent({
  * html`<lc-search
  *   remote
  *   .docs=${results}
- *   @search-input=${async (e) => { e.target.docs = await fetchResults(e.detail); }}
+ *   @search-input=${async (e) => {
+ *     e.target.loading = true;
+ *     e.target.docs = await fetchResults(e.detail);
+ *     e.target.loading = false;
+ *   }}
  * ></lc-search>`
  * ```
  *
