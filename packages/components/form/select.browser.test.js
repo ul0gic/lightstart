@@ -117,3 +117,41 @@ describe("lc-select typed into, many at once: the picks as tags", () => {
     assert.deepEqual(el.value, []);
   });
 });
+
+describe("lc-select with its list open: one Tab stop", () => {
+  for (const [name, props] of [["searchable", {}], ["tags", { multiple: true }]])
+    it(`${name}: the scrolling list is not a Tab stop, and focus stays on the field`, async () => {
+      const el = document.createElement("lc-select");
+      Object.assign(el, { label: "Language", searchable: true, options: Array.from({ length: 30 }, (_, i) => ({ value: `v${i}`, label: `Option ${i}` })), ...props });
+      document.body.appendChild(el);
+      await waitFor(() => el.querySelector(".select-search-input"), "the field");
+      const field = el.querySelector(".select-search-input");
+      field.focus();
+      await waitFor(() => el.querySelector(".select-dropdown"), "the list");
+      const list = el.querySelector(".select-dropdown");
+      assert.ok(list.scrollHeight > list.clientHeight, "the list scrolls, which Chromium makes a Tab stop unless told otherwise");
+      assert.equal(list.getAttribute("tabindex"), "-1");
+      assert.equal(document.activeElement, field);
+      el.remove();
+    });
+});
+
+describe("lc-select with a long list: the highlighted option stays visible", () => {
+  for (const [name, props] of [["searchable", {}], ["tags", { multiple: true }]])
+    it(`${name}: ArrowDown to the last option scrolls it into the list`, async () => {
+      const el = document.createElement("lc-select");
+      Object.assign(el, { label: "Language", searchable: true, options: Array.from({ length: 30 }, (_, i) => ({ value: `v${i}`, label: `Option ${i}` })), ...props });
+      document.body.appendChild(el);
+      await waitFor(() => el.querySelector(".select-search-input"), "the field");
+      const field = el.querySelector(".select-search-input");
+      field.focus();
+      await waitFor(() => el.querySelector(".select-dropdown"), "the list");
+      for (let i = 0; i < 30; i++) field.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }));
+      await waitFor(() => el.querySelector(".highlighted")?.textContent.trim() === "Option 29", "the last option highlighted");
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      const list = el.querySelector(".select-dropdown").getBoundingClientRect();
+      const row = el.querySelector(".highlighted").getBoundingClientRect();
+      assert.ok(row.top >= list.top - 1 && row.bottom <= list.bottom + 1, `row ${row.top}-${row.bottom} lies within list ${list.top}-${list.bottom}`);
+      el.remove();
+    });
+});
