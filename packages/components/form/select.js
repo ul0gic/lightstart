@@ -52,12 +52,15 @@ export default defineComponent({
 
   /**
    * An open list is scrolled into view, clear of whatever the page keeps over
-   * its bottom edge (`--lc-select-dropdown-scroll-margin`, a bar or a dock).
+   * its bottom edge (`--lc-select-dropdown-scroll-margin`, a bar or a dock),
+   * and the highlighted option is scrolled into the list.
    * @param {{ changedProps: Map<string, unknown> }} detail
    */
   updated({ changedProps }) {
-    if (!changedProps.has("open") || !this.open) return;
-    /** @type {HTMLElement | null} */ (this.querySelector(".select-dropdown"))?.scrollIntoView?.({ block: "nearest" });
+    if (!this.open) return;
+    if (changedProps.has("open")) /** @type {HTMLElement | null} */ (this.querySelector(".select-dropdown"))?.scrollIntoView?.({ block: "nearest" });
+    if (changedProps.has("open") || changedProps.has("highlightIndex") || changedProps.has("search"))
+      /** @type {HTMLElement | null} */ (this.querySelector(".select-dropdown .highlighted"))?.scrollIntoView?.({ block: "nearest" });
   },
 
   onClickOutside() {
@@ -278,7 +281,7 @@ export default defineComponent({
           class="select-search-input select-tags-input"
         />`}
         ${this.open && !full ? html`
-          <div class="select-dropdown" role="listbox">
+          <div class="select-dropdown" role="listbox" aria-label=${label || nothing} tabindex="-1">
             ${filtered.length === 0
               ? html`<div class="select-option select-no-results">${lcText("lc-select", "noResults")}</div>`
               : filtered.map((option, i) => {
@@ -323,7 +326,7 @@ export default defineComponent({
         <lc-icon name="chevron-down" class="select-arrow select-arrow-toggle"
           @mousedown=${this._toggleDropdown}></lc-icon>
         ${this.open ? html`
-          <div class="select-dropdown">
+          <div class="select-dropdown" tabindex="-1">
             ${filtered.length === 0
               ? html`<div class="select-option select-no-results">${lcText("lc-select", "noResults")}</div>`
               : filtered.map(
