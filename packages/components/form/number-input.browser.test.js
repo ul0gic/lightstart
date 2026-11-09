@@ -162,3 +162,56 @@ describe("lc-number-input error message", () => {
     assert.equal(message.querySelector("b"), null);
   });
 });
+
+describe("lc-number-input named by aria-label", () => {
+  /** @type {HTMLElement[]} */
+  const mounted = [];
+
+  before(() => {
+    define("lc-label", labelDef);
+    define("lc-number-input", numberInputDef);
+  });
+
+  after(() => {
+    for (const node of mounted) node.remove();
+  });
+
+  /** @param {Record<string, string>} attrs */
+  const mount = async (attrs) => {
+    const node = document.createElement("lc-number-input");
+    for (const [name, value] of Object.entries(attrs)) node.setAttribute(name, value);
+    document.body.appendChild(node);
+    mounted.push(node);
+    await rendered(node);
+    return node;
+  };
+
+  it("names the stepper's buttons by it and draws no label", async () => {
+    const node = await mount({ stepper: "", "aria-label": "Servings", value: "2" });
+    assert.equal(node.querySelector(".stepper-label"), null);
+    const [lower, raise] = node.querySelectorAll(".stepper-button");
+    assert.equal(lower.getAttribute("aria-label"), "Lower Servings");
+    assert.equal(raise.getAttribute("aria-label"), "Raise Servings");
+    assert.equal(node.querySelector(".stepper-read").getAttribute("aria-label"), "Edit Servings");
+  });
+
+  it("names the field and its spinner buttons by it and draws no label", async () => {
+    const node = await mount({ "aria-label": "Servings", value: "2" });
+    assert.equal(node.querySelector("lc-label"), null);
+    assert.equal(node.querySelector("input").getAttribute("aria-label"), "Servings");
+    assert.equal(node.querySelector(".number-input-button.increment").getAttribute("aria-label"), "Raise Servings");
+    assert.equal(node.querySelector(".number-input-button.decrement").getAttribute("aria-label"), "Lower Servings");
+  });
+
+  it("wins the name over a drawn label, as on lc-link", async () => {
+    const node = await mount({ stepper: "", label: "Shown", "aria-label": "Spoken" });
+    assert.equal(node.querySelector(".stepper-label").textContent, "Shown");
+    assert.equal(node.querySelector(".stepper-button").getAttribute("aria-label"), "Lower Spoken");
+  });
+
+  it("an empty aria-label leaves the label to name it", async () => {
+    const node = await mount({ label: "Quantity", "aria-label": "" });
+    assert.equal(node.querySelector("input").hasAttribute("aria-label"), false);
+    assert.equal(node.querySelector(".number-input-button.increment").getAttribute("aria-label"), "Raise Quantity");
+  });
+});
