@@ -531,7 +531,7 @@ export default defineComponent({
             <div class="form-field ${field.class || ""} ${error ? "has-error" : ""}">
               ${field.label && !drawsOwnLabel(field) ? html`<lc-label text=${field.label} ?required=${field.required}></lc-label>` : ""}
               ${this.renderField(ownsError ? { ...field, errorMessage: error ?? "" } : field, value)}
-              ${hint ? html`<small class="form-hint">${hint}</small>` : ""}
+              ${hint && !ownsError ? html`<small class="form-hint">${hint}</small>` : ""}
               ${error && !ownsError ? html`<span class="form-error">${error}</span>` : ""}
             </div>
           `;
