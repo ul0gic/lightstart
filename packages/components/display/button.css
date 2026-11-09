@@ -404,6 +404,20 @@ lc-button[icon-only] [part~=lc-link-anchor] {
   justify-content: center;
 }
 
+/*
+ * lc-link's variant colours are a bare link's. On a button the label keeps the
+ * button's colour, the one its hover and active fill were chosen against, so
+ * this outweighs lc-link's anchor rules rather than tying with them.
+ */
+.lc-button [part~=lc-link-anchor]:hover,
+.lc-button [part~=lc-link-anchor]:active,
+.lc-button [part~=lc-link-anchor]:visited,
+lc-button [part~=lc-link-anchor]:hover,
+lc-button [part~=lc-link-anchor]:active,
+lc-button [part~=lc-link-anchor]:visited {
+  color: inherit;
+}
+
 .lc-button,
 lc-button {
   border: var(--lc-button-border-width, var(--border-width, 0)) solid
