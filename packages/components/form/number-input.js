@@ -117,7 +117,8 @@ export default defineComponent({
     const current = this.value ?? 0;
     const atMin = this.min !== null && current <= this.min;
     const atMax = this.max !== null && current >= this.max;
-    const name = this.ariaLabel || this.label;
+    const name = this.ariaLabel || this.label || "";
+    const reading = `${this.value ?? ""}${this.unit || ""}`;
     return html`
       <div class="stepper-row">
         ${this.label ? html`<span class="stepper-label">${this.label}</span>` : ""}
@@ -156,7 +157,9 @@ export default defineComponent({
                     type="button"
                     class="stepper-read"
                     style="font:inherit;color:inherit;background:transparent;border:none;padding:0;cursor:text"
-                    aria-label=${lcText("lc-number-input", "edit", { label: name })}
+                    aria-label=${reading
+                      ? lcText("lc-number-input", "edit", { value: reading, label: name })
+                      : lcText("lc-number-input", "editEmpty", { label: name })}
                     ?disabled=${this.disabled || this.readonly}
                     @click=${() => this._startEdit()}
                   >${this.value}${this.unit ? html`<span class="stepper-unit">${this.unit}</span>` : ""}</button>`}
