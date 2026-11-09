@@ -81,6 +81,7 @@ export default {
   },
   "lc-table": {
     noData: "Sin datos",
+    region: "Tabla desplazable",
   },
   "lc-async": {
     failed: "Algo salió mal.",
