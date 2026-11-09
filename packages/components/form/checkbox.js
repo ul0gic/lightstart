@@ -14,6 +14,7 @@ export default defineComponent({
       enum: ["primary", "secondary", "success", "warning", "error"],
     }),
     shape: T.string({ defaultValue: "square", enum: ["square", "round"] }),
+    ariaLabel: T.string(),
   },
   style: true,
 
@@ -44,6 +45,7 @@ export default defineComponent({
         .indeterminate=${this.indeterminate}
         value=${this.value || nothing}
         name=${this.name}
+        aria-label=${this.ariaLabel || nothing}
         ?disabled=${this.disabled}
         ?required=${this.required}
         @change=${this.handleChange.bind(this)}
@@ -69,10 +71,10 @@ export default defineComponent({
  * ```
  *
  * @example
- * // A round state ring: empty, a dot while in progress, a check when done
+ * // A round state ring: empty, a dot while in progress, a check when done; aria-label names a box drawn without a label
  * ```html
- * <lc-checkbox shape="round" variant="warning" indeterminate></lc-checkbox>
- * <lc-checkbox shape="round" variant="success" checked></lc-checkbox>
+ * <lc-checkbox shape="round" variant="warning" indeterminate aria-label="In progress"></lc-checkbox>
+ * <lc-checkbox shape="round" variant="success" checked aria-label="Done"></lc-checkbox>
  * ```
  *
  * @example

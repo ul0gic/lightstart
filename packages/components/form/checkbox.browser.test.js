@@ -72,4 +72,17 @@ describe("@lightstart/light - lc-checkbox", () => {
     const done = await mount({ shape: "round", variant: "success", checked: "" });
     assert.notEqual(getComputedStyle(box(done)).backgroundColor, getComputedStyle(box(ring)).backgroundColor, "checked fills the ring");
   });
+
+  it("names the box by aria-label without drawing a label", async () => {
+    const bare = await mount({ shape: "round", "aria-label": "Done" });
+    assert.equal(box(bare).getAttribute("aria-label"), "Done");
+    assert.equal(bare.querySelector("lc-label"), null, "no visible label is drawn");
+    const both = await mount({ label: "Shown", "aria-label": "Spoken" });
+    assert.equal(box(both).getAttribute("aria-label"), "Spoken", "aria-label wins the name, as on lc-link");
+    assert.equal(both.querySelector("lc-label")?.getAttribute("text"), "Shown");
+    const plain = await mount({ label: "Shown" });
+    assert.equal(box(plain).hasAttribute("aria-label"), false, "the label alone names it, as before");
+    const empty = await mount({ "aria-label": "" });
+    assert.equal(box(empty).hasAttribute("aria-label"), false);
+  });
 });
