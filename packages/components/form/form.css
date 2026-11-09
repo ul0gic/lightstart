@@ -20,6 +20,14 @@ lc-form form {
     flex-direction: column;
     gap: var(--lc-form-field-gap, 0.5rem);
 
+    lc-input {
+      --lc-input-hint-color: var(--lc-form-hint-color, var(--text-muted, #6b7280));
+
+      .input-hint {
+        margin-top: var(--lc-form-field-gap, 0.5rem);
+      }
+    }
+
     &.has-error {
       lc-input,
       lc-select,
