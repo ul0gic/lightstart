@@ -1006,7 +1006,7 @@ View.define("example-indexeddb-explorer", {
               ${this.renderToolbar()}
 
               <lc-tabs .activeTab=${this.activeTab} @tab-change=${this._handleTabChange}>
-                ${tabs.map((tab) => html`<button slot="tab">${tab.label}</button>`)}
+                ${tabs.map((tab) => html`<button type="button" slot="tab">${tab.label}</button>`)}
 
                 <div slot="panel" class="tab-content">
                   ${tabs[this.activeTab].render()}

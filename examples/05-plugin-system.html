@@ -305,7 +305,7 @@
         return html`
           <h3>${this.name}</h3>
           <p>Clicks: <strong>${this.clicks}</strong></p>
-          <button @click=${() => this.handleClick()}>Click Me</button>
+          <button type="button" @click=${() => this.handleClick()}>Click Me</button>
         `;
       }
     });

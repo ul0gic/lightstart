@@ -105,9 +105,9 @@
           <h2>${this.label}</h2>
           <p>Count: ${this.count}</p>
           <div>
-            <button @click=${() => this.decrement()}>-</button>
-            <button @click=${() => this.reset()}>Reset</button>
-            <button @click=${() => this.increment()}>+</button>
+            <button type="button" @click=${() => this.decrement()}>-</button>
+            <button type="button" @click=${() => this.reset()}>Reset</button>
+            <button type="button" @click=${() => this.increment()}>+</button>
           </div>
         `;
       }

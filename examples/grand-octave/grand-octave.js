@@ -120,7 +120,7 @@ View.define("grand-octave", {
   keyFor(tone, kind) {
     const down = this._down[tone.note];
     return html`
-      <button
+      <button type="button"
         class=${() => `${kind} ${down.value ? "down" : ""}`}
         style=${kind === "sharp" ? `left: calc(100% / 7 * ${tone.slot})` : nothing}
         aria-label="${tone.note} (${tone.key})"
