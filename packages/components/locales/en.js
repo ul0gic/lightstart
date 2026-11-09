@@ -223,6 +223,8 @@ export default {
     cancel: "Cancel",
     finish: "Finish",
     step: "Step",
+    stepOf: "Step {step} of {total}",
+    progress: "Progress",
   },
   "lc-auth-form": {
     login: "Login",
