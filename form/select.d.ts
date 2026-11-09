@@ -122,7 +122,8 @@ declare const _default: Omit<{
     _commit(value: string[] | string): void;
     /**
      * An open list is scrolled into view, clear of whatever the page keeps over
-     * its bottom edge (`--lc-select-dropdown-scroll-margin`, a bar or a dock).
+     * its bottom edge (`--lc-select-dropdown-scroll-margin`, a bar or a dock),
+     * and the highlighted option is scrolled into the list.
      * @param {{ changedProps: Map<string, unknown> }} detail
      */
     updated({ changedProps }: {

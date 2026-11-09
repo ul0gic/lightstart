@@ -217,6 +217,8 @@ declare const _default: {
         cancel: string;
         finish: string;
         step: string;
+        stepOf: string;
+        progress: string;
     };
     "lc-auth-form": {
         login: string;

@@ -19,7 +19,8 @@
  * The trigger protocol is `toggle(trigger)`, `_open(trigger)` and `_close()`,
  * which is what `<lc-link popovertarget>` calls and what every direct caller
  * across the repo already holds. Opening fires `popover-open` and closing
- * fires `popover-close`, both bubbling.
+ * fires `popover-close`, both bubbling. An element trigger carries
+ * `aria-expanded` while the layer is open; a point trigger has none to carry.
  */
 export const withPopover: {
     mixins: (({

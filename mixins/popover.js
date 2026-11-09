@@ -27,7 +27,8 @@ import { env } from "@lightstart/light/env";
  * The trigger protocol is `toggle(trigger)`, `_open(trigger)` and `_close()`,
  * which is what `<lc-link popovertarget>` calls and what every direct caller
  * across the repo already holds. Opening fires `popover-open` and closing
- * fires `popover-close`, both bubbling.
+ * fires `popover-close`, both bubbling. An element trigger carries
+ * `aria-expanded` while the layer is open; a point trigger has none to carry.
  */
 export const withPopover = defineMixin({
   mixins: [withClickOutside(), withOverlay()],
@@ -69,6 +70,7 @@ export const withPopover = defineMixin({
     if (this.open) return;
 
     this._triggerElement = triggerElement;
+    if (triggerElement instanceof Element) triggerElement.setAttribute("aria-expanded", "true");
     this.open = true;
     this.style.display = "";
     this.setAttribute("data-open", "");
@@ -81,6 +83,7 @@ export const withPopover = defineMixin({
   _close() {
     if (!this.open) return;
 
+    if (this._triggerElement instanceof Element) this._triggerElement.setAttribute("aria-expanded", "false");
     this.open = false;
     this.style.display = "none";
     this.removeAttribute("data-open");
