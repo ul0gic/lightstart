@@ -130,7 +130,7 @@ export default defineComponent({
       `;
 
     return html`
-      <button
+      <button type="button"
         part="lc-nav-item-container"
         class="nav-item"
         title=${title}

@@ -45,7 +45,7 @@ export default defineComponent({
             <slot name="brand"></slot>
           </div>
 
-          <button
+          <button type="button"
             part="lc-navbar-toggle"
             class="navbar-toggle"
             @click=${this.toggleMobileMenu}

@@ -407,13 +407,13 @@ export default defineComponent({
     return html`
       <div class="picker-container">
         <div class="picker-tabs">
-          <button
+          <button type="button"
             class="picker-tab ${this.tab === "icon" ? "active" : ""}"
             @click=${() => {
               this.tab = "icon";
             }}
           >${lcText("lc-icon-picker", "icons")}</button>
-          <button
+          <button type="button"
             class="picker-tab ${this.tab === "emoji" ? "active" : ""}"
             @click=${() => {
               this.tab = "emoji";
@@ -441,7 +441,7 @@ export default defineComponent({
             <div class="picker-categories">
               ${categories.map(
                 (cat) => html`
-                <button
+                <button type="button"
                   class="category-pill ${this.category === cat ? "active" : ""}"
                   @click=${() => {
                     this.category = cat;
@@ -458,7 +458,7 @@ export default defineComponent({
             ${filteredIcons.map(
               /** @param {string} name */
               (name) => html`
-              <button
+              <button type="button"
                 class="picker-cell ${this.value === name ? "selected" : ""}"
                 title=${name}
                 @click=${() => this._select(name)}
@@ -474,7 +474,7 @@ export default defineComponent({
           <div class="picker-grid emoji-grid">
             ${filteredEmoji.map(
               (e) => html`
-              <button
+              <button type="button"
                 class="picker-cell emoji-cell ${this.value === e.char ? "selected" : ""}"
                 title=${e.name}
                 @click=${() => this._select(e.char)}

@@ -86,7 +86,7 @@ export default defineComponent({
             this.drawsControls()
               ? html`
                 <div part="lc-title-bar-controls" class="window-controls">
-                  <button
+                  <button type="button"
                     part="lc-title-bar-minimize"
                     class="control-button minimize"
                     @click=${this.handleMinimize}
@@ -96,7 +96,7 @@ export default defineComponent({
                       <line x1="2" y1="6" x2="10" y2="6" stroke="currentColor" stroke-width="1.5" />
                     </svg>
                   </button>
-                  <button
+                  <button type="button"
                     part="lc-title-bar-maximize"
                     class="control-button maximize"
                     @click=${this.handleMaximize}
@@ -113,7 +113,7 @@ export default defineComponent({
                           </svg>`
                     }
                   </button>
-                  <button
+                  <button type="button"
                     part="lc-title-bar-close"
                     class="control-button close"
                     @click=${this.handleClose}

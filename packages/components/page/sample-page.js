@@ -407,12 +407,12 @@ const renderDashboardMockup = () => html`
                 >
               </div>
             </div>
-            <button
+            <button type="button"
               class="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-dim text-muted hover:bg-hover"
             >
               <lc-icon name="mail" class="w-4 h-4"></lc-icon>
             </button>
-            <button
+            <button type="button"
               class="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-dim text-muted hover:bg-hover"
             >
               <lc-icon name="bell" class="w-4 h-4"></lc-icon>
@@ -431,7 +431,7 @@ const renderDashboardMockup = () => html`
                 Welcome back, Rahim. Here is what is happening today.
               </p>
             </div>
-            <button
+            <button type="button"
               class="bg-[var(--color-surface-inverse)] text-white px-5 py-2.5 rounded-full text-[13px] font-bold flex items-center gap-2 shadow-sm hover:bg-black transition"
             >
               <lc-icon name="plus" class="w-4 h-4"></lc-icon>
