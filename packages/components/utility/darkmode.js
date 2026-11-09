@@ -47,7 +47,7 @@ export default defineComponent({
 
     const label = this.label || lcText("lc-darkmode", "label");
     if (this.compact)
-      return html`<button aria-label=${label}>
+      return html`<button type="button" aria-label=${label}>
         <lc-icon ghost name=${this.getIcon()} size=${this.size || "28"} class="cursor-pointer shrink-0"></lc-icon>
       </button>`;
 
