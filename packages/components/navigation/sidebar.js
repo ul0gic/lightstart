@@ -28,7 +28,7 @@ export default defineComponent({
         ${
           this.collapsible
             ? html`
-              <button
+              <button type="button"
                 part="lc-sidebar-toggle"
                 class="sidebar-toggle"
                 @click=${this.toggle}
