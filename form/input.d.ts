@@ -24,6 +24,10 @@ declare const _default: Omit<{
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;
+            _labelledBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
+                readonly reactive: false;
+                readonly defaultValue: "";
+            }>;
             _internals: Prop<ElementInternals | null>;
         };
         events: {
@@ -36,6 +40,9 @@ declare const _default: Omit<{
         };
         getInputId(): string;
         connected(): void;
+        _onHostClick(e: MouseEvent): void;
+        updated(): void;
+        _syncLabelledBy(): void;
         syncFormValue(value: unknown): void;
     } & {
         props?: {
@@ -58,6 +65,10 @@ declare const _default: Omit<{
                 readonly enum: readonly ["default", "primary", "secondary", "success", "warning", "error"];
             }>;
             _inputId: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
+                readonly reactive: false;
+                readonly defaultValue: "";
+            }>;
+            _labelledBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;
@@ -133,6 +144,10 @@ declare const _default: Omit<{
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;
+            _labelledBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
+                readonly reactive: false;
+                readonly defaultValue: "";
+            }>;
             _internals: Prop<ElementInternals | null>;
         };
         events: {
@@ -145,6 +160,9 @@ declare const _default: Omit<{
         };
         getInputId(): string;
         connected(): void;
+        _onHostClick(e: MouseEvent): void;
+        updated(): void;
+        _syncLabelledBy(): void;
         syncFormValue(value: unknown): void;
     } & {
         props?: {
@@ -167,6 +185,10 @@ declare const _default: Omit<{
                 readonly enum: readonly ["default", "primary", "secondary", "success", "warning", "error"];
             }>;
             _inputId: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
+                readonly reactive: false;
+                readonly defaultValue: "";
+            }>;
+            _labelledBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;

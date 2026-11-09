@@ -184,7 +184,7 @@ Eight mixins carry behaviour that more than one component needs. List them under
 
 | Mixin | What the host gets |
 |---|---|
-| `withFormControl` | label, name, value, disabled, required, size and variant props, an id for `<label for>` (`<host id>-input` when the host has one, so the two never share an id), and form association through ElementInternals |
+| `withFormControl` | label, name, value, disabled, required, size and variant props, an id for `<label for>`, and form association through ElementInternals |
 | `withClickOutside()` | `onClickOutside(e)` whenever a click lands outside the host |
 | `withEscapeKey` | `onEscape()` while mounted |
 | `withOverlay()` | a place on the overlay stack while open: scroll lock, focus restore, and Escape delivered only to the topmost layer |
