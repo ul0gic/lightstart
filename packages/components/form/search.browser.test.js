@@ -607,6 +607,45 @@ describe("@lightstart/light - lc-search", () => {
     assert.equal(el.query, "arpo", "and neither clears the query");
   });
 
+  it("leaves an Escape it has nothing to close to the dialog around it", async () => {
+    const el = await mount({ inline: true, suggestions: RECENT });
+    const input = el.querySelector("input");
+    const escape = async () => {
+      const event = new KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true });
+      input.dispatchEvent(event);
+      await el.$requestUpdate();
+      return event.defaultPrevented;
+    };
+    input.focus();
+    await el.$requestUpdate();
+    assert.equal(await escape(), false, "suggestions up and nothing typed: a prevented Escape would keep a dialog open");
+
+    await type(el, "arpo");
+    assert.equal(await escape(), false, "a query and no active option");
+
+    await press(el, "ArrowDown");
+    assert.equal(await escape(), true, "an active option takes the Escape");
+    assert.equal(el.active, -1);
+    assert.equal(await escape(), false, "and the next one passes");
+
+    await type(el, "");
+    assert.equal(await escape(), false, "nor does clearing the field bring the suggestions back over it");
+  });
+
+  it("keeps the Escape that folds the field from reaching what holds it", async () => {
+    const el = await mount({ inline: true, collapsible: true });
+    await el.expand();
+    await type(el, "arpo");
+    await press(el, "ArrowDown");
+    await press(el, "Escape");
+    const event = new KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true });
+    el.querySelector("input").dispatchEvent(event);
+    await el.$requestUpdate();
+
+    assert.equal(el.expanded, false);
+    assert.equal(event.defaultPrevented, true);
+  });
+
   it("moves the magnifier to the other end on request", async () => {
     const el = await mount({ iconPosition: "right" });
     const box = el.getBoundingClientRect();
