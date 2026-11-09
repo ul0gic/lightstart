@@ -102,6 +102,28 @@ describe("@lightstart/light - lc-search", () => {
     assert.ok(el.querySelector("input"), "the field is there");
   });
 
+  it("takes an empty query attribute, or a null query, as nothing typed", async () => {
+    const errors = [];
+    const onError = (/** @type {ErrorEvent} */ e) => errors.push(e.message);
+    window.addEventListener("error", onError);
+    const el = await mount({ collapsible: true });
+    el.setAttribute("query", "");
+    await el.$requestUpdate();
+    await el.expand();
+    await type(el, "arpo");
+    assert.equal(el.querySelectorAll("[role=option]").length, 1, "typing still searches");
+
+    el.query = null;
+    await el.$requestUpdate();
+    el.onClickOutside();
+    await el.$requestUpdate();
+    await tick();
+    window.removeEventListener("error", onError);
+
+    assert.deepEqual(errors, []);
+    assert.equal(el.expanded, false, "an empty field folds away as it would with an empty string");
+  });
+
   it("joins the field to whatever the host puts beside it", async () => {
     const el = await mount({ leading: () => "meetup.rio" });
     const join = el.querySelector("lc-join");
