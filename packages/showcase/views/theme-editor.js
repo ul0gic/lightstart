@@ -472,7 +472,7 @@ const view = defineComponent({
       const content = this._renderTypographySection();
       if (content !== nothing)
         sections.push(html`
-          <button open>
+          <button type="button" open>
             <lc-icon name="type" size="14" class="mr-2"></lc-icon>Typography
           </button>
           <div>${content}</div>
@@ -483,7 +483,7 @@ const view = defineComponent({
       const content = this._renderColorsSection();
       if (content !== nothing)
         sections.push(html`
-          <button open>
+          <button type="button" open>
             <lc-icon name="palette" size="14" class="mr-2"></lc-icon>Colors
           </button>
           <div>${content}</div>
@@ -492,7 +492,7 @@ const view = defineComponent({
 
     if (s.includes("component-css"))
       sections.push(html`
-        <button>
+        <button type="button">
           <lc-icon name="paintbrush" size="14" class="mr-2"></lc-icon>Component CSS
         </button>
         <div>${this._renderComponentCSSSection()}</div>
@@ -502,7 +502,7 @@ const view = defineComponent({
       const content = this._renderSpacingSection();
       if (content !== nothing)
         sections.push(html`
-          <button>
+          <button type="button">
             <lc-icon name="move" size="14" class="mr-2"></lc-icon>Spacing
           </button>
           <div>${content}</div>
@@ -513,7 +513,7 @@ const view = defineComponent({
       const content = this._renderEdgesSection();
       if (content !== nothing)
         sections.push(html`
-          <button>
+          <button type="button">
             <lc-icon name="square" size="14" class="mr-2"></lc-icon>Edges
           </button>
           <div>${content}</div>

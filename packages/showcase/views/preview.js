@@ -159,6 +159,7 @@ const view = defineComponent({
         ${VIEWPORT_PRESETS.map(
           (preset) => html`
             <button
+              type="button"
               class="showcase-preview__preset ${this.viewportWidth === preset.width ? "is-active" : ""}"
               @click=${() => (this.viewportWidth = preset.width)}
               title=${preset.label}
