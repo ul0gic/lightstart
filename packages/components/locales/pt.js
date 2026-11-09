@@ -178,7 +178,8 @@ export default {
   },
   "lc-number-input": {
     lower: "Diminuir {label}",
-    edit: "Editar {label}",
+    edit: "{value}, editar {label}",
+    editEmpty: "Editar {label}",
     raise: "Aumentar {label}",
   },
   "lc-rating": {
