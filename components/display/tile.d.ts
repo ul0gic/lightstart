@@ -25,12 +25,17 @@ declare const _default: Omit<{
         select: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {}>;
     };
     connected(): void;
+    firstUpdated(): void;
     /** @param {{ changedProps: Map<string, unknown> }} arg */
     updated({ changedProps }: {
         changedProps: Map<string, unknown>;
     }): void;
     _reflectInteractive(): void;
-    /** @param {Event} e */
+    /**
+     * The host is the button, so a click anywhere on the tile and a key on the
+     * focused host both land here. A control inside the tile keeps its own.
+     * @param {Event} e
+     */
     _activate(e: Event): void;
     render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {

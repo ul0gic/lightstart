@@ -63,6 +63,7 @@ declare const _default: Omit<{
     };
     connected(): void;
     firstUpdated(): void;
+    _typed(): string;
     _shown(): SearchDoc[];
     _grouped(): {
         group: string;
@@ -83,7 +84,8 @@ declare const _default: Omit<{
     _onFocusOut(): void;
     /** @param {KeyboardEvent} e */
     _onKeydown(e: KeyboardEvent): void;
-    _escape(): undefined;
+    /** @returns {boolean} whether there was anything for Escape to close */
+    _escape(): boolean;
     onEscape(): void;
     onClickOutside(): void;
     /**

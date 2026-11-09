@@ -7,6 +7,11 @@ declare const _default: Omit<{
         name: string;
         value: string;
         label: string;
+        hint: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        _hintId: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
+            readonly reactive: false;
+            readonly defaultValue: "";
+        }>;
         size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["xs", "sm", "md", "lg", "xl"];
@@ -30,6 +35,11 @@ declare const _default: Omit<{
         name: string;
         value: string;
         label: string;
+        hint: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        _hintId: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
+            readonly reactive: false;
+            readonly defaultValue: "";
+        }>;
         size: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "md";
             readonly enum: readonly ["xs", "sm", "md", "lg", "xl"];

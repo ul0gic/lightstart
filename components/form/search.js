@@ -54,8 +54,12 @@ export default defineComponent({
     if (this.autofocus) this.focusInput();
   },
 
+  _typed() {
+    return (this.query || "").trim();
+  },
+
   _shown() {
-    if (!this.query.trim()) return this.suggestions.slice(0, this.limit);
+    if (!this._typed()) return this.suggestions.slice(0, this.limit);
     return this.remote
       ? this.docs.slice(0, this.limit)
       : matchDocs(this.docs, this.query, this.limit);
@@ -70,12 +74,13 @@ export default defineComponent({
   },
 
   _worthOpening() {
-    return !!this.query.trim() || this.suggestions.length > 0;
+    if (this.inline && !this.collapsible) return this.active >= 0;
+    return !!this._typed() || this.suggestions.length > 0;
   },
 
   _showPanel() {
-    if (this.inline) return !!this.query.trim() || this._flat().length > 0;
-    return this.open && (this._flat().length > 0 || (!!this.query.trim() && !this.loading));
+    if (this.inline) return !!this._typed() || this._flat().length > 0;
+    return this.open && (this._flat().length > 0 || (!!this._typed() && !this.loading));
   },
 
   focusInput() {
@@ -124,8 +129,8 @@ export default defineComponent({
   _onInput(e) {
     e.stopPropagation();
     this.query = /** @type {HTMLInputElement} */ (e.target).value;
-    this.open = this._worthOpening();
     this.active = -1;
+    this.open = this._worthOpening();
     this.$emit("search-input", this.query);
   },
 
@@ -136,7 +141,7 @@ export default defineComponent({
   _onFocusOut() {
     if (!this.collapsible || !this.expanded || this._expanding) return;
     setTimeout(() => {
-      if (!this.isConnected || !this.expanded || this._expanding || this.query.trim()) return;
+      if (!this.isConnected || !this.expanded || this._expanding || this._typed()) return;
       if (this.contains(this.ownerDocument.activeElement)) return;
       this.collapse();
     }, 0);
@@ -147,23 +152,32 @@ export default defineComponent({
     const flat = this._flat();
     if (e.key === "ArrowDown" || e.key === "ArrowUp") {
       e.preventDefault();
-      if (e.key === "ArrowDown") this.open = this._worthOpening();
       const moved = nextIndex(e.key, this.active, flat.length);
       if (moved !== null) this.active = moved;
+      if (e.key === "ArrowDown" || this.inline) this.open = this._worthOpening();
     } else if (e.key === "Enter") {
       const doc = flat[this.active] || flat[0];
       if (!doc) return;
       this._select(doc);
       if (doc.href) navigation.go(doc.href);
-    } else if (e.key === "Escape") this._escape();
+    } else if (e.key === "Escape" && this._escape()) e.preventDefault();
   },
 
+  /** @returns {boolean} whether there was anything for Escape to close */
   _escape() {
     if (this.inline) {
       this.open = false;
-      if (this.active >= 0) return void (this.active = -1);
-    } else if (this.open) return void (this.open = false);
-    if (this.collapsible) this.collapse();
+      if (this.active >= 0) {
+        this.active = -1;
+        return true;
+      }
+    } else if (this.open) {
+      this.open = false;
+      return true;
+    }
+    if (!this.collapsible || !this.expanded) return false;
+    this.collapse();
+    return true;
   },
 
   onEscape() {
@@ -173,7 +187,7 @@ export default defineComponent({
   onClickOutside() {
     if (this.inline) return;
     if (this.open) this.open = false;
-    if (this.collapsible && this.expanded && !this.query.trim()) this.collapse();
+    if (this.collapsible && this.expanded && !this._typed()) this.collapse();
   },
 
   /**
@@ -192,7 +206,10 @@ export default defineComponent({
     const classes = `search-result ${index === this.active ? "active" : ""}`;
     const id = `${this._id}-option-${index}`;
     const selected = index === this.active ? "true" : "false";
-    const activate = () => { this.active = index; };
+    const activate = () => {
+      this.active = index;
+      this.open = this._worthOpening();
+    };
     return doc.href
       ? html`
         <a
