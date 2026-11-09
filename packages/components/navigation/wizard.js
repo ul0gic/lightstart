@@ -106,7 +106,7 @@ export default defineComponent({
       <div class="wizard-container" part="lc-wizard-container">
         ${this.showHeader ? html`
         <div class="wizard-header" part="lc-wizard-header">
-          <button
+          <button type="button"
             @click=${this.handleBackClick.bind(this)}
             class="btn-back"
             part="lc-wizard-btn-back"
@@ -153,7 +153,7 @@ export default defineComponent({
           ? html`
               <div class="wizard-footer" part="lc-wizard-footer">
                 <slot name="footer">
-                  <button
+                  <button type="button"
                     @click=${this.handleNextClick.bind(this)}
                     class="btn-next"
                     part="lc-wizard-btn-next"

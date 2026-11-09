@@ -205,8 +205,8 @@ export default defineComponent({
         .activeTab=${this.mode === "login" ? 0 : 1}
         @tab-change=${(e) => this.handleModeChange(e.detail === 0 ? "login" : "register")}
       >
-        <button slot="tab" ?active=${this.mode === "login"}>${this.loginLabel || lcText(TAG, "login")}</button>
-        <button slot="tab" ?active=${this.mode === "register"}>${this.registerLabel || lcText(TAG, "register")}</button>
+        <button type="button" slot="tab" ?active=${this.mode === "login"}>${this.loginLabel || lcText(TAG, "login")}</button>
+        <button type="button" slot="tab" ?active=${this.mode === "register"}>${this.registerLabel || lcText(TAG, "register")}</button>
       </lc-tabs>
     `;
   },

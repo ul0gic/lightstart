@@ -25,7 +25,7 @@ export default defineComponent({
           ${
             this.showBackButton
               ? html`
-                <button
+                <button type="button"
                   part="lc-app-header-back-button"
                   class="back-button"
                   @click=${this.handleBackClick}
