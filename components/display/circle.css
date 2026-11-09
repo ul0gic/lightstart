@@ -1,5 +1,0 @@
-:where(.lc-circle, lc-circle) {
-  &:not([solid]) {
-    background-color: transparent;
-  }
-}
