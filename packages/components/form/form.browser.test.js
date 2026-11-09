@@ -415,7 +415,7 @@ describe("lc-form: the field grammar", () => {
         { name: "bare", label: "Bare", type: "text" },
       ],
     });
-    const hints = [...el.querySelectorAll(".form-hint")].map((h) => h.textContent.trim());
+    const hints = [...el.querySelectorAll(".form-hint, .input-hint")].map((h) => h.textContent.trim());
     assert.deepEqual(hints, ["The machine to reach", "Defaults to 22"]);
   });
 
@@ -1168,5 +1168,52 @@ describe("lc-form: a field's error", () => {
     const input = /** @type {HTMLInputElement} */ (field.querySelector('input[type="number"]'));
     assert.equal(input.getAttribute("aria-invalid"), "true");
     assert.equal(document.getElementById(/** @type {string} */ (input.getAttribute("aria-describedby")))?.textContent, "At least one guest.");
+  });
+});
+
+describe("lc-form: a field's help", () => {
+  /** @type {HTMLElement[]} */
+  const mounted = [];
+  before(() => {
+    define("lc-label", labelDef);
+    define("lc-input", inputDef);
+    define("lc-select", selectDef);
+    define("lc-form", formDef);
+  });
+  after(() => {
+    for (const el of mounted) el.remove();
+  });
+  /** @param {Record<string, unknown>} props */
+  const mount = async (props) => {
+    const el = /** @type {HTMLElement & { setErrors(errors: Record<string, string>): void }} */ (document.createElement("lc-form"));
+    Object.assign(el, props);
+    document.body.appendChild(el);
+    mounted.push(el);
+    await frame();
+    await tick();
+    return el;
+  };
+  /** @param {Element} input */
+  const describedBy = (input) => (input.getAttribute("aria-describedby") ?? "").split(" ").map((id) => document.getElementById(id)?.textContent);
+
+  it("an input field's help is drawn once, by the input, and named to it before its error", async () => {
+    const el = await mount({
+      fields: [
+        { name: "handle", label: "Handle", type: "text", help: "Letters and numbers only." },
+        { name: "port", label: "Port", type: "number", description: "Defaults to 22" },
+        { name: "kind", label: "Kind", type: "select", options: ["a", "b"], help: "Pick one." },
+      ],
+    });
+    const handleField = /** @type {HTMLElement} */ (el.querySelector('lc-input[name="handle"]')?.closest(".form-field"));
+    assert.equal(handleField.querySelectorAll(".input-hint, .form-hint").length, 1, "one hint, not two");
+    const handle = /** @type {HTMLInputElement} */ (handleField.querySelector("input"));
+    assert.deepEqual(describedBy(handle), ["Letters and numbers only."]);
+    assert.deepEqual(describedBy(/** @type {HTMLInputElement} */ (el.querySelector('lc-input[name="port"] input'))), ["Defaults to 22"]);
+    assert.equal(el.querySelector('lc-select[name="kind"]')?.closest(".form-field")?.querySelector(".form-hint")?.textContent?.trim(), "Pick one.");
+
+    el.setErrors({ handle: "Taken." });
+    await frame();
+    await tick();
+    assert.deepEqual(describedBy(handle), ["Letters and numbers only.", "Taken."]);
   });
 });
