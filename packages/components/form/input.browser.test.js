@@ -192,3 +192,52 @@ describe("@lightstart/light - lc-input error message", () => {
     assert.equal(el.querySelector(".input-affixed")?.nextElementSibling, el.querySelector(".input-error"));
   });
 });
+
+describe("@lightstart/light - lc-input hint", () => {
+  before(() => {
+    if (!customElements.get("lc-input")) View.define("lc-input", inputDef);
+  });
+
+  afterEach(async () => {
+    for (const el of mounted.splice(0)) el.remove();
+    await tick();
+  });
+
+  /** @param {Element} el */
+  const describedBy = (el) => (field(el).getAttribute("aria-describedby") ?? "").split(" ").map((id) => document.getElementById(id));
+
+  it("draws the hint under the field and names it to the field", async () => {
+    const el = await mount({ label: "Username", hint: "Letters and numbers only." });
+    const hint = /** @type {HTMLElement} */ (el.querySelector(".input-hint"));
+    assert.equal(hint.textContent, "Letters and numbers only.");
+    assert.deepEqual(describedBy(el), [hint]);
+    assert.equal(field(el).hasAttribute("aria-invalid"), false);
+  });
+
+  it("names the hint first and the error message after it when both are set", async () => {
+    const el = await mount({ hint: "Letters and numbers only.", "error-message": "Taken." });
+    assert.deepEqual(describedBy(el), [el.querySelector(".input-hint"), el.querySelector(".input-error")]);
+    assert.equal(el.querySelector(".input-hint + .input-error"), el.querySelector(".input-error"), "the message follows the hint");
+  });
+
+  it("clearing the hint removes it and leaves the error message named", async () => {
+    const el = /** @type {HTMLElement & { hint: string, $requestUpdate: () => Promise<unknown> }} */ (await mount({ hint: "Letters and numbers only.", "error-message": "Taken." }));
+    el.hint = "";
+    await el.$requestUpdate();
+    assert.equal(el.querySelector(".input-hint"), null);
+    assert.deepEqual(describedBy(el), [el.querySelector(".input-error")]);
+  });
+
+  it("a hint carrying markup shows its characters", async () => {
+    const el = await mount({ hint: "<b>x</b>" });
+    const hint = /** @type {HTMLElement} */ (el.querySelector(".input-hint"));
+    assert.equal(hint.textContent, "<b>x</b>");
+    assert.equal(hint.querySelector("b"), null);
+  });
+
+  it("without a hint the field has no hint and no description", async () => {
+    const el = await mount({ label: "Username" });
+    assert.equal(el.querySelector(".input-hint"), null);
+    assert.equal(field(el).hasAttribute("aria-describedby"), false);
+  });
+});
