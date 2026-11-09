@@ -101,6 +101,22 @@ describe("@lightstart/light - lc-file-upload", () => {
     assert.deepEqual([...el.querySelectorAll(".file-remove")].map((button) => button.getAttribute("aria-label")), ["Remove a.txt", "Remove b.txt"]);
   });
 
+  it("sends one change per pick and per drop, its own, with the value", async () => {
+    const el = await mount({ multiple: "" });
+    /** @type {Event[]} */
+    const seen = [];
+    el.addEventListener("change", (e) => seen.push(e));
+    await pick(el, [["a.txt", "text/plain"]]);
+    await drop(el, [["b.txt", "text/plain"]]);
+    assert.equal(seen.length, 2);
+    for (const e of seen) {
+      assert.ok(e instanceof CustomEvent);
+      assert.equal(e.target, el);
+    }
+    assert.deepEqual(/** @type {CustomEvent} */ (seen[0]).detail.files.map((/** @type {File} */ file) => file.name), ["a.txt"]);
+    assert.deepEqual(/** @type {CustomEvent} */ (seen[1]).detail.files.map((/** @type {File} */ file) => file.name), ["a.txt", "b.txt"]);
+  });
+
   it("takes any file when accept is empty, and words its other errors from the locale file", async () => {
     const el = await mount({ "max-size": "2" });
     await drop(el, [["a.bin", "application/octet-stream"], ["b.bin", ""]]);
