@@ -92,6 +92,16 @@ export default {
         </div>
       `,
     },
+    {
+      title: "Hint",
+      description: "Drawn under the field and named to it, so a screen reader reads it with the field, before any error message.",
+      render: () => html`
+        <div style="display: flex; flex-direction: column; width: 100%; max-width: 360px; gap: 0.5rem; align-items: flex-start;">
+          <lc-input label="Username" hint="Letters and numbers only."></lc-input>
+          <lc-input label="Handle" hint="Letters and numbers only." error-message="That handle is taken."></lc-input>
+        </div>
+      `,
+    },
   ],
 };
 
