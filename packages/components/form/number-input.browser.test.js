@@ -192,7 +192,7 @@ describe("lc-number-input named by aria-label", () => {
     const [lower, raise] = node.querySelectorAll(".stepper-button");
     assert.equal(lower.getAttribute("aria-label"), "Lower Servings");
     assert.equal(raise.getAttribute("aria-label"), "Raise Servings");
-    assert.equal(node.querySelector(".stepper-read").getAttribute("aria-label"), "Edit Servings");
+    assert.equal(node.querySelector(".stepper-read").getAttribute("aria-label"), "2, edit Servings");
   });
 
   it("names the field and its spinner buttons by it and draws no label", async () => {
@@ -213,5 +213,53 @@ describe("lc-number-input named by aria-label", () => {
     const node = await mount({ label: "Quantity", "aria-label": "" });
     assert.equal(node.querySelector("input").hasAttribute("aria-label"), false);
     assert.equal(node.querySelector(".number-input-button.increment").getAttribute("aria-label"), "Raise Quantity");
+  });
+});
+
+describe("lc-number-input stepper reading", () => {
+  /** @type {HTMLElement[]} */
+  const mounted = [];
+
+  before(() => {
+    define("lc-number-input", numberInputDef);
+  });
+
+  after(() => {
+    for (const node of mounted) node.remove();
+  });
+
+  /** @param {Record<string, string>} attrs */
+  const mount = async (attrs) => {
+    const node = document.createElement("lc-number-input");
+    node.setAttribute("stepper", "");
+    for (const [name, value] of Object.entries(attrs)) node.setAttribute(name, value);
+    document.body.appendChild(node);
+    mounted.push(node);
+    await rendered(node);
+    return node;
+  };
+
+  it("is named by the value it draws, then the edit word and the label", async () => {
+    const read = (await mount({ label: "Reps", value: "8" })).querySelector(".stepper-read");
+    assert.equal(read.textContent, "8");
+    assert.equal(read.getAttribute("aria-label"), "8, edit Reps");
+  });
+
+  it("puts the unit in the name as it is drawn", async () => {
+    const read = (await mount({ label: "Weight", unit: "kg", value: "60" })).querySelector(".stepper-read");
+    assert.equal(read.textContent, "60kg");
+    assert.equal(read.getAttribute("aria-label"), "60kg, edit Weight");
+  });
+
+  it("reads cleanly with no label or aria-label", async () => {
+    const node = await mount({ value: "3" });
+    const names = [...node.querySelectorAll("button")].map((b) => b.getAttribute("aria-label").trim());
+    assert.deepEqual(names, ["Lower", "3, edit", "Raise"]);
+  });
+
+  it("is named by the edit word alone while it draws no value", async () => {
+    const read = (await mount({ label: "Count" })).querySelector(".stepper-read");
+    assert.equal(read.textContent, "");
+    assert.equal(read.getAttribute("aria-label"), "Edit Count");
   });
 });
