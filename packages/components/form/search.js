@@ -207,10 +207,6 @@ export default defineComponent({
     const classes = `search-result ${index === this.active ? "active" : ""}`;
     const id = `${this._id}-option-${index}`;
     const selected = index === this.active ? "true" : "false";
-    const activate = () => {
-      this.active = index;
-      this.open = this._worthOpening();
-    };
     return doc.href
       ? html`
         <a
@@ -220,7 +216,6 @@ export default defineComponent({
           class=${classes}
           href=${navigation.href(String(doc.href))}
           @click=${() => this._select(doc)}
-          @mouseenter=${activate}
         >${body}</a>
       `
       : html`
@@ -231,7 +226,6 @@ export default defineComponent({
           type="button"
           class=${classes}
           @click=${() => this._select(doc)}
-          @mouseenter=${activate}
         >${body}</button>
       `;
   },

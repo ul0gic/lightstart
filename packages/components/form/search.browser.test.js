@@ -632,6 +632,23 @@ describe("@lightstart/light - lc-search", () => {
     assert.equal(await escape(), false, "nor does clearing the field bring the suggestions back over it");
   });
 
+  it("does not spend an Escape on a row the pointer only rests on", async () => {
+    const el = await mount({ inline: true });
+    const input = el.querySelector("input");
+    input.focus();
+    await type(el, "a");
+    const row = el.querySelector("[role=option]");
+    row.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
+    await el.$requestUpdate();
+    assert.equal(row.getAttribute("aria-selected"), "false", "hovering does not select the row");
+    assert.equal(input.hasAttribute("aria-activedescendant"), false, "nor point the field at it");
+
+    const event = new KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true });
+    input.dispatchEvent(event);
+    await el.$requestUpdate();
+    assert.equal(event.defaultPrevented, false, "so Escape goes on to whatever holds the field");
+  });
+
   it("keeps the Escape that folds the field from reaching what holds it", async () => {
     const el = await mount({ inline: true, collapsible: true });
     await el.expand();
