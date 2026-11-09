@@ -119,7 +119,7 @@ export default defineComponent({
           </button>
           ${this.showStepCounter
             ? html`
-                <div class="step-counter" part="lc-wizard-step-counter">
+                <div class="step-counter" part="lc-wizard-step-counter" role="status">
                   ${this.stepLabel || lcText("lc-wizard", "step")} ${this.currentStep}/${this.totalSteps}
                 </div>
               `
@@ -130,7 +130,16 @@ export default defineComponent({
 
         ${this.showProgress
           ? html`
-              <div class="wizard-progress" part="lc-wizard-progress">
+              <div
+                class="wizard-progress"
+                part="lc-wizard-progress"
+                role="progressbar"
+                aria-label=${lcText("lc-wizard", "progress")}
+                aria-valuemin="0"
+                aria-valuemax=${this.totalSteps}
+                aria-valuenow=${this.currentStep}
+                aria-valuetext=${lcText("lc-wizard", "stepOf", { step: this.currentStep, total: this.totalSteps })}
+              >
                 <div
                   class="wizard-progress-fill"
                   part="lc-wizard-progress-fill"
@@ -199,8 +208,8 @@ export default defineComponent({
  * @part container - Main wizard container
  * @part header - Header with back button and step counter
  * @part btn-back - Back/cancel button
- * @part step-counter - Step X/Y indicator
- * @part progress - Progress bar container
+ * @part step-counter - Step X/Y indicator (a status region, so a screen reader announces each step)
+ * @part progress - Progress bar container (role progressbar, valued in steps)
  * @part progress-fill - Progress bar fill element
  * @part content - Step content area
  * @part footer - Footer with navigation button
