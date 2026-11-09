@@ -2639,11 +2639,11 @@
         },
         {
           "name": "step-counter",
-          "description": "Step X/Y indicator"
+          "description": "Step X/Y indicator (a status region, so a screen reader announces each step)"
         },
         {
           "name": "progress",
-          "description": "Progress bar container"
+          "description": "Progress bar container (role progressbar, valued in steps)"
         },
         {
           "name": "progress-fill",
