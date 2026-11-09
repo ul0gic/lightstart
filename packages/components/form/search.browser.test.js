@@ -320,6 +320,74 @@ describe("@lightstart/light - lc-search", () => {
     assert.equal(el.querySelector(".search-empty").textContent.trim(), "No results");
   });
 
+  it("waits inline without saying nothing matched, then shows what the host sent", async () => {
+    const el = await mount({ remote: true, inline: true, docs: [] });
+    el.addEventListener("search-input", () => { el.loading = true; });
+    await type(el, "zq");
+    const panel = el.querySelector(".search-dropdown");
+
+    assert.equal(el.querySelector(".search-empty"), null, "no empty body yet");
+    assert.equal(panel.getAttribute("aria-busy"), "true");
+
+    el.docs = FROM_SERVER;
+    el.loading = false;
+    await el.$requestUpdate();
+    assert.deepEqual(titles(el), FROM_SERVER.map((d) => d.title));
+    assert.equal(el.querySelector("[role=listbox]").hasAttribute("aria-busy"), false);
+
+    el.loading = true;
+    el.docs = [];
+    await el.$requestUpdate();
+    el.loading = false;
+    await el.$requestUpdate();
+    assert.equal(el.querySelector(".search-empty").textContent.trim(), "No results", "an answer of nothing says so");
+  });
+
+  it("keeps its popup shut while the host is loading and nothing is up yet", async () => {
+    const el = await mount({ remote: true, docs: [] });
+    el.addEventListener("search-input", () => { el.loading = true; });
+    const input = el.querySelector("input");
+    input.focus();
+    await type(el, "zq");
+
+    assert.equal(el.querySelector(".search-dropdown"), null, "no empty box under the field");
+    assert.equal(input.getAttribute("aria-expanded"), "false");
+
+    el.docs = FROM_SERVER;
+    await el.$requestUpdate();
+    assert.equal(input.getAttribute("aria-expanded"), "true", "results open it");
+    assert.equal(el.querySelector("[role=listbox]").getAttribute("aria-busy"), "true", "still busy while loading");
+
+    el.loading = false;
+    await el.$requestUpdate();
+    assert.equal(el.querySelector("[role=listbox]").hasAttribute("aria-busy"), false);
+    assert.deepEqual(titles(el), FROM_SERVER.map((d) => d.title));
+  });
+
+  it("opens its popup on the answer that nothing matched once loading clears", async () => {
+    const el = await mount({ remote: true, docs: [] });
+    el.addEventListener("search-input", () => { el.loading = true; });
+    const input = el.querySelector("input");
+    input.focus();
+    await type(el, "zq");
+    assert.equal(input.getAttribute("aria-expanded"), "false");
+
+    el.loading = false;
+    await el.$requestUpdate();
+    assert.equal(input.getAttribute("aria-expanded"), "true");
+    assert.equal(el.querySelector(".search-empty").textContent.trim(), "No results");
+  });
+
+  it("keeps the results it has while the next set loads", async () => {
+    const el = await mount({ remote: true, docs: FROM_SERVER });
+    await type(el, "a");
+    el.loading = true;
+    await el.$requestUpdate();
+
+    assert.deepEqual(titles(el), FROM_SERVER.map((d) => d.title));
+    assert.equal(el.querySelector("[role=listbox]").getAttribute("aria-busy"), "true");
+  });
+
   it("lets the results be wider than the field they hang from", async () => {
     const el = await mount({});
     el.style.cssText = "width:200px;--lc-search-dropdown-min-width:360px";
