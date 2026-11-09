@@ -9,6 +9,10 @@ import T from "@lightstart/light/types";
  * Inline alert/notification component for displaying status messages.
  * Similar to toast but static/inline rather than floating.
  *
+ * An error or warning is an alert, read out at once (`role="alert"`);
+ * every other variant is a status, read once the screen reader is idle
+ * (`role="status"`).
+ *
  * @slot - Alert content
  *
  * @example Basic Alert
@@ -52,6 +56,8 @@ import T from "@lightstart/light/types";
 import { html } from "@lightstart/light/html";
 import { defineComponent } from "@lightstart/light";
 
+const ALERT_VARIANTS = new Set(["error", "warning"]);
+
 export default defineComponent({
 	tag: "lc-alert",
 	icons: ["circle-check", "circle-x", "triangle-alert", "info", "sticky-note", "lightbulb"],
@@ -82,7 +88,7 @@ export default defineComponent({
 
 	render() {
 		return html`
-			<div part="lc-alert-alert" class="alert alert-${this.variant}" role="alert">
+			<div part="lc-alert-alert" class="alert alert-${this.variant}" role=${ALERT_VARIANTS.has(this.variant) ? "alert" : "status"}>
 				<div part="lc-alert-icon" class="alert-icon">
 					<lc-icon name=${this._getIcon(this.variant)}></lc-icon>
 				</div>
