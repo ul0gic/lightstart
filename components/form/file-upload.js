@@ -112,6 +112,7 @@ export default defineComponent({
 
   /** @param {Event} e */
   handleFileSelect(e) {
+    e.stopPropagation();
     const files = Array.from(/** @type {HTMLInputElement} */ (e.target).files || []);
     this._processFiles(files);
   },
