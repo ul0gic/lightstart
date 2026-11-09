@@ -54,8 +54,12 @@ export default defineComponent({
     if (this.autofocus) this.focusInput();
   },
 
+  _typed() {
+    return (this.query || "").trim();
+  },
+
   _shown() {
-    if (!this.query.trim()) return this.suggestions.slice(0, this.limit);
+    if (!this._typed()) return this.suggestions.slice(0, this.limit);
     return this.remote
       ? this.docs.slice(0, this.limit)
       : matchDocs(this.docs, this.query, this.limit);
@@ -70,12 +74,12 @@ export default defineComponent({
   },
 
   _worthOpening() {
-    return !!this.query.trim() || this.suggestions.length > 0;
+    return !!this._typed() || this.suggestions.length > 0;
   },
 
   _showPanel() {
-    if (this.inline) return !!this.query.trim() || this._flat().length > 0;
-    return this.open && (this._flat().length > 0 || (!!this.query.trim() && !this.loading));
+    if (this.inline) return !!this._typed() || this._flat().length > 0;
+    return this.open && (this._flat().length > 0 || (!!this._typed() && !this.loading));
   },
 
   focusInput() {
@@ -136,7 +140,7 @@ export default defineComponent({
   _onFocusOut() {
     if (!this.collapsible || !this.expanded || this._expanding) return;
     setTimeout(() => {
-      if (!this.isConnected || !this.expanded || this._expanding || this.query.trim()) return;
+      if (!this.isConnected || !this.expanded || this._expanding || this._typed()) return;
       if (this.contains(this.ownerDocument.activeElement)) return;
       this.collapse();
     }, 0);
@@ -173,7 +177,7 @@ export default defineComponent({
   onClickOutside() {
     if (this.inline) return;
     if (this.open) this.open = false;
-    if (this.collapsible && this.expanded && !this.query.trim()) this.collapse();
+    if (this.collapsible && this.expanded && !this._typed()) this.collapse();
   },
 
   /**
