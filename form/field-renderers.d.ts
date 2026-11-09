@@ -1,0 +1,10 @@
+export function registerFormFieldRenderer(type: string, render: FormFieldRenderer): void;
+export function getFormFieldRenderer(type: string): FormFieldRenderer | undefined;
+export function formFieldTypes(): string[];
+export function renderFormControl(field: FormField, value: unknown, onChange?: (value: unknown) => void, html?: typeof defaultHtml): Renderable;
+export function drawsOwnLabel(field: FormField): boolean;
+export function drawsOwnError(field: FormField): boolean;
+import type { FormFieldRenderer } from "../types.js";
+import type { FormField } from "../types.js";
+import { html as defaultHtml } from "@lightstart/light/html";
+import type { Renderable } from "../types.js";
