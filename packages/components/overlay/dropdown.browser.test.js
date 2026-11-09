@@ -102,6 +102,76 @@ describe("@lightstart/light - lc-dropdown", () => {
     assert.equal(document.activeElement, rows()[2], "and back again");
   });
 
+  it("focuses the first and last enabled row on Home and End", async () => {
+    const { menu } = await open(["One", "Two", "Three"]);
+    const rows = () => [...menu.querySelectorAll("button.lc-dropdown-item")];
+
+    rows()[1].focus();
+    press("End");
+    assert.equal(document.activeElement, rows()[2]);
+    press("Home");
+    assert.equal(document.activeElement, rows()[0]);
+  });
+
+  it("skips disabled rows on Home and End", async () => {
+    const { menu } = await open();
+    menu.items = [{ label: "One", disabled: true }, { label: "Two" }, { label: "Three" }, { label: "Four", disabled: true }];
+    await menu.$requestUpdate();
+    const rows = () => [...menu.querySelectorAll("button.lc-dropdown-item")];
+
+    press("End");
+    assert.equal(document.activeElement, rows()[2]);
+    press("Home");
+    assert.equal(document.activeElement, rows()[1]);
+  });
+
+  it("closes on Tab and Shift+Tab from a row, leaving focus on the trigger without swallowing the key", async () => {
+    for (const shiftKey of [false, true]) {
+      /** @type {HTMLElement} */ (document.activeElement).blur();
+      const { trigger, menu } = await open(["One", "Two"]);
+      trigger.focus();
+      menu.querySelector("button.lc-dropdown-item")?.focus();
+
+      const event = new KeyboardEvent("keydown", { key: "Tab", shiftKey, bubbles: true, cancelable: true });
+      document.dispatchEvent(event);
+      assert.equal(overlays.stack.value.length, 0, "released before the browser moves focus, so no restore pulls it back");
+      await menu.$requestUpdate();
+      assert.equal(menu.open, false);
+      assert.equal(event.defaultPrevented, false, "the browser still moves focus on");
+      assert.equal(document.activeElement, trigger, "so it moves on from the trigger");
+    }
+  });
+
+  it("keeps aria-expanded on the trigger through every way of closing", async () => {
+    const expanded = (/** @type {Element} */ trigger) => trigger.getAttribute("aria-expanded");
+    const closers = [
+      () => escape(),
+      () => document.body.click(),
+      () => press("Tab"),
+      (/** @type {Element} */ menu) => /** @type {HTMLElement} */ (menu.querySelector("button.lc-dropdown-item")).click(),
+    ];
+
+    for (const close of closers) {
+      const { trigger, menu } = await open(["One"]);
+      assert.equal(expanded(trigger), "true");
+      close(menu);
+      await menu.$requestUpdate();
+      assert.equal(menu.open, false);
+      assert.equal(expanded(trigger), "false");
+    }
+  });
+
+  it("marks the trigger as a menu button and points at the menu when it has an id", async () => {
+    const { trigger, menu } = await open();
+    assert.equal(trigger.getAttribute("aria-haspopup"), "menu");
+    assert.equal(trigger.hasAttribute("aria-controls"), false);
+
+    menu.toggle(trigger);
+    menu.id = "actions-menu";
+    menu.toggle(trigger);
+    assert.equal(trigger.getAttribute("aria-controls"), "actions-menu");
+  });
+
   it("takes a render callback for a body that changes while it is open", async () => {
     let step = "menu";
     const trigger = document.createElement("button");
