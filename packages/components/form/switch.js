@@ -1,5 +1,6 @@
-import { html } from "@lightstart/light/html";
+import { html, nothing } from "@lightstart/light/html";
 import T from "@lightstart/light/types";
+import { uniqueId } from "../utils/id.js";
 import { defineComponent } from "@lightstart/light";
 
 export default defineComponent({
@@ -10,6 +11,8 @@ export default defineComponent({
     name: "",
     value: "on",
     label: "",
+    hint: T.string(),
+    _hintId: T.string({ reactive: false, defaultValue: "" }),
     size: T.string({
       defaultValue: "md",
       enum: ["xs", "sm", "md", "lg", "xl"],
@@ -30,6 +33,7 @@ export default defineComponent({
   },
 
   render() {
+    const hintId = this.hint ? (this._hintId ||= uniqueId("lc-switch-hint-")) : "";
     return html`
       <label class="switch-wrapper">
         <input
@@ -39,6 +43,7 @@ export default defineComponent({
           ?disabled=${this.disabled}
           name=${this.name}
           value=${this.value}
+          aria-describedby=${hintId || nothing}
           @change=${this.handleChange.bind(this)}
         />
         <div class="switch-control">
@@ -46,6 +51,7 @@ export default defineComponent({
         </div>
         ${this.label ? html`<span class="switch-label">${this.label}</span>` : ""}
       </label>
+      ${hintId ? html`<span class="switch-hint" id=${hintId}>${this.hint}</span>` : ""}
     `;
   },
 });
@@ -67,6 +73,11 @@ export default defineComponent({
  * @example With Label
  * ```html
  * <lc-switch label="Enable notifications" checked></lc-switch>
+ * ```
+ *
+ * @example With Hint
+ * ```html
+ * <lc-switch label="Email updates" hint="A summary of new activity, once a week."></lc-switch>
  * ```
  *
  * @example Size Variants
