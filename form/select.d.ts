@@ -119,6 +119,8 @@ declare const _default: Omit<{
     connected(): void;
     /** @param {FocusEvent} e */
     _onFocusOut(e: FocusEvent): void;
+    _openList(): void;
+    _closeList(): void;
     /**
      * The current value as the list it is when `multiple`, so every read has
      * one shape whichever mode the element is in.

@@ -65,8 +65,18 @@ export default defineComponent({
   /** @param {FocusEvent} e */
   _onFocusOut(e) {
     if (!this.open || this.contains(/** @type {Node | null} */ (e.relatedTarget))) return;
+    this._closeList();
+  },
+
+  _openList() {
+    this.open = true;
+    this.search = "";
+  },
+
+  _closeList() {
     this.open = false;
     this.search = "";
+    this.highlightIndex = -1;
   },
 
   /**
@@ -110,9 +120,7 @@ export default defineComponent({
   },
 
   onClickOutside() {
-    if (!this.open) return;
-    this.open = false;
-    this.search = "";
+    if (this.open) this._closeList();
   },
 
   /** @returns {string} */
@@ -209,14 +217,11 @@ export default defineComponent({
     this.search = /** @type {HTMLInputElement} */ (e.target).value;
     this.highlightIndex = 0;
     if (!this.open) this.open = true;
-    if (!this.search && !this.value)
-      this.open = false;
-
+    if (!this.search && !this.value) this._closeList();
   },
 
   _onSearchFocus() {
-    this.open = true;
-    this.search = "";
+    this._openList();
   },
 
   /** @param {KeyboardEvent} e */
@@ -229,19 +234,23 @@ export default defineComponent({
     }
     if (e.key === "ArrowDown" || e.key === "ArrowUp") {
       e.preventDefault();
+      if (!this.open) {
+        this._openList();
+        return;
+      }
       const moved = nextIndex(e.key, this.highlightIndex, filtered.length);
       if (moved !== null) this.highlightIndex = moved;
     } else if (
       e.key === "Enter" &&
+      this.open &&
       this.highlightIndex >= 0 &&
       filtered[this.highlightIndex]
     ) {
       e.preventDefault();
       this._selectOption(filtered[this.highlightIndex]);
-    } else if (e.key === "Escape") {
-      this.open = false;
-      this.search = "";
-    }
+    } else if (e.key === "Escape")
+      this._closeList();
+
   },
 
   /** @param {SelectOption} option */
@@ -251,13 +260,10 @@ export default defineComponent({
       const selected = this.selected;
       if (!selected.includes(value) && this._full()) return;
       this._commit(selected.includes(value) ? selected.filter((v) => v !== value) : [...selected, value]);
-      this.search = "";
-      this.highlightIndex = 0;
-      this.open = false;
+      this._closeList();
       return;
     }
-    this.open = false;
-    this.search = "";
+    this._closeList();
     this._commit(/** @type {string} */ (this._getValue(option)));
   },
 
@@ -289,12 +295,10 @@ export default defineComponent({
   _toggleDropdown(e) {
     e.preventDefault();
     e.stopPropagation();
-    if (this.open) {
-      this.open = false;
-      this.search = "";
-    } else {
-      this.open = true;
-      this.search = "";
+    if (this.open)
+      this._closeList();
+     else {
+      this._openList();
       const input = /** @type {HTMLElement | null} */ (this.querySelector(".select-search-input"));
       if (input) input.focus();
     }
@@ -480,7 +484,8 @@ export default defineComponent({
  *
  * A field you type into is an ARIA combobox and its list a listbox of options,
  * the highlighted one followed by `aria-activedescendant` while focus stays in
- * the field; the list closes when focus leaves the component.
+ * the field; the list closes when focus leaves the component. On a closed list
+ * an arrow key opens it and chooses nothing, and Enter is left to the form.
  *
  * @example Basic Select
  * ```html
