@@ -23,6 +23,25 @@
     color: var(--text-color);
   }
 
+  &:has(> .switch-hint) {
+    display: inline-grid;
+    grid-template-columns: auto auto;
+    column-gap: 0.5rem;
+
+    .switch-wrapper {
+      display: grid;
+      grid-column: 1 / -1;
+      grid-template-columns: subgrid;
+    }
+  }
+
+  .switch-hint {
+    grid-column: 2;
+    color: var(--lc-switch-hint-color, var(--text-muted, #6b7280));
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+  }
+
   .switch-control {
     position: relative;
     width: 2.5rem;

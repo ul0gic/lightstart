@@ -23,6 +23,12 @@ export default {
       `,
     },
     {
+      title: "Hint",
+      render: () => html`
+        <lc-switch label="Email updates" hint="A summary of new activity, once a week."></lc-switch>
+      `,
+    },
+    {
       title: "Size variants",
       render: () => html`
         <div style="display: flex; flex-direction: column; gap: 1rem;">
