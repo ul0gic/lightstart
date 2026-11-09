@@ -134,6 +134,11 @@ export default {
   "lc-file-upload": {
     click: "Click to upload",
     drag: "or drag and drop",
+    oneFile: "Only one file is allowed",
+    notAccepted: "File {name} is not an accepted type",
+    tooLarge: "File {name} exceeds maximum size of {size}",
+    maxSize: "Max size: {size}",
+    remove: "Remove {name}",
   },
   "lc-pricing-card": {
     popular: "Most popular",
