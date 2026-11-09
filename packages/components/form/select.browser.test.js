@@ -254,3 +254,18 @@ describe("lc-select typed into: keys on a closed list", () => {
       el.remove();
     });
 });
+
+describe("lc-select with tags inside a form", () => {
+  it("draws no submit button, so the form's Enter cannot take a tag off", async () => {
+    const form = document.createElement("form");
+    const el = document.createElement("lc-select");
+    Object.assign(el, { label: "Languages", searchable: true, multiple: true, value: ["v1", "v3"], options: Array.from({ length: 5 }, (_, i) => ({ value: `v${i}`, label: `Option ${i}` })) });
+    form.append(el);
+    document.body.append(form);
+    await waitFor(() => el.querySelectorAll(".tag-close").length === 2, "two tags with a close button");
+    const closes = [...el.querySelectorAll(".tag-close")];
+    assert.deepEqual(closes.map((button) => button.type), ["button", "button"]);
+    assert.equal([...form.elements].some((control) => control.type === "submit"), false, "the form has no default button of the component's making");
+    form.remove();
+  });
+});

@@ -31,7 +31,7 @@ export default defineComponent({
         ${
           this.static
             ? html`<div part="lc-sidebar-section-heading">${title}</div>`
-            : html`<button part="lc-sidebar-section-toggle"
+            : html`<button type="button" part="lc-sidebar-section-toggle"
                 @click=${() => this.$emit("toggle", { collapsed: !this.collapsed })}>
                 <lc-icon name=${this.collapsed ? "chevron-right" : "chevron-down"} size=${this.size === "md" ? "14" : "10"} part="lc-sidebar-section-chevron"></lc-icon>
                 ${title}

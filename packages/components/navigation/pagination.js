@@ -89,7 +89,7 @@ export default defineComponent({
         return html`<span class=${klass} aria-label=${label} aria-disabled="true">${content}</span>`;
       return html`<lc-link class=${klass} href=${this.hrefFor(page)} aria-label=${label} aria-current=${active ? "page" : nothing}>${content}</lc-link>`;
     }
-    return html`<button class=${klass} ?disabled=${disabled} @click=${() => this.goToPage(page)} aria-label=${label} aria-current=${active ? "page" : "false"}>${content}</button>`;
+    return html`<button type="button" class=${klass} ?disabled=${disabled} @click=${() => this.goToPage(page)} aria-label=${label} aria-current=${active ? "page" : "false"}>${content}</button>`;
   },
 
   renderDefault() {
@@ -136,7 +136,7 @@ export default defineComponent({
   renderLoadmore() {
     return html`
       <div class="pagination-loadmore">
-        <button
+        <button type="button"
           class="pagination-button loadmore"
           ?disabled=${!this.hasMore}
           @click=${this._loadMore}
