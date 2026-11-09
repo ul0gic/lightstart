@@ -8,6 +8,7 @@
  */
 /** A theme: nested token groups (`color`, `spacing`, `font`, ...) whose leaves become `--group-key` variables, and an optional `dark` block of the same shape. */
 export type ThemeData = {
+    name?: string;
     content?: Record<string, unknown>;
     font?: ThemeFont;
     link?: Record<string, unknown>;
