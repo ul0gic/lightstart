@@ -16,6 +16,7 @@ export default defineComponent({
     size: T.string({ defaultValue: "md", enum: ["sm", "md", "lg"] }),
     block: false,
     name: "",
+    label: "",
   },
   style: true,
   events: {
@@ -67,7 +68,7 @@ export default defineComponent({
     const multiple = this.multiple;
     const stop = Math.max(0, options.findIndex((option) => option.value === this.value));
     return html`
-      <div class="segmented-track" role=${multiple ? "group" : "radiogroup"} aria-disabled=${this.disabled ? "true" : "false"}
+      <div class="segmented-track" role=${multiple ? "group" : "radiogroup"} aria-label=${this.label || nothing} aria-disabled=${this.disabled ? "true" : "false"}
         @keydown=${(/** @type {KeyboardEvent} */ e) => this._onKeydown(e, options)}>
         ${options.map((option, index) => {
           const on = this._isOn(option.value);
@@ -105,6 +106,10 @@ export default defineComponent({
  * is on, in the order of the options, and `change` carries the option just
  * toggled as `value` beside the new `values`.
  *
+ * `label` names the strip for assistive technology: it becomes the
+ * `aria-label` of the radio group (or the group, with `multiple`). It is not
+ * drawn.
+ *
  * @example
  * // Units
  * ```html
@@ -119,6 +124,12 @@ export default defineComponent({
  *   value=${this.weightUnit}
  *   @change=${(e) => (this.weightUnit = e.detail.value)}
  * ></lc-segmented>
+ * ```
+ *
+ * @example
+ * // Named
+ * ```html
+ * <lc-segmented label="Period" .options=${["Day", "Week", "Month"]} value="Week"></lc-segmented>
  * ```
  *
  * @example

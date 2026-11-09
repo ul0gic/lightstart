@@ -10,9 +10,9 @@ export default {
   examples: [
     {
       title: "Basic",
-      description: "Tab lands on the picked segment, and the arrow keys move the pick along, wrapping at either end.",
+      description: "Tab lands on the picked segment, and the arrow keys move the pick along, wrapping at either end. label names the strip for screen readers.",
       render: () => html`
-        <lc-segmented .options=${["Day", "Week", "Month"]} value="Week"></lc-segmented>
+        <lc-segmented label="Period" .options=${["Day", "Week", "Month"]} value="Week"></lc-segmented>
       `,
     },
     {
@@ -38,7 +38,7 @@ export default {
       description: "With multiple, each segment toggles on its own and values holds the ones that are on.",
       render: () => html`
         <div style="width:360px">
-          <lc-segmented multiple block .options=${DAYS} .values=${["Tuesday", "Thursday", "Sunday"]}></lc-segmented>
+          <lc-segmented multiple block label="Days" .options=${DAYS} .values=${["Tuesday", "Thursday", "Sunday"]}></lc-segmented>
         </div>
       `,
     },
