@@ -73,6 +73,15 @@ describe("@lightstart/light - lc-segmented", () => {
     assert.deepEqual(seen, [{ value: "Thursday" }]);
   });
 
+  it("names the radio group, or the group with multiple, by label, and leaves it unnamed without one", async () => {
+    const one = await mount({ attrs: { label: "Days" } });
+    assert.equal(one.querySelector('.segmented-track[role="radiogroup"]')?.getAttribute("aria-label"), "Days");
+    const many = await mount({ attrs: { label: "Days", multiple: "" } });
+    assert.equal(many.querySelector('.segmented-track[role="group"]')?.getAttribute("aria-label"), "Days");
+    const none = await mount();
+    assert.equal(none.querySelector(".segmented-track")?.hasAttribute("aria-label"), false);
+  });
+
   it("with multiple, toggles each option on its own as pressed buttons in a group", async () => {
     const el = await mount({ attrs: { multiple: "" }, values: ["Thursday"] });
     assert.equal(el.querySelector(".segmented-track")?.getAttribute("role"), "group");
