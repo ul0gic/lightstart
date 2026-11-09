@@ -209,3 +209,48 @@ describe("lc-select typed into: a combobox over a listbox", () => {
     el.remove();
   });
 });
+
+describe("lc-select typed into: keys on a closed list", () => {
+  /** @param {HTMLElement} field @param {string} key */
+  const press = (field, key) => {
+    const event = new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true });
+    field.dispatchEvent(event);
+    return event;
+  };
+
+  for (const [name, props, value] of [["searchable", {}, "v1"], ["tags", { multiple: true }, ["v1"]]])
+    it(`${name}: ArrowDown opens the list without choosing, and Enter leaves the value alone`, async () => {
+      const el = document.createElement("lc-select");
+      Object.assign(el, { label: "Language", searchable: true, value, options: Array.from({ length: 5 }, (_, i) => ({ value: `v${i}`, label: `Option ${i}` })), ...props });
+      document.body.appendChild(el);
+      await waitFor(() => el.querySelector(".select-search-input"), "the field");
+      const field = el.querySelector(".select-search-input");
+      field.focus();
+      await waitFor(() => el.querySelector(".select-dropdown"), "the list");
+
+      press(field, "ArrowDown");
+      press(field, "ArrowDown");
+      press(field, "ArrowDown");
+      await waitFor(() => el.querySelector(".highlighted")?.textContent.trim() === "Option 2", "the third option highlighted");
+      press(field, "Escape");
+      await waitFor(() => !el.querySelector(".select-dropdown"), "the list to close");
+
+      const enter = press(field, "Enter");
+      await new Promise((r) => setTimeout(r, 30));
+      assert.deepEqual(el.value, value, "Enter on a closed list changes nothing");
+      assert.equal(enter.defaultPrevented, false, "and is left to the form");
+      assert.equal(el.querySelector(".select-dropdown"), null);
+
+      const down = press(field, "ArrowDown");
+      await waitFor(() => el.querySelector(".select-dropdown"), "ArrowDown to open the list");
+      assert.equal(down.defaultPrevented, true);
+      assert.equal(el.querySelector(".highlighted"), null, "opening chooses nothing, and the last highlight is gone");
+      assert.equal(field.hasAttribute("aria-activedescendant"), false);
+      assert.deepEqual(el.value, value);
+
+      press(field, "ArrowDown");
+      await waitFor(() => el.querySelector(".highlighted"), "a highlight after the next ArrowDown");
+      assert.equal(el.querySelector(".highlighted").textContent.trim(), "Option 0", "the walk starts from the top");
+      el.remove();
+    });
+});
