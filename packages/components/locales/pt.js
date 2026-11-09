@@ -83,6 +83,7 @@ export default {
   },
   "lc-table": {
     noData: "Sem dados",
+    region: "Tabela rolável",
   },
   "lc-async": {
     failed: "Algo deu errado.",

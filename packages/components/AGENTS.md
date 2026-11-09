@@ -82,7 +82,7 @@ comments saying so.
 | `withPointerDrag()` | divider, split-pane, float-panel (capture); drag-panel, bottom-sheet (`capture: false, touchFallback: true`); `withPullToRefresh` (also `mouse: false`, and `dragYields` handing every move but a pull back to the page's scroll) |
 | `withPullToRefresh()` | an app's own scrolling page, which draws `lc-pull-indicator` above its content |
 | `withSwipeThreshold()` | drawer, stories |
-| `withResize()` | asset-wave, asset-waveform |
+| `withResize()` | table; asset-wave, asset-waveform |
 
 A fragment that takes options is a function returning `defineMixin({...})`; one that does not is
 the object itself. Do not annotate a mixin method with `@this`: `defineMixin` already types `this`

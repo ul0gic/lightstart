@@ -88,6 +88,7 @@ export default {
   },
   "lc-table": {
     noData: "No data",
+    region: "Scrollable table",
   },
   "lc-async": {
     failed: "Something went wrong.",
