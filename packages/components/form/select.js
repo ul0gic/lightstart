@@ -418,7 +418,7 @@ export default defineComponent({
             @change=${this._onChange.bind(this)}
           >
             ${
-              placeholder && !this.multiple && !value
+              placeholder && !this.multiple && !value && !options.some((option) => (option.value ?? option) === "")
                 ? html`<option value="" disabled selected hidden>
                   ${placeholder}
                 </option>`
