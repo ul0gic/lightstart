@@ -1300,4 +1300,27 @@ describe("lc-form field definitions and the controls they reach", () => {
     await tick();
     assert.deepEqual([...el.querySelectorAll("[role=alert]")].map((message) => message.textContent?.trim()), ["Pick one.", "Taken."]);
   });
+
+  it("with novalidate, submits a required field left empty and leaves the refusing to the caller", async () => {
+    const fields = [{ name: "title", label: "Title", type: "text", required: true }];
+    const checked = await mount({ fields });
+    const free = await mount({ fields, novalidate: true });
+    assert.equal(checked.querySelector("form").noValidate, false);
+    assert.equal(free.querySelector("form").noValidate, true);
+    /** @type {unknown[]} */
+    const submitted = [];
+    /** @type {unknown[]} */
+    const refused = [];
+    free.addEventListener("form-submit", (e) => submitted.push(e.detail));
+    free.addEventListener("form-invalid", (e) => refused.push(e.detail));
+    free.submit();
+    await frame();
+    assert.equal(submitted.length, 1, "the submit goes through");
+    assert.deepEqual(refused, []);
+    assert.equal(free.querySelector("[role=alert]"), null, "no built-in message is drawn");
+    free.setErrors({ title: "Taken." });
+    await frame();
+    await tick();
+    assert.equal(free.querySelector("[role=alert]")?.textContent?.trim(), "Taken.");
+  });
 });
