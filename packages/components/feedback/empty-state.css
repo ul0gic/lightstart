@@ -40,7 +40,8 @@
 
   & [part~=lc-empty-state-description] {
     font-size: var(--lc-empty-state-desc-size, var(--text-sm, 0.85rem));
-    opacity: 0.65;
+    color: var(--lc-empty-state-desc-color, inherit);
+    opacity: var(--lc-empty-state-desc-opacity, 0.65);
     max-width: 32ch;
     line-height: 1.5;
   }
