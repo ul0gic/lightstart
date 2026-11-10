@@ -286,10 +286,12 @@ registerFormFieldRenderer("array", (field, value, onChange, html) => {
   const rowName = (/** @type {string} */ key, /** @type {number} */ index) =>
     lcText("lc-field", key, { label: field.label || lcText("lc-field", "item"), position: index + 1 });
 
+  const emptyLabel = field.emptyLabel ?? lcText("lc-field", "nothingYet");
+
   return html`
     <fieldset class="lc-form-list">
       ${field.label ? html`<legend>${field.label}</legend>` : ""}
-      ${items.length === 0 ? html`<p class="lc-form-list-empty">${field.emptyLabel || lcText("lc-field", "nothingYet")}</p>` : ""}
+      ${items.length === 0 && emptyLabel ? html`<p class="lc-form-list-empty">${emptyLabel}</p>` : ""}
       ${items.map((item, index) => html`
         <div class="lc-form-list-item">
           <div class="lc-form-list-fields">

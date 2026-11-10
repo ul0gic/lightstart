@@ -1249,4 +1249,19 @@ describe("lc-form field definitions and the controls they reach", () => {
     assert.equal(code.getAttribute("autocapitalize"), "characters");
   });
 
+  it("an array field with an empty emptyLabel draws no empty line, and with none draws the default words", async () => {
+    const el = await mount({
+      fields: [
+        { name: "quiet", label: "Quiet", type: "array", itemField: { name: "item", type: "text" }, emptyLabel: "" },
+        { name: "plain", label: "Plain", type: "array", itemField: { name: "item", type: "text" } },
+        { name: "named", label: "Named", type: "array", itemField: { name: "item", type: "text" }, emptyLabel: "No rows" },
+      ],
+    });
+    const lists = [...el.querySelectorAll(".lc-form-list")];
+    assert.equal(lists.length, 3);
+    assert.equal(lists[0].querySelector(".lc-form-list-empty"), null);
+    assert.ok(lists[1].querySelector(".lc-form-list-empty")?.textContent?.trim());
+    assert.equal(lists[2].querySelector(".lc-form-list-empty")?.textContent?.trim(), "No rows");
+  });
+
 });
