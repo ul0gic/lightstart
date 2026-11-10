@@ -79,6 +79,7 @@ export default defineComponent({
   events: {
     "field-change": T.object({ name: T.string(), value: T.any(), values: T.object() }),
     "form-invalid": T.object({ errors: T.object() }),
+    "form-submit": T.object(),
   },
 
   connected() {
