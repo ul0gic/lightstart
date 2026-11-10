@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { deletePath, getPath, parsePath, setPath } from "./path.js";
+import { deletePath, getPath, parsePath, pathKey, setPath } from "./path.js";
 
 test("a bracket index is a numeric segment, so a missing container knows its own shape", () => {
   assert.deepEqual(parsePath("links[0].url"), ["links", 0, "url"]);
@@ -45,4 +45,11 @@ test("deleting an object key removes it, and a path through nothing is a no-op",
   deletePath(row, "meta.drop");
   assert.deepEqual(row.meta, { keep: 1 });
   assert.deepEqual(deletePath(row, "nothing.here"), row);
+});
+
+test("a path has one key however its indexes are spelled", () => {
+  assert.equal(pathKey("links[0].url"), "links.0.url");
+  assert.equal(pathKey("links.0.url"), "links.0.url");
+  assert.equal(pathKey("meta.tags[1]"), "meta.tags.1");
+  assert.equal(pathKey("title"), "title");
 });

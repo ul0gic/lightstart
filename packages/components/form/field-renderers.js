@@ -14,7 +14,7 @@
  */
 
 import { html as defaultHtml, nothing } from "@lightstart/light/html";
-import { getPath } from "./path.js";
+import { getPath, pathKey } from "./path.js";
 import { lcText } from "../utils/text.js";
 
 /** @import { FormField, FormFieldRenderer, Renderable } from "../types.ts" */
@@ -243,9 +243,26 @@ registerFormFieldRenderer("json", (field, value, onChange, html) => html`
   ></lc-textarea>
 `);
 
+/**
+ * @param {FormField} parent
+ * @param {FormField} child
+ * @param {unknown} value
+ * @param {(next: unknown) => void} onChange
+ * @param {Parameters<FormFieldRenderer>[3]} html
+ */
+const nestedControl = (parent, child, value, onChange, html) => {
+  const errors = parent.errors ?? {};
+  const error = errors[pathKey(child.name)];
+  const field = { ...child, errors };
+  if (!error) return renderFormControl(field, value, onChange, html);
+  if (drawsOwnError(child)) return renderFormControl({ ...field, errorMessage: error }, value, onChange, html);
+  return html`${renderFormControl(field, value, onChange, html)}<span class="form-error" role="alert">${error}</span>`;
+};
+
 registerFormFieldRenderer("object", (field, value, onChange, html) => {
   const children = (field.fields || []).map((child) =>
-    renderFormControl(
+    nestedControl(
+      field,
       { ...child, name: `${field.name}.${child.name}` },
       getPath(value, child.name),
       (/** @type {unknown} */ next) => onChange({ ...(value && typeof value === "object" ? value : {}), [child.name]: next }),
@@ -296,14 +313,16 @@ registerFormFieldRenderer("array", (field, value, onChange, html) => {
         <div class="lc-form-list-item">
           <div class="lc-form-list-fields">
             ${single
-              ? renderFormControl(
+              ? nestedControl(
+                  field,
                   { ...single, name: `${field.name}[${index}]`, label: single.label || "" },
                   item,
                   (/** @type {unknown} */ next) => onChange(items.map((entry, i) => (i === index ? next : entry))),
                   html,
                 )
               : children.map((child) =>
-                  renderFormControl(
+                  nestedControl(
+                    field,
                     { ...child, name: `${field.name}[${index}].${child.name}` },
                     getPath(item, child.name),
                     (/** @type {unknown} */ next) => at(index, { ...(item && typeof item === "object" ? item : {}), [child.name]: next }),
