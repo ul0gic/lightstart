@@ -290,6 +290,9 @@ export const projectSlots = (host, hooks) => {
       }
       moveUnit(unit, holder, cursor);
     }
+    hooks.watchSlot(holder);
+    for (const unit of stray)
+      for (const node of unitNodes(unit)) if (node.nodeType === 1) hooks.watchUnit(/** @type {Element} */ (node));
   }
 
   let again = false;

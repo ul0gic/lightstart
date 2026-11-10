@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it, beforeEach, afterEach } from "node:test";
 import View, { defineComponent, defineMixin } from "@lightstart/light";
 import T from "@lightstart/light/types";
-import { disposeTree, element, html, key } from "@lightstart/light/html";
+import { disposeTree, element, html, key, nothing } from "@lightstart/light/html";
 import { signal } from "@lightstart/light/signals";
 import { composeDefinition } from "./definition.js";
 
@@ -1907,6 +1907,45 @@ describe("light - light-DOM slots", () => {
     await tick();
     assert.equal(i.parentNode, el.querySelector(":scope > unslotted"));
     assert.equal(el.querySelector("slot").hasAttribute("data-assigned"), false);
+    el.remove();
+  });
+
+  it("routes a child its parent inserts after the first render, on a host with no default slot", async () => {
+    if (!customElements.get("slot-late-row")) View.define("slot-late-row", { render() { return html`<b>fixed</b><slot name="end"></slot>`; } });
+    const page = defineHost(
+      function () {
+        return html`<slot-late-row>${this.live ? html`<i slot="end">late</i>` : nothing}</slot-late-row>`;
+      },
+      { props: { live: false } },
+    );
+    const el = await mount(page);
+    await tick();
+    const row = el.querySelector("slot-late-row");
+    assert.ok(row.querySelector(":scope > unslotted"), "the empty range is held while it names no slot");
+    el.live = true;
+    await el.$requestUpdate();
+    await tick();
+    const i = row.querySelector("i");
+    assert.equal(i.parentNode, row.querySelector("slot[name=end]"));
+    assert.ok(i.getClientRects().length > 0);
+    assert.equal(row.querySelector(":scope > unslotted"), null);
+    el.live = false;
+    await el.$requestUpdate();
+    await tick();
+    assert.equal(row.querySelector("i"), null);
+    assert.equal(row.querySelector("slot[name=end]").hasAttribute("data-assigned"), false);
+    el.remove();
+  });
+
+  it("routes a held child once it gains the slot attribute of a slot the host renders", async () => {
+    const tag = defineHost(() => html`<slot name="a"></slot>`);
+    const el = await mount(tag, "<i>x</i>");
+    const i = el.querySelector("i");
+    assert.equal(i.parentNode, el.querySelector(":scope > unslotted"));
+    i.setAttribute("slot", "a");
+    await tick();
+    assert.equal(i.parentNode, el.querySelector("slot[name=a]"));
+    assert.equal(el.querySelector(":scope > unslotted"), null);
     el.remove();
   });
 
