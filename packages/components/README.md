@@ -121,6 +121,8 @@ export default {
 
 `novalidate` leaves validation to the caller: the browser's own checks and the form's `required` refusals are skipped, the submit goes through, and `setErrors()` draws what the caller finds.
 
+An error is addressed by its field's name, and a name is a path: `setErrors({ "links[0].url": "Not an address" })`, or the same path spelled `links.0.url`, draws the message at that row's control, in a list or a group at any depth.
+
 An error is drawn with `role="alert"`, by the form or by the control that owns it, so one that a submit or `setErrors()` brings is announced.
 
 A control's host is not focusable, so `focus()` on it moves nothing. `lc-input` and `lc-search` have `focusInput()`, which puts the caret in the field.
