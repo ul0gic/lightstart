@@ -1,7 +1,7 @@
 import { html } from "@lightstart/light/html";
 import T from "@lightstart/light/types";
 import { getFormFieldRenderer, renderFormControl, drawsOwnLabel, drawsOwnError } from "./field-renderers.js";
-import { getPath, setPath } from "./path.js";
+import { getPath, pathKey, setPath } from "./path.js";
 import { defineComponent } from "@lightstart/light";
 import { lcText } from "../utils/text.js";
 
@@ -520,19 +520,20 @@ export default defineComponent({
 
   render() {
     const formData = this.deserialize(this.data || {});
+    const errors = Object.fromEntries(Object.entries(this.errors).map(([path, message]) => [pathKey(path), String(message)]));
 
     return html`
       <form ?novalidate=${this.novalidate} @submit=${this._handleSubmit}>
         ${this.visibleFields().map((original) => {
           const value = formData[original.name];
           const field = this._withOptions(original, value);
-          const error = this.errors[field.name];
+          const error = errors[pathKey(field.name)];
           const ownsError = !this.typeHandlers[field.type]?.render && drawsOwnError(field);
           const hint = field.help || field.description;
           return html`
             <div class="form-field ${field.class || ""} ${error ? "has-error" : ""}">
               ${field.label && !drawsOwnLabel(field) ? html`<lc-label text=${field.label} ?required=${field.required}></lc-label>` : ""}
-              ${this.renderField(ownsError ? { ...field, errorMessage: error ?? "" } : field, value)}
+              ${this.renderField(ownsError ? { ...field, errors, errorMessage: error ?? "" } : { ...field, errors }, value)}
               ${hint && !ownsError ? html`<small class="form-hint">${hint}</small>` : ""}
               ${error && !ownsError ? html`<span class="form-error" role="alert">${error}</span>` : ""}
             </div>

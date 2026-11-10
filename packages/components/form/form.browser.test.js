@@ -1323,4 +1323,76 @@ describe("lc-form field definitions and the controls they reach", () => {
     await tick();
     assert.equal(free.querySelector("[role=alert]")?.textContent?.trim(), "Taken.");
   });
+
+  /** @param {Element} el @param {string} name */
+  const messageOf = (el, name) => {
+    const control = /** @type {Element} */ (el.querySelector(`[name="${name}"]`));
+    const own = control.querySelector(".input-error");
+    const beside = control.nextElementSibling?.matches(".form-error") ? control.nextElementSibling : null;
+    return (own ?? beside)?.textContent?.trim() ?? null;
+  };
+  const PARTS = {
+    name: "parts",
+    label: "Parts",
+    type: "array",
+    itemFields: [
+      { name: "count", label: "Count", type: "number" },
+      { name: "kind", label: "Kind", type: "select", options: ["a", "b"] },
+    ],
+  };
+
+  it("draws an error addressed to a row's control at that control, whichever way the index is spelled", async () => {
+    const el = await mount({ fields: [PARTS], data: { parts: [{ count: 1, kind: "a" }, { count: 2, kind: "b" }] } });
+    el.setErrors({ "parts.0.count": "Too many.", "parts[1].kind": "Pick another." });
+    await frame();
+    await tick();
+    assert.equal(messageOf(el, "parts[0].count"), "Too many.");
+    assert.equal(messageOf(el, "parts[1].kind"), "Pick another.");
+    assert.equal(messageOf(el, "parts[1].count"), null);
+    assert.equal(messageOf(el, "parts[0].kind"), null);
+    assert.equal(el.querySelectorAll("[role=alert]").length, 2, "each message is drawn once");
+  });
+
+  it("draws an error addressed to a group's field at that field, at any depth", async () => {
+    const el = await mount({
+      fields: [{
+        name: "place",
+        label: "Place",
+        type: "object",
+        fields: [
+          { name: "city", label: "City", type: "text" },
+          { name: "links", label: "Links", type: "array", itemFields: [{ name: "url", label: "URL", type: "url" }] },
+        ],
+      }],
+      data: { place: { city: "", links: [{ url: "x" }] } },
+    });
+    el.setErrors({ "place.city": "Name a city.", "place.links[0].url": "Not an address." });
+    await frame();
+    await tick();
+    assert.equal(messageOf(el, "place.city"), "Name a city.");
+    assert.equal(messageOf(el, "place.links[0].url"), "Not an address.");
+  });
+
+  it("draws a row's error beside a registered control that draws none of its own", async () => {
+    registerFormFieldRenderer("probe-plain-control", (field, value, onChange, h) => h`<input name=${field.name} .value=${String(value ?? "")} @input=${(/** @type {Event} */ e) => onChange(/** @type {HTMLInputElement} */ (e.target).value)} />`);
+    const el = await mount({
+      fields: [{ name: "codes", label: "Codes", type: "array", itemField: { name: "code", type: "probe-plain-control" } }],
+      data: { codes: ["a", "b"] },
+    });
+    el.setErrors({ "codes.1": "Unknown code." });
+    await frame();
+    await tick();
+    assert.equal(messageOf(el, "codes[1]"), "Unknown code.");
+    assert.equal(messageOf(el, "codes[0]"), null);
+  });
+
+  it("still draws an error addressed to the list itself once, under the list", async () => {
+    const el = await mount({ fields: [PARTS, { name: "title", label: "Title", type: "text" }], data: { parts: [{ count: 1, kind: "a" }] } });
+    el.setErrors({ parts: "Add at least two.", title: "Taken." });
+    await frame();
+    await tick();
+    const list = /** @type {Element} */ (el.querySelector(".lc-form-list")?.closest(".form-field"));
+    assert.deepEqual([...list.querySelectorAll("[role=alert]")].map((message) => message.textContent?.trim()), ["Add at least two."]);
+    assert.equal(messageOf(el, "title"), "Taken.");
+  });
 });
