@@ -106,3 +106,35 @@ describe("@lightstart/light - lc-empty-state", () => {
     assert.ok(el.querySelector("[part~=lc-empty-state-actions]")?.contains(button));
   });
 });
+
+describe("@lightstart/light - lc-empty-state description colour", () => {
+  before(async () => {
+    if (!customElements.get("lc-empty-state")) View.define("lc-empty-state", emptyStateDef);
+    await loadStyles("empty-state");
+  });
+
+  afterEach(async () => {
+    for (const el of mounted.splice(0)) el.remove();
+    await tick();
+  });
+
+  /** @param {Element} el */
+  const descriptionOf = (el) => getComputedStyle(/** @type {HTMLElement} */ (el.querySelector("[part~=lc-empty-state-description]")));
+
+  it("draws the description in a colour and an opacity a theme sets", async () => {
+    const el = await mount({ title: "Nothing here", description: "Add one to begin." });
+    el.style.setProperty("--lc-empty-state-desc-color", "rgb(10, 20, 30)");
+    el.style.setProperty("--lc-empty-state-desc-opacity", "1");
+    const style = descriptionOf(el);
+    assert.equal(style.color, "rgb(10, 20, 30)");
+    assert.equal(style.opacity, "1");
+  });
+
+  it("keeps the text colour at 0.65 when a theme sets neither", async () => {
+    const el = await mount({ title: "Nothing here", description: "Add one to begin." });
+    el.style.setProperty("--lc-empty-state-color", "rgb(40, 50, 60)");
+    const style = descriptionOf(el);
+    assert.equal(style.color, "rgb(40, 50, 60)");
+    assert.equal(style.opacity, "0.65");
+  });
+});
