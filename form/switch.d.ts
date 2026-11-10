@@ -1,7 +1,6 @@
 declare const _default: Omit<{
     tag: string;
     props: {
-        _internals: Prop<ElementInternals | null>;
         checked: false;
         disabled: false;
         name: string;
@@ -22,14 +21,11 @@ declare const _default: Omit<{
         }>;
     };
     style: boolean;
-    formAssociated: boolean;
-    connected(): void;
     /** @param {Event} e */
     handleChange(e: Event): void;
     render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
-        _internals: Prop<ElementInternals | null>;
         checked: false;
         disabled: false;
         name: string;
@@ -53,4 +49,3 @@ declare const _default: Omit<{
     mixins?: [] | undefined;
 };
 export default _default;
-import type { Prop } from "../types.js";

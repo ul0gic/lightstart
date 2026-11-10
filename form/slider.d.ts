@@ -1,6 +1,5 @@
 declare const _default: Omit<{
     mixins: [{
-        formAssociated: boolean;
         props: {
             label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
             name: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
@@ -24,11 +23,6 @@ declare const _default: Omit<{
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;
-            _labelledBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
-                readonly reactive: false;
-                readonly defaultValue: "";
-            }>;
-            _internals: import("../types.js").Prop<ElementInternals | null>;
         };
         events: {
             input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
@@ -40,10 +34,6 @@ declare const _default: Omit<{
         };
         getInputId(): string;
         connected(): void;
-        _onHostClick(e: MouseEvent): void;
-        updated(): void;
-        _syncLabelledBy(): void;
-        syncFormValue(value: unknown): void;
     } & {
         props?: {
             label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
@@ -68,11 +58,6 @@ declare const _default: Omit<{
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;
-            _labelledBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
-                readonly reactive: false;
-                readonly defaultValue: "";
-            }>;
-            _internals: import("../types.js").Prop<ElementInternals | null>;
         } | undefined;
         events?: {
             input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
@@ -101,7 +86,6 @@ declare const _default: Omit<{
         steppers: false;
     };
     style: boolean;
-    connected(): void;
     willUpdate(): void;
     firstUpdated(): void;
     updated(): void;
@@ -142,7 +126,6 @@ declare const _default: Omit<{
     } | undefined;
     events?: {} | undefined;
     mixins?: [{
-        formAssociated: boolean;
         props: {
             label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
             name: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
@@ -166,11 +149,6 @@ declare const _default: Omit<{
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;
-            _labelledBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
-                readonly reactive: false;
-                readonly defaultValue: "";
-            }>;
-            _internals: import("../types.js").Prop<ElementInternals | null>;
         };
         events: {
             input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
@@ -182,10 +160,6 @@ declare const _default: Omit<{
         };
         getInputId(): string;
         connected(): void;
-        _onHostClick(e: MouseEvent): void;
-        updated(): void;
-        _syncLabelledBy(): void;
-        syncFormValue(value: unknown): void;
     } & {
         props?: {
             label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
@@ -210,11 +184,6 @@ declare const _default: Omit<{
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;
-            _labelledBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
-                readonly reactive: false;
-                readonly defaultValue: "";
-            }>;
-            _internals: import("../types.js").Prop<ElementInternals | null>;
         } | undefined;
         events?: {
             input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {

@@ -4,7 +4,6 @@
 export const missing: any;
 export const found: import("@lightstart/light").ComponentThis<Omit<{
     mixins: [{
-        formAssociated: boolean;
         props: {
             label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
             name: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
@@ -28,11 +27,6 @@ export const found: import("@lightstart/light").ComponentThis<Omit<{
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;
-            _labelledBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
-                readonly reactive: false;
-                readonly defaultValue: "";
-            }>;
-            _internals: import("../types").Prop<ElementInternals | null>;
         };
         events: {
             input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
@@ -44,10 +38,6 @@ export const found: import("@lightstart/light").ComponentThis<Omit<{
         };
         getInputId(): string;
         connected(): void;
-        _onHostClick(e: MouseEvent): void;
-        updated(): void;
-        _syncLabelledBy(): void;
-        syncFormValue(value: unknown): void;
     } & {
         props?: {
             label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
@@ -72,11 +62,6 @@ export const found: import("@lightstart/light").ComponentThis<Omit<{
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;
-            _labelledBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
-                readonly reactive: false;
-                readonly defaultValue: "";
-            }>;
-            _internals: import("../types").Prop<ElementInternals | null>;
         } | undefined;
         events?: {
             input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
@@ -122,7 +107,6 @@ export const found: import("@lightstart/light").ComponentThis<Omit<{
     } | undefined;
     events?: {} | undefined;
     mixins?: [{
-        formAssociated: boolean;
         props: {
             label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
             name: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
@@ -146,11 +130,6 @@ export const found: import("@lightstart/light").ComponentThis<Omit<{
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;
-            _labelledBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
-                readonly reactive: false;
-                readonly defaultValue: "";
-            }>;
-            _internals: import("../types").Prop<ElementInternals | null>;
         };
         events: {
             input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
@@ -162,10 +141,6 @@ export const found: import("@lightstart/light").ComponentThis<Omit<{
         };
         getInputId(): string;
         connected(): void;
-        _onHostClick(e: MouseEvent): void;
-        updated(): void;
-        _syncLabelledBy(): void;
-        syncFormValue(value: unknown): void;
     } & {
         props?: {
             label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
@@ -190,11 +165,6 @@ export const found: import("@lightstart/light").ComponentThis<Omit<{
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;
-            _labelledBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
-                readonly reactive: false;
-                readonly defaultValue: "";
-            }>;
-            _internals: import("../types").Prop<ElementInternals | null>;
         } | undefined;
         events?: {
             input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
@@ -206,7 +176,6 @@ export const found: import("@lightstart/light").ComponentThis<Omit<{
         } | undefined;
     }] | undefined;
 }, [{
-    formAssociated: boolean;
     props: {
         label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         name: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
@@ -230,11 +199,6 @@ export const found: import("@lightstart/light").ComponentThis<Omit<{
             readonly reactive: false;
             readonly defaultValue: "";
         }>;
-        _labelledBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
-            readonly reactive: false;
-            readonly defaultValue: "";
-        }>;
-        _internals: import("../types").Prop<ElementInternals | null>;
     };
     events: {
         input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
@@ -246,10 +210,6 @@ export const found: import("@lightstart/light").ComponentThis<Omit<{
     };
     getInputId(): string;
     connected(): void;
-    _onHostClick(e: MouseEvent): void;
-    updated(): void;
-    _syncLabelledBy(): void;
-    syncFormValue(value: unknown): void;
 } & {
     props?: {
         label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
@@ -274,11 +234,6 @@ export const found: import("@lightstart/light").ComponentThis<Omit<{
             readonly reactive: false;
             readonly defaultValue: "";
         }>;
-        _labelledBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
-            readonly reactive: false;
-            readonly defaultValue: "";
-        }>;
-        _internals: import("../types").Prop<ElementInternals | null>;
     } | undefined;
     events?: {
         input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {

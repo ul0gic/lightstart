@@ -18,22 +18,12 @@ export default defineComponent({
   },
   style: true,
 
-  connected() {
-    this._updateFormValue();
-  },
-
   /** @param {{ changedProps: Map<string, unknown> }} arg */
   updated({ changedProps }) {
-    if (changedProps.has("checked"))
-      this._updateFormValue();
     if (changedProps.has("indeterminate")) {
       const input = this.querySelector("input");
       if (input) input.indeterminate = this.indeterminate;
     }
-  },
-
-  _updateFormValue() {
-    this.syncFormValue(this.checked ? (this.value || "on") : null);
   },
 
   /** @param {Event} e */
@@ -41,7 +31,6 @@ export default defineComponent({
     e.stopPropagation();
     this.checked = /** @type {HTMLInputElement} */ (e.target).checked;
     this.indeterminate = false;
-    this._updateFormValue();
     this.$emit("change", { checked: this.checked, value: this.value });
   },
 
@@ -54,7 +43,7 @@ export default defineComponent({
         class="checkbox"
         ?checked=${this.checked}
         .indeterminate=${this.indeterminate}
-        value=${this.value}
+        value=${this.value || nothing}
         name=${this.name}
         aria-label=${this.ariaLabel || nothing}
         ?disabled=${this.disabled}

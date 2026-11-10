@@ -1,11 +1,10 @@
 declare const _default: Omit<{
     mixins: [{
-        formAssociated: boolean;
         props: {
             label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
             name: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
             id: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
-            value: Prop<import("../types.js").Renderable>;
+            value: Prop<Renderable>;
             placeholder: string;
             disabled: false;
             readonly: false;
@@ -24,11 +23,6 @@ declare const _default: Omit<{
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;
-            _labelledBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
-                readonly reactive: false;
-                readonly defaultValue: "";
-            }>;
-            _internals: Prop<ElementInternals | null>;
         };
         events: {
             input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
@@ -40,16 +34,12 @@ declare const _default: Omit<{
         };
         getInputId(): string;
         connected(): void;
-        _onHostClick(e: MouseEvent): void;
-        updated(): void;
-        _syncLabelledBy(): void;
-        syncFormValue(value: unknown): void;
     } & {
         props?: {
             label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
             name: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
             id: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
-            value: Prop<import("../types.js").Renderable>;
+            value: Prop<Renderable>;
             placeholder: string;
             disabled: false;
             readonly: false;
@@ -68,11 +58,6 @@ declare const _default: Omit<{
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;
-            _labelledBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
-                readonly reactive: false;
-                readonly defaultValue: "";
-            }>;
-            _internals: Prop<ElementInternals | null>;
         } | undefined;
         events?: {
             input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
@@ -93,7 +78,6 @@ declare const _default: Omit<{
     tag: string;
     style: boolean;
     props: {
-        _defaultValue: Prop<string | string[]>;
         options: Prop<SelectOption[]>;
         multiple: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
         searchable: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
@@ -110,11 +94,6 @@ declare const _default: Omit<{
             readonly defaultValue: -1;
         }>;
     };
-    formResetCallback(): void;
-    /** @param {boolean} disabled */
-    formDisabledCallback(disabled: boolean): void;
-    /** @param {string} state */
-    formStateRestoreCallback(state: string): void;
     reportValidity(): boolean;
     connected(): void;
     /** @param {FocusEvent} e */
@@ -129,11 +108,7 @@ declare const _default: Omit<{
     readonly selected: string[];
     /** @param {unknown} value @returns {boolean} */
     isSelected(value: unknown): boolean;
-    /**
-     * A multi-select's form value is the list joined, which is what
-     * `formStateRestoreCallback` reads back.
-     * @param {string[] | string} value
-     */
+    /** @param {string[] | string} value */
     _commit(value: string[] | string): void;
     /**
      * An open list is scrolled into view, clear of whatever the page keeps over
@@ -187,12 +162,16 @@ declare const _default: Omit<{
     _onChange(e: Event): void;
     /** @param {MouseEvent} e */
     _toggleDropdown(e: MouseEvent): void;
+    /**
+     * The named native control a searchable select does not draw.
+     * @returns {Renderable}
+     */
+    _hiddenValues(): Renderable;
     renderTags(): import("@lightstart/light/html").TemplateResult;
     renderSearchable(): import("@lightstart/light/html").TemplateResult;
     render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
-        _defaultValue: Prop<string | string[]>;
         options: Prop<SelectOption[]>;
         multiple: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
         searchable: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
@@ -211,12 +190,11 @@ declare const _default: Omit<{
     } | undefined;
     events?: {} | undefined;
     mixins?: [{
-        formAssociated: boolean;
         props: {
             label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
             name: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
             id: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
-            value: Prop<import("../types.js").Renderable>;
+            value: Prop<Renderable>;
             placeholder: string;
             disabled: false;
             readonly: false;
@@ -235,11 +213,6 @@ declare const _default: Omit<{
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;
-            _labelledBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
-                readonly reactive: false;
-                readonly defaultValue: "";
-            }>;
-            _internals: Prop<ElementInternals | null>;
         };
         events: {
             input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
@@ -251,16 +224,12 @@ declare const _default: Omit<{
         };
         getInputId(): string;
         connected(): void;
-        _onHostClick(e: MouseEvent): void;
-        updated(): void;
-        _syncLabelledBy(): void;
-        syncFormValue(value: unknown): void;
     } & {
         props?: {
             label: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
             name: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
             id: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
-            value: Prop<import("../types.js").Renderable>;
+            value: Prop<Renderable>;
             placeholder: string;
             disabled: false;
             readonly: false;
@@ -279,11 +248,6 @@ declare const _default: Omit<{
                 readonly reactive: false;
                 readonly defaultValue: "";
             }>;
-            _labelledBy: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
-                readonly reactive: false;
-                readonly defaultValue: "";
-            }>;
-            _internals: Prop<ElementInternals | null>;
         } | undefined;
         events?: {
             input: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
@@ -303,5 +267,6 @@ declare const _default: Omit<{
     }] | undefined;
 };
 export default _default;
+import type { Renderable } from "../types.js";
 import type { Prop } from "../types.js";
 import type { SelectOption } from "../types.js";
