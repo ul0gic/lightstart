@@ -327,10 +327,11 @@ export interface RuleEntry<M extends ProjectModel = ProjectModel> {
     file: string;
     rule: CheckRule<M>;
 }
-/** A rule file and the owner its id is derived from. */
+/** A rule file and the owner its id is derived from; `own` marks light's built-in rules. */
 export interface RuleSource {
     owner: string;
     file: string;
+    own?: boolean;
 }
 export interface RunOptions<M extends ProjectModel = ProjectModel> {
     context: ProjectContext<M>;

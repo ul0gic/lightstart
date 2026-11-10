@@ -1,4 +1,4 @@
-export const TYPESCRIPT_HINT: "light classes:bake reads templates with TypeScript.\n  Install it where you are running from:  npm i -D typescript";
+export const TYPESCRIPT_HINT: "light classes:bake reads templates with TypeScript 6: typescript 6, or @typescript/typescript6 beside TypeScript 7.\n  Install it where you are running from:  npm i -D @typescript/typescript6";
 export function classStringsOf(source: string, file: string, ts: typeof import("typescript")): {
     classes: string[];
     problems: string[];
