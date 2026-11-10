@@ -3,7 +3,7 @@
  *
  * A field name is a path, not a key: `links[0].url` addresses one entry of a
  * repeated group. The form holds one values object and every control addresses
- * its own leaf, so these four functions are the whole contract between a
+ * its own leaf, so these five functions are the whole contract between a
  * nested field list and the payload it produces.
  */
 
@@ -19,6 +19,14 @@ export const parsePath = (path) =>
     .split(".")
     .filter((segment) => segment !== "")
     .map((segment) => (/^\d+$/.test(segment) ? Number(segment) : segment));
+
+/**
+ * A path in one spelling, so `links[0].url` and `links.0.url` are the same
+ * key: what an error addressed to a field is looked up by.
+ * @param {string} path
+ * @returns {string}
+ */
+export const pathKey = (path) => parsePath(path).join(".");
 
 /**
  * @param {unknown} source
