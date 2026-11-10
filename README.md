@@ -110,7 +110,7 @@ export default {
 | `required` | Refused on submit, with the reason drawn beside the field |
 | `help` / `description` | A hint under the control |
 | `visibleIf` | A field name that has to be truthy, or a predicate over the values. A hidden field is not collected either |
-| `min` / `max` / `step`, `disabled`, `readonly`, `placeholder`, `rows` | Forwarded to the control; on a `multi-select`, `max` is the most it takes |
+| `min` / `max` / `step`, `disabled`, `readonly`, `placeholder`, `rows`, `inputmode`, `autocomplete`, `autocapitalize` | Forwarded to the control; on a `multi-select`, `max` is the most it takes |
 | `searchable` | A `select` typed into to find its option. A `multi-select` always is, and draws what is picked as tags with an x |
 | `prefix` | Text drawn inside a text field before what is typed and never part of the value, like the `@` of a handle |
 | `options`, or `loadOptions` + `dependsOn` | A select's choices, constant or fetched and reloaded when what they follow changes; an option's `leading` (a flag, an emoji) is drawn before its label |
@@ -118,6 +118,14 @@ export default {
 | `class` | On the field's wrapper |
 
 `layout="stacked"` gives each field its own row; the default pairs them two to a row above 640px.
+
+`novalidate` leaves validation to the caller: the browser's own checks and the form's `required` refusals are skipped, the submit goes through, and `setErrors()` draws what the caller finds.
+
+An error is addressed by its field's name, and a name is a path: `setErrors({ "links[0].url": "Not an address" })`, or the same path spelled `links.0.url`, draws the message at that row's control, in a list or a group at any depth.
+
+An error is drawn with `role="alert"`, by the form or by the control that owns it, so one that a submit or `setErrors()` brings is announced.
+
+A control's host is not focusable, so `focus()` on it moves nothing. `lc-input` and `lc-search` have `focusInput()`, which puts the caret in the field.
 
 A control it does not have is registered rather than worked around:
 

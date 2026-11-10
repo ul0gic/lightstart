@@ -79,6 +79,8 @@ export const found: import("@lightstart/light").ComponentThis<Omit<{
             readonly enum: readonly ["text", "email", "tel", "url", "search", "password", "number", "date", "datetime-local", "time", "month", "week", "color"];
         }>;
         inputmode: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        autocomplete: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        autocapitalize: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         min: import("../types").Prop<string | number | null>;
         max: import("../types").Prop<string | number | null>;
         step: import("../types").Prop<string | number | null>;
@@ -98,6 +100,8 @@ export const found: import("@lightstart/light").ComponentThis<Omit<{
             readonly enum: readonly ["text", "email", "tel", "url", "search", "password", "number", "date", "datetime-local", "time", "month", "week", "color"];
         }>;
         inputmode: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        autocomplete: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        autocapitalize: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         min: import("../types").Prop<string | number | null>;
         max: import("../types").Prop<string | number | null>;
         step: import("../types").Prop<string | number | null>;
@@ -249,6 +253,8 @@ export const found: import("@lightstart/light").ComponentThis<Omit<{
         readonly enum: readonly ["text", "email", "tel", "url", "search", "password", "number", "date", "datetime-local", "time", "month", "week", "color"];
     }>;
     inputmode: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+    autocomplete: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+    autocapitalize: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
     min: import("../types").Prop<string | number | null>;
     max: import("../types").Prop<string | number | null>;
     step: import("../types").Prop<string | number | null>;
@@ -261,6 +267,8 @@ export const found: import("@lightstart/light").ComponentThis<Omit<{
         readonly enum: readonly ["text", "email", "tel", "url", "search", "password", "number", "date", "datetime-local", "time", "month", "week", "color"];
     }>;
     inputmode: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+    autocomplete: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+    autocapitalize: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
     min: import("../types").Prop<string | number | null>;
     max: import("../types").Prop<string | number | null>;
     step: import("../types").Prop<string | number | null>;

@@ -14,6 +14,8 @@ export default defineComponent({
       enum: ["text", "email", "tel", "url", "search", "password", "number", "date", "datetime-local", "time", "month", "week", "color"],
     }),
     inputmode: T.string(),
+    autocomplete: T.string(),
+    autocapitalize: T.string(),
     min: /** @type {Prop<string | number | null>} */ (T.any({ defaultValue: null })),
     max: /** @type {Prop<string | number | null>} */ (T.any({ defaultValue: null })),
     step: /** @type {Prop<string | number | null>} */ (T.any({ defaultValue: null })),
@@ -50,6 +52,8 @@ export default defineComponent({
         class="input"
         type=${this.type}
         inputmode=${this.inputmode || nothing}
+        autocomplete=${this.autocomplete || nothing}
+        autocapitalize=${this.autocapitalize || nothing}
         .value=${this.value ?? ""}
         placeholder=${this.placeholder}
         min=${this.min ?? nothing}
@@ -69,7 +73,7 @@ export default defineComponent({
         ? html`<span class="input-affixed" style=${`--lc-input-prefix-chars:${[...this.prefix].length}`}><span class="input-prefix" aria-hidden="true">${this.prefix}</span>${field}</span>`
         : field}
       ${this.hint ? html`<span class="input-hint" id=${`${id}-hint`}>${this.hint}</span>` : ""}
-      ${this.errorMessage ? html`<span class="input-error" id=${`${id}-error`}>${this.errorMessage}</span>` : ""}
+      ${this.errorMessage ? html`<span class="input-error" id=${`${id}-error`} role="alert">${this.errorMessage}</span>` : ""}
     `;
   },
 });

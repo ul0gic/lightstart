@@ -11,6 +11,7 @@ declare const _default: Omit<{
             readonly defaultValue: "grid";
             readonly enum: readonly ["grid", "stacked"];
         }>;
+        novalidate: false;
         _options: Prop<Record<string, {
             loading: boolean;
             options: unknown[];
@@ -31,6 +32,7 @@ declare const _default: Omit<{
         "form-invalid": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
             readonly errors: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
+        "form-submit": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
     };
     connected(): void;
     /**
@@ -175,6 +177,7 @@ declare const _default: Omit<{
             readonly defaultValue: "grid";
             readonly enum: readonly ["grid", "stacked"];
         }>;
+        novalidate: false;
         _options: Prop<Record<string, {
             loading: boolean;
             options: unknown[];
@@ -195,6 +198,7 @@ declare const _default: Omit<{
         "form-invalid": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
             readonly errors: import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
+        "form-submit": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
     } | undefined;
     mixins?: [] | undefined;
 };

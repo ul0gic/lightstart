@@ -78,6 +78,8 @@ declare const _default: Omit<{
         minlength: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly defaultValue: null;
         }>;
+        autocomplete: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        autocapitalize: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         resize: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "vertical";
             readonly enum: readonly ["none", "both", "horizontal", "vertical"];
@@ -99,6 +101,8 @@ declare const _default: Omit<{
         minlength: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
             readonly defaultValue: null;
         }>;
+        autocomplete: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        autocapitalize: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         resize: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly defaultValue: "vertical";
             readonly enum: readonly ["none", "both", "horizontal", "vertical"];

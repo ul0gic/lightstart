@@ -318,7 +318,7 @@ export default defineComponent({
     const label = this.label && !collapsed
       ? html`<lc-label id="${this._id}-label" for="${this._id}-input" text=${this.label}></lc-label>`
       : nothing;
-    const error = this.errorMessage ? html`<span class="search-error" id="${this._id}-error">${this.errorMessage}</span>` : nothing;
+    const error = this.errorMessage ? html`<span class="search-error" id="${this._id}-error" role="alert">${this.errorMessage}</span>` : nothing;
     if (!this.leading && !this.trailing) return html`${label}${body}${error}`;
     return html`
       ${label}

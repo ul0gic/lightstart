@@ -75,6 +75,8 @@ declare const _default: Omit<{
             readonly enum: readonly ["text", "email", "tel", "url", "search", "password", "number", "date", "datetime-local", "time", "month", "week", "color"];
         }>;
         inputmode: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        autocomplete: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        autocapitalize: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         min: Prop<string | number | null>;
         max: Prop<string | number | null>;
         step: Prop<string | number | null>;
@@ -96,6 +98,8 @@ declare const _default: Omit<{
             readonly enum: readonly ["text", "email", "tel", "url", "search", "password", "number", "date", "datetime-local", "time", "month", "week", "color"];
         }>;
         inputmode: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        autocomplete: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        autocapitalize: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         min: Prop<string | number | null>;
         max: Prop<string | number | null>;
         step: Prop<string | number | null>;
