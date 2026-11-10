@@ -57,7 +57,7 @@ const walk = (dir) =>
 export const stage = () => {
   rmSync(DIST, { recursive: true, force: true });
   const sources = walk(LIGHT).map((file) => relative(LIGHT, file)).filter((file) => (/\.(js|ts|css)$/.test(file) || SHIM_FILE.test(file)) && !SIDE_FILE.test(file) && !TOOL_FILE.test(file));
-  const docs = ["README.md", "LICENSE"].filter((file) => existsSync(join(LIGHT, file)));
+  const docs = [...walk(LIGHT).map((file) => relative(LIGHT, file)).filter((file) => /(^|[\\/])README\.md$/.test(file)), "LICENSE"].filter((file) => existsSync(join(LIGHT, file)));
   for (const file of [...sources, ...docs]) {
     mkdirSync(dirname(join(DIST, file)), { recursive: true });
     cpSync(join(LIGHT, file), join(DIST, file));
