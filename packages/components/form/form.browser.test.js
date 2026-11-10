@@ -1268,4 +1268,22 @@ describe("lc-form field definitions and the controls they reach", () => {
     assert.deepEqual(Object.keys(formDef.events ?? {}).sort(), ["field-change", "form-invalid", "form-submit"]);
   });
 
+  it("a refused field's border takes the theme's danger colour, as the same field does outside a form", async () => {
+    const sheet = document.createElement("link");
+    sheet.rel = "stylesheet";
+    sheet.href = new URL("./form.css", import.meta.url).href;
+    const loaded = new Promise((resolve) => { sheet.onload = resolve; sheet.onerror = resolve; });
+    document.head.append(sheet);
+    await loaded;
+    document.documentElement.style.setProperty("--color-danger", "rgb(138, 25, 21)");
+    const el = await mount({ fields: [{ name: "kind", label: "Kind", type: "select", options: ["a", "b"] }] });
+    el.setErrors({ kind: "Pick one." });
+    await frame();
+    await tick();
+    const control = /** @type {HTMLElement} */ (el.querySelector('lc-select[name="kind"]'));
+    assert.equal(getComputedStyle(control).getPropertyValue("--lc-input-border-color").trim(), "rgb(138, 25, 21)");
+    assert.equal(getComputedStyle(/** @type {HTMLElement} */ (el.querySelector(".form-error"))).color, "rgb(138, 25, 21)");
+    document.documentElement.style.removeProperty("--color-danger");
+    sheet.remove();
+  });
 });
