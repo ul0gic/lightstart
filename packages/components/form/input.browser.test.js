@@ -241,3 +241,26 @@ describe("@lightstart/light - lc-input hint", () => {
     assert.equal(field(el).hasAttribute("aria-describedby"), false);
   });
 });
+
+describe("@lightstart/light - lc-input autofill attributes", () => {
+  before(() => {
+    if (!customElements.get("lc-input")) View.define("lc-input", inputDef);
+  });
+
+  afterEach(async () => {
+    for (const el of mounted.splice(0)) el.remove();
+    await tick();
+  });
+
+  it("hands autocomplete and autocapitalize to its field, where the browser reads them", async () => {
+    const el = await mount({ type: "password", autocomplete: "new-password", autocapitalize: "characters" });
+    assert.equal(field(el).getAttribute("autocomplete"), "new-password");
+    assert.equal(field(el).getAttribute("autocapitalize"), "characters");
+  });
+
+  it("leaves both off its field when neither is set", async () => {
+    const el = await mount({ label: "Username" });
+    assert.equal(field(el).hasAttribute("autocomplete"), false);
+    assert.equal(field(el).hasAttribute("autocapitalize"), false);
+  });
+});
