@@ -1264,4 +1264,8 @@ describe("lc-form field definitions and the controls they reach", () => {
     assert.equal(lists[2].querySelector(".lc-form-list-empty")?.textContent?.trim(), "No rows");
   });
 
+  it("declares form-submit among its events, with the two it already declared", () => {
+    assert.deepEqual(Object.keys(formDef.events ?? {}).sort(), ["field-change", "form-invalid", "form-submit"]);
+  });
+
 });
