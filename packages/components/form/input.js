@@ -73,7 +73,7 @@ export default defineComponent({
         ? html`<span class="input-affixed" style=${`--lc-input-prefix-chars:${[...this.prefix].length}`}><span class="input-prefix" aria-hidden="true">${this.prefix}</span>${field}</span>`
         : field}
       ${this.hint ? html`<span class="input-hint" id=${`${id}-hint`}>${this.hint}</span>` : ""}
-      ${this.errorMessage ? html`<span class="input-error" id=${`${id}-error`}>${this.errorMessage}</span>` : ""}
+      ${this.errorMessage ? html`<span class="input-error" id=${`${id}-error`} role="alert">${this.errorMessage}</span>` : ""}
     `;
   },
 });
