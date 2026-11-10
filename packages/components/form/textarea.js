@@ -1,4 +1,4 @@
-import { html } from "@lightstart/light/html";
+import { html, nothing } from "@lightstart/light/html";
 import { defineComponent } from "@lightstart/light";
 import { withFormControl } from "@lightstart/components/mixins/form-control.js";
 import T from "@lightstart/light/types";
@@ -11,6 +11,8 @@ export default defineComponent({
     cols: 50,
     maxlength: T.number({ defaultValue: null }),
     minlength: T.number({ defaultValue: null }),
+    autocomplete: T.string(),
+    autocapitalize: T.string(),
     resize: T.string({
       defaultValue: "vertical",
       enum: ["none", "both", "horizontal", "vertical"],
@@ -43,6 +45,10 @@ export default defineComponent({
         .value=${this.value ?? ""}
         placeholder=${this.placeholder}
         rows=${this.rows}
+        maxlength=${this.maxlength ?? nothing}
+        minlength=${this.minlength ?? nothing}
+        autocomplete=${this.autocomplete || nothing}
+        autocapitalize=${this.autocapitalize || nothing}
         ?disabled=${this.disabled}
         ?readonly=${this.readonly}
         ?required=${this.required}
