@@ -96,6 +96,9 @@ const input = (/** @type {string} */ type, /** @type {string} */ placeholder = "
       ?readonly=${field.readonly}
       placeholder=${field.placeholder || placeholder}
       prefix=${field.prefix || ""}
+      inputmode=${field.inputmode || nothing}
+      autocomplete=${field.autocomplete || nothing}
+      autocapitalize=${field.autocapitalize || nothing}
       hint=${field.help || field.description || nothing}
       error-message=${field.errorMessage || nothing}
       .min=${field.min ?? null}

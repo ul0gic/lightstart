@@ -119,7 +119,7 @@ export default {
 | `required` | Refused on submit, with the reason drawn beside the field |
 | `help` / `description` | A hint under the control |
 | `visibleIf` | A field name that has to be truthy, or a predicate over the values. A hidden field is not collected either |
-| `min` / `max` / `step`, `disabled`, `readonly`, `placeholder`, `rows` | Forwarded to the control; on a `multi-select`, `max` is the most it takes |
+| `min` / `max` / `step`, `disabled`, `readonly`, `placeholder`, `rows`, `inputmode`, `autocomplete`, `autocapitalize` | Forwarded to the control; on a `multi-select`, `max` is the most it takes |
 | `searchable` | A `select` typed into to find its option. A `multi-select` always is, and draws what is picked as tags with an x |
 | `prefix` | Text drawn inside a text field before what is typed and never part of the value, like the `@` of a handle |
 | `options`, or `loadOptions` + `dependsOn` | A select's choices, constant or fetched and reloaded when what they follow changes; an option's `leading` (a flag, an emoji) is drawn before its label |
