@@ -119,6 +119,8 @@ export default {
 
 `layout="stacked"` gives each field its own row; the default pairs them two to a row above 640px.
 
+`novalidate` leaves validation to the caller: the browser's own checks and the form's `required` refusals are skipped, the submit goes through, and `setErrors()` draws what the caller finds.
+
 An error is drawn with `role="alert"`, by the form or by the control that owns it, so one that a submit or `setErrors()` brings is announced.
 
 A control it does not have is registered rather than worked around:

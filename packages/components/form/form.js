@@ -69,6 +69,7 @@ export default defineComponent({
     ),
     errors: /** @type {Prop<Record<string, unknown>>} */ (T.object({ defaultValue: {} })),
     layout: T.string({ defaultValue: "grid", enum: ["grid", "stacked"] }),
+    novalidate: false,
     _options: /** @type {Prop<Record<string, { loading: boolean, options: unknown[], error: string }>>} */ (
       T.object({ attribute: false, defaultValue: () => ({}) })
     ),
@@ -482,7 +483,7 @@ export default defineComponent({
     e.preventDefault();
     e.stopPropagation();
 
-    const errors = this.validate();
+    const errors = this.novalidate ? {} : this.validate();
     if (Object.keys(errors).length) {
       this.setErrors(errors);
       this.$emit("form-invalid", { errors });
@@ -521,7 +522,7 @@ export default defineComponent({
     const formData = this.deserialize(this.data || {});
 
     return html`
-      <form @submit=${this._handleSubmit}>
+      <form ?novalidate=${this.novalidate} @submit=${this._handleSubmit}>
         ${this.visibleFields().map((original) => {
           const value = formData[original.name];
           const field = this._withOptions(original, value);
