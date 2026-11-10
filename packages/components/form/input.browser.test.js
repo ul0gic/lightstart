@@ -264,3 +264,24 @@ describe("@lightstart/light - lc-input autofill attributes", () => {
     assert.equal(field(el).hasAttribute("autocapitalize"), false);
   });
 });
+
+describe("@lightstart/light - lc-input error announcement", () => {
+  before(() => {
+    if (!customElements.get("lc-input")) View.define("lc-input", inputDef);
+  });
+
+  afterEach(async () => {
+    for (const el of mounted.splice(0)) el.remove();
+    await tick();
+  });
+
+  it("draws its error message as an alert, so one that appears is announced", async () => {
+    const el = /** @type {HTMLElement & { errorMessage: string, $requestUpdate: () => Promise<unknown> }} */ (await mount({ label: "Email" }));
+    assert.equal(el.querySelector("[role=alert]"), null);
+    el.errorMessage = "Enter an email address.";
+    await el.$requestUpdate();
+    const message = /** @type {HTMLElement} */ (el.querySelector(".input-error"));
+    assert.equal(message.getAttribute("role"), "alert");
+    assert.equal(field(el).getAttribute("aria-describedby"), message.id, "the field is still described by it");
+  });
+});

@@ -240,7 +240,7 @@ export default defineComponent({
         }
         ${hidden}
       </div>
-      ${this.errorMessage ? html`<span class="input-error" id=${`${this.getInputId()}-error`}>${this.errorMessage}</span>` : ""}
+      ${this.errorMessage ? html`<span class="input-error" id=${`${this.getInputId()}-error`} role="alert">${this.errorMessage}</span>` : ""}
     `;
   },
 });

@@ -133,6 +133,8 @@ bundler can split the catalogue into chunks it loads on demand.
 
 `layout="stacked"` gives each field its own row; the default pairs them two to a row above 640px.
 
+An error is drawn with `role="alert"`, by the form or by the control that owns it, so one that a submit or `setErrors()` brings is announced.
+
 A control it does not have is registered rather than worked around:
 
 ```js

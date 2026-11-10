@@ -221,7 +221,7 @@ export default defineComponent({
           </lc-button>
         </label>
 
-        ${this.error ? html`<div class="file-upload-error">${this.error}</div>` : ""}
+        ${this.error ? html`<div class="file-upload-error" role="alert">${this.error}</div>` : ""}
         ${this.showPreview && this.entries.length > 0 ? this._renderFileList() : ""}
       </div>
     `;
@@ -254,7 +254,7 @@ export default defineComponent({
           </div>
         </label>
 
-        ${this.error ? html`<div class="file-upload-error">${this.error}</div>` : ""}
+        ${this.error ? html`<div class="file-upload-error" role="alert">${this.error}</div>` : ""}
         ${this.showPreview && this.entries.length > 0 ? this._renderFileList() : ""}
       </div>
     `;
