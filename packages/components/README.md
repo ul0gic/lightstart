@@ -132,6 +132,8 @@ export default {
 
 An error is drawn with `role="alert"`, by the form or by the control that owns it, so one that a submit or `setErrors()` brings is announced.
 
+A control's host is not focusable, so `focus()` on it moves nothing. `lc-input` and `lc-search` have `focusInput()`, which puts the caret in the field.
+
 A control it does not have is registered rather than worked around:
 
 ```js
