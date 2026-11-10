@@ -215,6 +215,10 @@ export interface FormField {
   searchable?: boolean;
   /** Text drawn inside a text field before what is typed, never part of the value. */
   prefix?: string;
+  /** Forwarded to a text field's native control: the keypad a phone shows, what the browser may fill in, and how it capitalizes. */
+  inputmode?: string;
+  autocomplete?: string;
+  autocapitalize?: string;
   defaultValue?: unknown;
   /** A hint under the control. `description` is the same slot under the name a schema tends to use. */
   help?: string;

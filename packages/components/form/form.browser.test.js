@@ -1217,3 +1217,36 @@ describe("lc-form: a field's help", () => {
     assert.deepEqual(describedBy(handle), ["Letters and numbers only.", "Taken."]);
   });
 });
+
+describe("lc-form field definitions and the controls they reach", () => {
+  /** @type {HTMLElement[]} */
+  const mounted = [];
+  after(() => {
+    for (const el of mounted) el.remove();
+  });
+  const mount = async (props) => {
+    const el = /** @type {HTMLElement & { setErrors(errors: Record<string, string>): void }} */ (document.createElement("lc-form"));
+    Object.assign(el, props);
+    document.body.appendChild(el);
+    mounted.push(el);
+    await frame();
+    await tick();
+    return el;
+  };
+
+  it("hands a text field's inputmode, autocomplete and autocapitalize to its native control", async () => {
+    const el = await mount({
+      fields: [
+        { name: "amount", label: "Amount", type: "text", inputmode: "decimal" },
+        { name: "code", label: "Code", type: "text", autocomplete: "one-time-code", autocapitalize: "characters" },
+      ],
+    });
+    const amount = /** @type {HTMLInputElement} */ (el.querySelector('lc-input[name="amount"] input'));
+    const code = /** @type {HTMLInputElement} */ (el.querySelector('lc-input[name="code"] input'));
+    assert.equal(amount.getAttribute("inputmode"), "decimal");
+    assert.equal(amount.hasAttribute("autocomplete"), false);
+    assert.equal(code.getAttribute("autocomplete"), "one-time-code");
+    assert.equal(code.getAttribute("autocapitalize"), "characters");
+  });
+
+});
