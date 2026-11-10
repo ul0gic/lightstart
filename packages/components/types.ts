@@ -262,6 +262,10 @@ export interface FormField {
   actions?: Array<{ label?: string; icon?: string; title?: string; onClick?: (items: unknown[]) => void }>;
   /** Set by the CMS field pipeline; picks a registered renderer over the plain input. */
   cmsType?: string;
+  /** The error addressed to this field, handed to a control that draws its own. */
+  errorMessage?: string;
+  /** Every error the form holds, by `pathKey`, handed to a field that draws fields of its own. */
+  errors?: Record<string, string>;
   /**
    * A registered renderer reads whatever its own field type declares: a media
    * picker wants the workspace it picks from, an image field the page's slug.
