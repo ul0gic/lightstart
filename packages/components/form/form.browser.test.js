@@ -1286,4 +1286,18 @@ describe("lc-form field definitions and the controls they reach", () => {
     document.documentElement.style.removeProperty("--color-danger");
     sheet.remove();
   });
+
+  it("draws a field's error as an alert, so one a submit or setErrors brings is announced", async () => {
+    const el = await mount({
+      fields: [
+        { name: "kind", label: "Kind", type: "select", options: ["a", "b"] },
+        { name: "title", label: "Title", type: "text" },
+      ],
+    });
+    assert.equal(el.querySelector("[role=alert]"), null);
+    el.setErrors({ kind: "Pick one.", title: "Taken." });
+    await frame();
+    await tick();
+    assert.deepEqual([...el.querySelectorAll("[role=alert]")].map((message) => message.textContent?.trim()), ["Pick one.", "Taken."]);
+  });
 });
