@@ -269,3 +269,29 @@ describe("lc-select with tags inside a form", () => {
     form.remove();
   });
 });
+
+describe("lc-select with an option for the empty value", () => {
+  /** @param {Record<string, unknown>} props */
+  const mount = async (props) => {
+    const el = /** @type {HTMLElement & { value: unknown }} */ (document.createElement("lc-select"));
+    Object.assign(el, { placeholder: "Select...", ...props });
+    document.body.append(el);
+    await waitFor(() => el.querySelector("select"), "the control");
+    return el;
+  };
+  /** @param {Element} el */
+  const shown = (el) => /** @type {HTMLSelectElement} */ (el.querySelector("select")).selectedOptions[0]?.textContent?.trim();
+
+  it("shows that option's label when nothing is chosen, where it showed the placeholder", async () => {
+    const el = await mount({ options: [{ value: "", label: "No default" }, { value: "a", label: "A" }] });
+    assert.equal(shown(el), "No default");
+    assert.equal(el.querySelector("option[hidden]"), null, "no placeholder option is drawn");
+    el.remove();
+  });
+
+  it("still shows the placeholder when no option has the empty value", async () => {
+    const el = await mount({ options: [{ value: "a", label: "A" }, { value: "b", label: "B" }] });
+    assert.equal(shown(el), "Select...");
+    el.remove();
+  });
+});
