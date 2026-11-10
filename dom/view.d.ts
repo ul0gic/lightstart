@@ -58,8 +58,14 @@ declare class View extends HTMLElement {
     static initPlugins(component: ViewConstructor, definition: ComponentDefinition, tag: string): Promise<(void | undefined)[]>;
     /**
      * Install a class written by hand as the custom element `tag`: signal
-     * fields, a `render()` the engine tracks, and `connected`, `disconnected`,
-     * `willUpdate`, `firstUpdated`, `updated` as plain methods.
+     * fields, a `render()` the engine tracks, `connected`, `disconnected`,
+     * `willUpdate`, `firstUpdated`, `updated` as plain methods, and the props
+     * its `static props` declares, the shape `View.define` takes. A class
+     * without `static props` may declare them as `static properties`; one that
+     * declares both takes `props`. The plugins apply as they do to a class
+     * `View.define` builds, with the class's statics as its definition: a
+     * plugin's `props`, `test` and `init` read them, a key it declares is a
+     * static, and a hook it adds is a method.
      * @template {ViewConstructor} C
      * @param {string} tag
      * @param {C} component
@@ -171,11 +177,12 @@ declare class View extends HTMLElement {
     /**
      * Call the hook a class written by hand declares as a method (a class
      * `View.define` built has its hooks on the class, run above). The update
-     * hooks receive the changed properties.
+     * hooks receive the changed properties; a hook a plugin adds receives the
+     * detail, as a definition's does.
      * @param {string} name
-     * @param {Map<string, unknown> | null} changedProps
+     * @param {LifecycleEventDetail} detail
      */
-    $runMethodHook(name: string, changedProps: Map<string, unknown> | null): void;
+    $runMethodHook(name: string, detail: LifecycleEventDetail): void;
     /** @param {string} element */
     $: (element: string) => Element | null;
     /** @param {string} element */
