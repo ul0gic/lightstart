@@ -14,6 +14,8 @@ export default defineComponent({
       enum: ["text", "email", "tel", "url", "search", "password", "number", "date", "datetime-local", "time", "month", "week", "color"],
     }),
     inputmode: T.string(),
+    autocomplete: T.string(),
+    autocapitalize: T.string(),
     min: /** @type {Prop<string | number | null>} */ (T.any({ defaultValue: null })),
     max: /** @type {Prop<string | number | null>} */ (T.any({ defaultValue: null })),
     step: /** @type {Prop<string | number | null>} */ (T.any({ defaultValue: null })),
@@ -50,6 +52,8 @@ export default defineComponent({
         class="input"
         type=${this.type}
         inputmode=${this.inputmode || nothing}
+        autocomplete=${this.autocomplete || nothing}
+        autocapitalize=${this.autocapitalize || nothing}
         .value=${this.value ?? ""}
         placeholder=${this.placeholder}
         min=${this.min ?? nothing}
