@@ -266,6 +266,7 @@ export const projectSlots = (host, hooks) => {
   const stray = [];
   /** @param {ChildNode} unit */
   const route = (unit) => {
+    for (const node of unitNodes(unit)) if (node.nodeType === 1) hooks.watchUnit(/** @type {Element} */ (node));
     const name = unitName(unit);
     const slot = byName.get(name);
     if (slot) /** @type {ChildNode[]} */ (wanted.get(slot)).push(unit);
@@ -320,8 +321,6 @@ export const projectSlots = (host, hooks) => {
     if (!list.length) slot.restore();
     if (changed) slot.notify = true;
     hooks.watchSlot(slot.el);
-    for (const unit of list)
-      for (const node of unitNodes(unit)) if (node.nodeType === 1) hooks.watchUnit(/** @type {Element} */ (node));
   }
 
   if (host.$unslotted && !unitsIn(host.$unslotted).length) {

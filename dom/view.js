@@ -167,11 +167,24 @@ const SLOT_OBSERVE = { childList: true, attributes: true, attributeFilter: ["slo
 /** @type {WeakSet<View>} */
 const projectingHosts = new WeakSet();
 /** @type {WeakMap<Element, View>} */
-const projectedBy = new WeakMap();
-/** @type {WeakMap<Element, View>} */
 const slotOwner = new WeakMap();
+/** @type {WeakSet<Node>} */
+const observedForSlots = new WeakSet();
 /** @type {MutationObserver | null} */
 let slotObserver = null;
+
+/**
+ * The host whose units `node` holds: the host itself, one of its slots, or
+ * its unslotted holder.
+ * @param {Node | null} node
+ * @returns {View | undefined}
+ */
+const hostHolding = (node) => {
+  if (node === null) return undefined;
+  if (projectingHosts.has(/** @type {View} */ (node))) return /** @type {View} */ (node);
+  if (/** @type {Element} */ (node).localName === UNSLOTTED_TAG) return hostHolding(node.parentNode);
+  return slotOwner.get(/** @type {Element} */ (node));
+};
 
 /** @param {MutationRecord[]} records */
 const onSlotRecords = (records) => {
@@ -179,12 +192,7 @@ const onSlotRecords = (records) => {
   const due = new Set();
   for (const record of records) {
     const target = /** @type {Element} */ (record.target);
-    const host =
-      record.type === "attributes"
-        ? projectedBy.get(target) ?? slotOwner.get(target)
-        : projectingHosts.has(/** @type {View} */ (target))
-          ? /** @type {View} */ (target)
-          : slotOwner.get(target);
+    const host = record.type === "attributes" && !slotOwner.has(target) ? hostHolding(target.parentNode) : hostHolding(target);
     if (host) due.add(host);
   }
   for (const host of due) host.$project();
@@ -192,8 +200,9 @@ const onSlotRecords = (records) => {
 
 /** @param {Node} target */
 const observeForSlots = (target) => {
-  slotObserver ??= new MutationObserver(onSlotRecords);
-  slotObserver.observe(target, SLOT_OBSERVE);
+  if (observedForSlots.has(target)) return;
+  observedForSlots.add(target);
+  (slotObserver ??= new MutationObserver(onSlotRecords)).observe(target, SLOT_OBSERVE);
 };
 
 const KNOWN_DEFINITION_KEYS = ["mixins", "props", "events", "extends", "icons", "formAssociated", "style", "class", "role", "tag"];
@@ -908,15 +917,10 @@ class View extends BaseElement {
     observeForSlots(this);
     const hooks = (this.$slotHooks ??= {
       watchSlot: (el) => {
-        if (slotOwner.get(el) === this) return;
         slotOwner.set(el, this);
         observeForSlots(el);
       },
-      watchUnit: (el) => {
-        if (projectedBy.get(el) === this) return;
-        projectedBy.set(el, this);
-        observeForSlots(el);
-      },
+      watchUnit: (el) => observeForSlots(el),
       unknown: (name) => {
         if (!config.dev) return;
         const warned = (this.$slotWarned ??= new Set());
@@ -947,8 +951,11 @@ class View extends BaseElement {
     const key = this.$ctor._attrs[attrName] ?? attrName;
     if (this.$ignoreAttributeChange) return;
     this.$attrOriginated = true;
-    this.$state.set(key, parse(value, this.$ctor.properties[key]));
+    const prop = this.$ctor.properties[key];
+    this.$state.set(key, parse(value, prop));
     this.$attrOriginated = false;
+    if (prop?.attribute && attrName === key.toLowerCase() && kebabOf(key) !== attrName)
+      this.$updateAttribute({ key, value: this.$state.get(key), skipPropUpdate: true, type: prop.$type });
   }
 
   /**
