@@ -74,8 +74,8 @@ export const modelApi = (name        , schemaOf                               ) 
       const byId = (id                 )               => send(MODEL_EDIT, withOpts({ id, patch: (patchOrOpts ?? {})        }, opts))                ;
       if (typeof idOrRow === "string") return byId(idOrRow);
       if (typeof idOrRow === "number") return byId(idOrRow);
-      const row      = idOrRow;
-      return send(MODEL_EDIT, withOpts({ id: row.id, patch: row }, patchOrOpts                                  ))                ;
+      const row                                = idOrRow;
+      return send(MODEL_EDIT, withOpts({ id: row.id, patch: { ...row } }, patchOrOpts                                  ))                ;
     },
     remove: (id, opts) => send(MODEL_REMOVE, withOpts({ id }, opts))                    ,
     removeAll: (where = {}) => send(MODEL_REMOVE_MANY, { where })                   ,

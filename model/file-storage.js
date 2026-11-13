@@ -6,6 +6,7 @@
  */
 
 import { schemaField } from "./fields.js";
+import { rowOf } from "./pipeline.js";
 
                                                                             
 
@@ -62,7 +63,7 @@ export const uploadFiles = async (schema                         , model        
     if (kind === "file") uploaded.push([field, await uploadOne(provider, value, { field, model })]);
     else if (kind === "files" && Array.isArray(value)) uploaded.push([field, await uploadAll(provider, value, { field, model })]);
   }
-  return Object.fromEntries([...Object.entries(row), ...uploaded]);
+  return rowOf([...Object.entries(row), ...uploaded]);
 };
 
 /**

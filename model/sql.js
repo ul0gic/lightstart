@@ -32,7 +32,7 @@ const OPERATORS           = [">", ">=", "<", "<=", "!=", "<>", "=", "in", "not i
                                       
   
 
-const copy = (row     )      => Object.fromEntries(Object.entries(row));
+const copy = (row     )      => ({ ...Object.fromEntries(Object.entries(row)) });
 
 /** What a schema stores as JSON text, as SQLite's 1 or 0, and as a JSON array. */
 class FieldSets {
@@ -72,7 +72,7 @@ export const decodeRow = (schema                         , row     )      => {
     if (booleans.has(field) && value !== null && value !== undefined) return [field, Boolean(Number(value))];
     return [field, value];
   });
-  return Object.fromEntries(entries);
+  return { ...Object.fromEntries(entries) };
 };
 
 const selectOne = (db             , model        , id                 , schema                         )             => {
@@ -281,7 +281,8 @@ export class SqlWriter {
     const schema = this.schemaOf(model);
     const ctx = this.context(model, "edit", id, options.user);
     const reduced = forStorage(schema, withoutImmutable(schema, patch));
-    const asked = Object.fromEntries([...Object.entries(reduced), ["id", id]]);
+    const entries                           = [...Object.entries(reduced), ["id", id]];
+    const asked      = { ...Object.fromEntries(entries) };
     const hooked = this.hook(model, "beforeEdit", asked, ctx);
     let changes = hooked === undefined || hooked === null ? asked : (hooked       );
     if (options.shape !== undefined) changes = options.shape(changes);

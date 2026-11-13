@@ -36,6 +36,12 @@ const includeTargets = (api          , include        )           => {
                                   
  
 
+const copyQuery = (source        )               => {
+  const query               = {};
+  for (const [field, value] of Object.entries(source)) query[field] = value;
+  return query;
+};
+
 const liveQuery =                                    (api          , query              , { name, eager, ready }            )                        => {
   let total = 0;
   let settled = false;
@@ -88,7 +94,7 @@ const liveQuery =                                    (api          , query      
 /** A live query of `api`: a `resource()` over `api.query()` that refetches, coalesced per tick, when its model or an included model changes. */
 export const modelQuery =                                    (api          , opts                    = {})                        => {
   const { name = api.name, eager = true, ready, ...query } = opts;
-  return liveQuery   (api, query, { name, eager, ready });
+  return liveQuery   (api, copyQuery(query), { name, eager, ready });
 };
 
 const loadsInFlight                          = new WeakMap();
@@ -121,7 +127,7 @@ const singleRow = (api          , query                                 , name  
                      
  
 
-const follow =    (current             , at           )              => {
+function followLive   (current                       , at           )                        {
   let writer = writerOf(at.host.$queries);
   if (writer === undefined) {
     writer = writableRecord();
@@ -142,7 +148,30 @@ const follow =    (current             , at           )              => {
     at.settle();
   });
   return current;
-};
+}
+
+function followOne   (current             , at           )              {
+  let writer = writerOf(at.host.$queries);
+  if (writer === undefined) {
+    writer = writableRecord();
+    at.host.$queries = writer.record;
+  }
+  writer.writeKey(at.key, current);
+  at.offs.push(current.value.subscribe((value) => {
+    if (value === undefined) return;
+    at.store.set(at.key, value);
+    at.onValue(value, current);
+  }));
+  at.offs.push(current.error.subscribe((error) => {
+    if (error) at.onError(error);
+  }));
+  countLoad(at.store, 1);
+  current.ensure().catch(() => {}).finally(() => {
+    countLoad(at.store, -1);
+    at.settle();
+  });
+  return current;
+}
 
 /** Keep `store`'s `key` mirroring `api`'s live query (an array property) or one row (any other), rebuilt when a `dependsOn` key changes. */
 export const bindModelQuery = ({ store, key, prop, host, api, onValue, onError }   
@@ -153,9 +182,9 @@ export const bindModelQuery = ({ store, key, prop, host, api, onValue, onError }
                 
                                                    
                                      
- )                                                => {
+ )          => {
   const name = `${api.name}:${key}`;
-  let res                             = null;
+  let stop                      = null;
   const at            = { offs: [], host, key, store, onValue: onValue ?? (() => {}), onError: onError ?? (() => {}), settle: () => {} };
   const loaded = new Promise      ((resolve) => {
     at.settle = () => resolve();
@@ -163,12 +192,17 @@ export const bindModelQuery = ({ store, key, prop, host, api, onValue, onError }
 
   const build = () => {
     for (const off of at.offs.splice(0)) off();
-    res?.dispose();
+    stop?.();
     const given = prop.query;
     const query = (typeof given === "function" ? (given                               )(host) : (given ?? {}))                                   ;
     const ready = prop.ready                            ;
-    if (prop.$type === "array") res = follow(liveQuery(api, query, { name, eager: true, ready }), at);
-    else res = follow(singleRow(api, query, name, ready), at);
+    if (prop.$type === "array") {
+      const current = followLive(liveQuery(api, copyQuery(query), { name, eager: true, ready }), at);
+      stop = () => current.dispose();
+    } else {
+      const current = followOne(singleRow(api, query, name, ready), at);
+      stop = () => current.dispose();
+    }
   };
 
   build();
@@ -180,8 +214,8 @@ export const bindModelQuery = ({ store, key, prop, host, api, onValue, onError }
     unbind: () => {
       for (const off of depOffs) off();
       for (const off of at.offs.splice(0)) off();
-      res?.dispose();
-      res = null;
+      stop?.();
+      stop = null;
       const writer = writerOf(host.$queries);
       if (writer && writer.dropKey !== null) writer.dropKey(key);
     },

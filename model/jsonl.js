@@ -18,6 +18,7 @@ import { configureModel, modelBus } from "./config.js";
 import { createAdapter, hasAdapter, registerStorageAdapter } from "./factory.js";
 import { buildQueryResult, validateQueryOptions } from "./query-builder.js";
 import { createStore, storeRequest } from "./store.js";
+import { rowOf } from "./pipeline.js";
 
                                                                                                                                                              
 
@@ -77,7 +78,7 @@ const tableOf = (adapter              , model        )             => {
   return table;
 };
 
-const copy = (row     )      => Object.fromEntries(Object.entries(row));
+const copy = (row     )      => rowOf(Object.entries(row));
 
 const record = (adapter              , table            , row     )      => {
   const line = JSON.stringify(row);

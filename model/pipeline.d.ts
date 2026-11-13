@@ -5,6 +5,8 @@
  * whole pipeline inside one transaction. A row is copied, never changed.
  */
 import type { ModelSchema, Row } from "./types.js";
+/** The row made of `entries`, in order, a later field of the same name winning. */
+export declare const rowOf: (entries: [string, unknown][]) => Row;
 /** A row as an adapter stores it: a `many`/`one` value dropped, a loaded `belongs` row reduced to its id. */
 export declare const forStorage: (schema: ModelSchema | undefined, row: Row) => Row;
 /** The row with every absent field that declares a default filled in; a function default is called, an object one cloned. */

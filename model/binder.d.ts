@@ -15,7 +15,7 @@
  * query as a `sync:` entry, its rows read through `LiveRows`.
  */
 import type { Controller } from "../controller/class.js";
-import type { StoreCore, SyncBinder, SyncHost, SyncProp } from "../controller/types.js";
+import type { Binding, StoreCore, SyncBinder, SyncHost, SyncProp } from "../controller/types.js";
 import type { ModelApi, ModelQueryOptions, ModelQueryResource } from "./types.js";
 /** A live query of `api`: a `resource()` over `api.query()` that refetches, coalesced per tick, when its model or an included model changes. */
 export declare const modelQuery: <T extends Record<string, unknown>>(api: ModelApi, opts?: ModelQueryOptions) => ModelQueryResource<T>;
@@ -28,10 +28,7 @@ export declare const bindModelQuery: ({ store, key, prop, host, api, onValue, on
     api: ModelApi;
     onValue?: (value: unknown, res: unknown) => void;
     onError?: (error: unknown) => void;
-}) => {
-    unbind: () => void;
-    loaded: Promise<void>;
-};
+}) => Binding;
 /**
  * The model as a sync target: light's binding hands a property bound to a
  * model api (or a thunk answering one) to `bindModelQuery`, with its `query`

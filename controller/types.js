@@ -209,18 +209,14 @@
  
 
                           
-                   
+                  
                             
                                             
                                                                                             
  
 
-/** What `adapterFor` wraps: a controller instance or a store through its `$sync`, or a `$sync` object itself. */
-                              
-                   
-                             
-                                             
-                                                                                             
+/** What `adapterFor` wraps: a `$sync` object, or a controller or store through its own `$sync`. */
+                                              
                   
                                      
                         

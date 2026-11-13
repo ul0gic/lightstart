@@ -8,6 +8,7 @@ import { modelBus } from "./config.js";
 import { MODEL_ERROR, MODEL_WARN } from "./events.js";
 import { relationValueToId, relationWhere } from "./relationships.js";
 import { entryOf, schemaEntry } from "./fields.js";
+import { rowOf } from "./pipeline.js";
 
                                                                                       
 
@@ -16,7 +17,7 @@ import { entryOf, schemaEntry } from "./fields.js";
  * warns and is skipped; a failed load emits `MODEL_ERROR` and leaves `[]` or
  * `null` per the relation's cardinality.
  */
-export async function loadRelationships(reader           , models                             , modelName        , record     , includes          )               {
+export async function loadRelationships                     (reader   , models                             , modelName        , record     , includes          )               {
   if (includes.length === 0) return record;
 
   const modelSchema = entryOf(models, modelName);
@@ -48,14 +49,14 @@ export async function loadRelationships(reader           , models               
     }
   }
 
-  return Object.fromEntries([...Object.entries(record), ...loaded]);
+  return rowOf([...Object.entries(record), ...loaded]);
 }
 
 /**
  * Batch version of `loadRelationships`: a polymorphic `belongs` is resolved
  * with one query per target type instead of one per row.
  */
-export async function loadRelationshipsForMany(reader           , models                             , modelName        , records       , includes          )                 {
+export async function loadRelationshipsForMany                     (reader   , models                             , modelName        , records       , includes          )                 {
   if (!includes || includes.length === 0 || !records || records.length === 0) return records;
 
   const modelSchema = entryOf(models, modelName);
@@ -70,7 +71,7 @@ export async function loadRelationshipsForMany(reader           , models        
     else regularIncludes.push(relationName);
   }
 
-  let enriched        = records.map((r)      => Object.fromEntries(Object.entries(r)));
+  let enriched        = records.map((r)      => rowOf(Object.entries(r)));
 
   if (regularIncludes.length > 0) {
     const loads                 = [];
@@ -80,7 +81,8 @@ export async function loadRelationshipsForMany(reader           , models        
 
   for (const relationName of polymorphicIncludes) {
     const typeFieldName = `${relationName}Type`;
-    const found                 = enriched.map(() => null);
+    const found                 = [];
+    for (let i = 0; i < enriched.length; i++) found.push(null);
     const byType = new Map                               ();
     for (let i = 0; i < enriched.length; i++) {
       const record = enriched[i];
@@ -107,14 +109,14 @@ export async function loadRelationshipsForMany(reader           , models        
 
     enriched = enriched.map((record, i)      => {
       const hit                    = [relationName, found[i]];
-      return Object.fromEntries([...Object.entries(record), hit]);
+      return rowOf([...Object.entries(record), hit]);
     });
   }
 
   return enriched;
 }
 
-async function loadRelationship(reader           , models                             , modelName        , record     , relationName        , relationDef                        )                              {
+async function loadRelationship                     (reader   , models                             , modelName        , record     , relationName        , relationDef                        )                              {
   const { relationship, targetModel, many, polymorphic } = relationDef;
 
   if (relationship === "belongs" && polymorphic) {

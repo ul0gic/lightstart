@@ -7,6 +7,6 @@
  * inbound value by writing it; the store then notifies everyone bound to that
  * key, including listeners registered through `on`.
  */
-import type { Adapter, StoreShaped } from "../types.js";
+import type { Adapter, StoreShaped, SyncObj } from "../types.js";
 /** The adapter over `target`'s `$sync` (or `target` itself, when it is the surface), registered as `name`. */
-export declare const adapterFor: (name: string, target: StoreShaped) => Adapter;
+export declare const adapterFor: (name: string, target: StoreShaped | SyncObj) => Adapter;
