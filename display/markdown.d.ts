@@ -9,7 +9,10 @@ declare const _default: Omit<{
     props: {
         content: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         anchors: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
-        untrusted: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        unsafeHtml: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
+            readonly attribute: false;
+            readonly defaultValue: false;
+        }>;
         onWikiLink: import("@lightstart/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
         _marked: Prop<MarkedLike | null>;
         _headings: Prop<MarkdownHeading[]>;
@@ -28,7 +31,10 @@ declare const _default: Omit<{
     props?: {
         content: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         anchors: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
-        untrusted: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
+        unsafeHtml: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
+            readonly attribute: false;
+            readonly defaultValue: false;
+        }>;
         onWikiLink: import("@lightstart/light/types").TypeDefinition<(...args: unknown[]) => unknown>;
         _marked: Prop<MarkedLike | null>;
         _headings: Prop<MarkdownHeading[]>;
