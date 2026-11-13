@@ -24,6 +24,8 @@ export default defineRoutes({
 
 A view renders and dispatches; state lives in a controller.`;
 
+const comment = `Press <kbd>Enter</kbd> to send. The [guide](https://example.com/guide) has more, and [this link](javascript:void(0)) is drawn as text.`;
+
 export default {
   description: "Markdown rendered to HTML, styled by the theme's prose rules.",
   preview: () => html`<lc-markdown .content=${doc}></lc-markdown>`,
@@ -40,6 +42,13 @@ export default {
       description: "Every heading gets an id; `anchors` shows a link to it on hover. A fenced block renders through lc-code-block.",
       render: () => html`
         <lc-markdown anchors .content=${guide}></lc-markdown>
+      `,
+    },
+    {
+      title: "Untrusted content",
+      description: "Set `untrusted` for markdown the page did not write, such as a reader's comment: HTML in it is drawn as text, and a link keeps its URL only when it stays on the site or goes to http, https, mailto or tel.",
+      render: () => html`
+        <lc-markdown untrusted .content=${comment}></lc-markdown>
       `,
     },
   ],

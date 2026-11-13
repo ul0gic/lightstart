@@ -7,13 +7,22 @@ import { createSlugger } from "../utils/slug.js";
 /** @param {string} text */
 const escapeAttribute = (text) => text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
+const LINK_PROTOCOLS = new Set(["http:", "https:", "mailto:", "tel:"]);
+
+/** @param {string} href */
+const isLinkSafe = (href) => {
+  const link = document.createElement("a");
+  link.href = href;
+  return LINK_PROTOCOLS.has(link.protocol);
+};
+
 /**
  * What one parse collects. `marked` is one module-wide instance and `parse`
  * is synchronous, so the component points this at its own record before
  * parsing and the renderers write into it.
- * @type {{ slug: (text: string) => string, headings: MarkdownHeading[], anchors: boolean }}
+ * @type {{ slug: (text: string) => string, headings: MarkdownHeading[], anchors: boolean, untrusted: boolean }}
  */
-let current = { slug: createSlugger(), headings: [], anchors: false };
+let current = { slug: createSlugger(), headings: [], anchors: false, untrusted: false };
 
 const renderer = {
   /**
@@ -40,6 +49,26 @@ const renderer = {
     const lang = typeof token === "object" ? token.lang : info;
     const language = (lang || "").split(/\s/)[0];
     return `<lc-code-block language="${escapeAttribute(language)}" code="${escapeAttribute(text)}"></lc-code-block>\n`;
+  },
+  /** @param {string | { text: string }} token a token from marked 5 on; before, the HTML */
+  html(token) {
+    const text = typeof token === "object" ? token.text : token;
+    return current.untrusted ? escapeAttribute(text) : text;
+  },
+  /**
+   * @this {{ parser: { parseInline: (tokens: unknown[]) => string } }}
+   * @param {string | { href: string, title?: string | null, tokens: unknown[] }} token a token from marked 5 on; before, the URL, with the title and the drawn text after it
+   * @param {string | null} [title]
+   * @param {string} [text]
+   * @returns {string | false} `false` hands the link to marked
+   */
+  link(token, title, text) {
+    if (!current.untrusted) return false;
+    const href = typeof token === "object" ? token.href : token;
+    const label = typeof token === "object" ? this.parser.parseInline(token.tokens) : (text ?? "");
+    if (!isLinkSafe(href)) return label;
+    const tip = typeof token === "object" ? token.title : title;
+    return `<a href="${escapeAttribute(href)}"${tip ? ` title="${escapeAttribute(tip)}"` : ""}>${label}</a>`;
   },
 };
 
@@ -87,7 +116,7 @@ const loadMarked = () => {
           /** @param {{ name: string, display: string }} token */
           renderer(token) {
             const escaped = token.name.replace(/"/g, "&quot;");
-            return `<a class="wiki-link" data-name="${escaped}">${token.display}</a>`;
+            return `<a class="wiki-link" data-name="${escaped}">${current.untrusted ? escapeAttribute(token.display) : token.display}</a>`;
           },
         },
       ],
@@ -103,6 +132,7 @@ export default defineComponent({
   props: {
     content: T.string(),
     anchors: T.boolean(),
+    untrusted: T.boolean(),
     onWikiLink: T.function(),
     _marked: /** @type {Prop<MarkedLike | null>} */ (T.object({ attribute: false })),
     _headings: /** @type {Prop<MarkdownHeading[]>} */ (T.array({ attribute: false, defaultValue: [], reactive: false })),
@@ -135,7 +165,7 @@ export default defineComponent({
 
   render() {
     if (!this._marked) return "";
-    current = { slug: createSlugger(), headings: [], anchors: this.anchors };
+    current = { slug: createSlugger(), headings: [], anchors: this.anchors, untrusted: this.untrusted };
     const rendered = this._marked.parse(this.content || "");
     this._headings = current.headings;
     return unsafeHTML(rendered);
