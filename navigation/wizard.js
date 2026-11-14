@@ -86,12 +86,8 @@ export default defineComponent({
     this.nextStep();
   },
 
-  updated() {
-    if (this.showProgress)
-      /** @type {HTMLElement | null} */ (this.querySelector("[part~=lc-wizard-progress-fill]"))?.style.setProperty("width", `${(this.currentStep / this.totalSteps) * 100}%`);
-  },
-
   render() {
+    const progress = (this.currentStep / this.totalSteps) * 100;
     const isFirstStep = this.currentStep === 1;
     const isLastStep = this.currentStep >= this.totalSteps;
 
@@ -100,7 +96,7 @@ export default defineComponent({
       stepSlots.push(html`
         <div
           class="step-content ${i === this.currentStep ? "active" : ""}"
-          ?hidden=${i !== this.currentStep}
+          style="display: ${i === this.currentStep ? "block" : "none"}"
         >
           <slot name="step-${i}"></slot>
         </div>
@@ -143,6 +139,7 @@ export default defineComponent({
                 <div
                   class="wizard-progress-fill"
                   part="lc-wizard-progress-fill"
+                  style="width: ${progress}%"
                 ></div>
               </div>
             `

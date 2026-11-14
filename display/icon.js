@@ -1,7 +1,7 @@
 import T from "@lightstart/light/types";
 import View, { defineComponent, trackWork } from "@lightstart/light";
 import { icons } from "@lightstart/light/theme/icons.js";
-import { ICON_NAME, maskRule } from "./icon-mask.js";
+import { ICON_NAME, iconSizeRule, maskRule } from "./icon-mask.js";
 /** @import { IconEntry } from "@lightstart/light/theme" */
 /** @import { IconVariant } from "../types.js" */
 
@@ -11,15 +11,30 @@ const isIconName = (name) => typeof name === "string" && ICON_NAME.test(name);
 /** @type {Map<string, Promise<IconEntry | null>>} */
 const entries = new Map();
 const drawn = new Set();
+const sized = new Set();
+/** @type {CSSStyleSheet | null} */
+let iconSheet = null;
+let iconRules = "";
+
 const devSheet = () => {
   const doc = globalThis.document;
-  let tag = doc?.getElementById("lc-icon-rules");
-  if (!tag && doc) {
-    tag = doc.createElement("style");
-    tag.id = "lc-icon-rules";
-    doc.head.appendChild(tag);
-  }
-  return tag;
+  if (iconSheet || !doc || typeof CSSStyleSheet === "undefined") return iconSheet;
+  iconSheet = new CSSStyleSheet();
+  doc.adoptedStyleSheets = [...doc.adoptedStyleSheets, iconSheet];
+  return iconSheet;
+};
+
+/** The rules drawn so far, for a test or a diagnostic. */
+export const drawnIconRules = () => iconRules;
+
+/** @param {string} size */
+const drawSize = (size) => {
+  if (sized.has(size)) return;
+  const sheet = devSheet();
+  if (!sheet) return;
+  sized.add(size);
+  iconRules += `${iconSizeRule(size)}\n`;
+  sheet.replaceSync(iconRules);
 };
 
 /** @param {string} name */
@@ -38,8 +53,8 @@ const variantsOf = (solid, bold) => ["", ...(solid ? /** @type {IconVariant[]} *
 /** @type {(name: string, solid: boolean, bold: boolean) => Promise<void>} */
 const drawIcon = async (name, solid, bold) => {
   const entry = await entryFor(name);
-  const tag = devSheet();
-  if (!entry || !tag) return;
+  const sheet = devSheet();
+  if (!entry || !sheet) return;
   let added = "";
   for (const variant of variantsOf(solid, bold)) {
     const key = ruleKey(name, variant);
@@ -49,7 +64,8 @@ const drawIcon = async (name, solid, bold) => {
     if (rule) added += `${rule}\n`;
   }
   if (!added) return;
-  tag.textContent += added;
+  iconRules += added;
+  sheet.replaceSync(iconRules);
 };
 
 export default defineComponent({
@@ -97,11 +113,7 @@ export default defineComponent({
     return this.getIcon(this.name, this.solid, this.bold);
   },
   applyNumericSize() {
-    if (this.size && /^\d+$/.test(this.size))
-      this.style.setProperty("--lc-icon-size", `${this.size}px`);
-     else
-      this.style.removeProperty("--lc-icon-size");
-
+    if (this.size && /^\d+$/.test(this.size)) drawSize(this.size);
   },
   render() {
     if (this.name && !isIconName(this.name)) return this.name;

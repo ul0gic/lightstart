@@ -18,6 +18,10 @@ declare const _default: Omit<{
         subheadline: string;
         body: string;
         sectionId: string;
+        unsafeHtml: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
+            readonly attribute: false;
+            readonly defaultValue: false;
+        }>;
     };
     render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
@@ -31,6 +35,10 @@ declare const _default: Omit<{
         subheadline: string;
         body: string;
         sectionId: string;
+        unsafeHtml: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
+            readonly attribute: false;
+            readonly defaultValue: false;
+        }>;
     } | undefined;
     events?: {} | undefined;
     mixins?: [] | undefined;

@@ -21,6 +21,10 @@ declare const _default: Omit<{
         image: Prop<ShowcaseImage>;
         ctas: Prop<ShowcaseCta[]>;
         sectionId: string;
+        unsafeHtml: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
+            readonly attribute: false;
+            readonly defaultValue: false;
+        }>;
     };
     render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
@@ -36,6 +40,10 @@ declare const _default: Omit<{
         image: Prop<ShowcaseImage>;
         ctas: Prop<ShowcaseCta[]>;
         sectionId: string;
+        unsafeHtml: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
+            readonly attribute: false;
+            readonly defaultValue: false;
+        }>;
     } | undefined;
     events?: {} | undefined;
     mixins?: [] | undefined;

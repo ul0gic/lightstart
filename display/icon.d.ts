@@ -1,3 +1,4 @@
+export function drawnIconRules(): string;
 declare const _default: Omit<{
     tag: string;
     style: boolean;

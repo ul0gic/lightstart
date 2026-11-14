@@ -15,6 +15,8 @@ export function iconMaskCSS(icons: Array<{
     solid?: Set<string> | "all";
     bold?: Set<string> | "all";
 }): string;
+export function iconSizeRule(px: number | string): string;
+export function iconSizeCSS(sizes: Iterable<number | string>): string;
 import type { IconEntry } from "@lightstart/light/theme";
 /** An icon's body as a CSS mask rule, keyed by the `name` attribute. */
 /** @import { IconEntry } from "@lightstart/light/theme" */

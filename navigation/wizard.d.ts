@@ -22,7 +22,6 @@ declare const _default: Omit<{
     goToStep(step: number): boolean;
     handleBackClick(): void;
     handleNextClick(): void;
-    updated(): void;
     render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
     props?: {
