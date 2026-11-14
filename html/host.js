@@ -143,6 +143,16 @@ export class Host {
     unsupported(`attribute removal (${name}, ${String(el === null)})`);
   }
 
+  /**
+   * Write an element's style as the document's CSSOM allows, or remove it for
+   * null. The default is the attribute path, so a host that has no CSSOM keeps
+   * its old behaviour.
+   */
+  setStyle(el          , value               ) {
+    if (value === null) this.removeAttribute(el, "style");
+    else this.setAttribute(el, "style", value);
+  }
+
   toggleAttribute(el          , name        , on         ) {
     unsupported(`boolean attributes (${name}=${String(on)}, ${String(el === null)})`);
   }

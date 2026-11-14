@@ -17,7 +17,7 @@ export declare const ZERO: number[];
 /**
  * Cells one code point takes: 0 (combining, control, joiner), 1, or 2 (wide).
  */
-export declare const codePointWidth: (cp: number) => 0 | 1 | 2;
+export declare const codePointWidth: (cp: number) => 1 | 0 | 2;
 /**
  * Cells one grapheme cluster takes.
  */

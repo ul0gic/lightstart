@@ -66,6 +66,12 @@ export declare class Host {
     stringify(value: unknown): string;
     setAttribute(el: HostNode, name: string, value: string): void;
     removeAttribute(el: HostNode, name: string): void;
+    /**
+     * Write an element's style as the document's CSSOM allows, or remove it for
+     * null. The default is the attribute path, so a host that has no CSSOM keeps
+     * its old behaviour.
+     */
+    setStyle(el: HostNode, value: string | null): void;
     toggleAttribute(el: HostNode, name: string, on: boolean): void;
     setProperty(el: HostNode, name: string, value: unknown): void;
     /**

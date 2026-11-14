@@ -31,6 +31,13 @@ import { generateDarkTheme } from "./tokens.js";
  */
 export function injectThemeCSS(variables: Record<string, string>, styleId?: string, selector?: string): void;
 /**
+ * Drop the sheet `injectThemeCSS` (or the theme itself) wrote under an id, and
+ * only that sheet: the counterpart of `injectThemeCSS(vars, styleId)`, now that
+ * the theme writes constructable sheets rather than `<style id>` elements.
+ * @param {string} styleId
+ */
+export function removeThemeCSS(styleId: string): void;
+/**
  * Apply a theme to the document: variables on `:root`, variant rules, the
  * dark side and fonts.
  * @param {ThemeData | null | undefined} themeData
@@ -42,7 +49,7 @@ export function applyTheme(themeData: ThemeData | null | undefined): void;
  * @param {ThemeData} lightTheme
  * @param {ThemeData} [explicitDark]
  */
-export function applyDarkTheme(lightTheme: ThemeData, explicitDark?: ThemeData): undefined;
+export function applyDarkTheme(lightTheme: ThemeData, explicitDark?: ThemeData): void;
 /**
  * A theme's variables on a region instead of the document.
  * @param {string} scope any CSS selector

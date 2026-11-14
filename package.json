@@ -77,8 +77,8 @@
       "default": "./theme/runtime.js"
     },
     "./check": {
-      "types": "./check/types.d.ts",
-      "default": "./check/define.js"
+      "types": "./check/index.d.ts",
+      "default": "./check/index.js"
     },
     "./eslint": {
       "types": "./eslint/types.d.ts",
@@ -129,7 +129,8 @@
     "eslint": "^9.17.0",
     "eslint-plugin-lit": "^2.3.1",
     "globals": "^15.14.0",
-    "typescript": "^6.0.3 || ^7.0.0"
+    "typescript": "^6.0.3 || ^7.0.0",
+    "@lightstart/cli": "^0.1.0"
   },
   "peerDependenciesMeta": {
     "@lightstart/server": {
@@ -154,6 +155,9 @@
       "optional": true
     },
     "typescript": {
+      "optional": true
+    },
+    "@lightstart/cli": {
       "optional": true
     }
   },

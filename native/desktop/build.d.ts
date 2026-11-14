@@ -12,7 +12,10 @@ export class Built {
 }
 export function compileBackend(backend: string, exe: string, target: string, npmStatic: string[]): string;
 export function build(backend: string, web: string, out: string, name: string, target: string, keepLight: boolean, noWeb?: boolean, npmStatic?: string[]): Promise<Built>;
-export function desktop(argv: string[]): Promise<number>;
+export function desktop(argv: readonly string[], options?: {
+    ctx?: import("@lightstart/cli").CommandContext;
+    args?: Record<string, unknown>;
+}): Promise<number>;
 export type Staged = {
     dir: string;
     manifest: {

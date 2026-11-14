@@ -74,6 +74,18 @@ export declare class AttributePart extends ThunkHolder {
     _commitString(value: string | NothingValue): void;
     dispose(): void;
 }
+/**
+ * A static `style="…"` attribute withheld from the template markup, applied
+ * through the host's style path once, when the element first commits.
+ */
+export declare class StaticStylePart extends Part {
+    el: unknown;
+    value: string;
+    committed: boolean;
+    constructor(spec: PartSpec, el: HostNode);
+    setFromValues(_values: unknown[]): void;
+    dispose(): void;
+}
 export declare class RawTextPart extends ThunkHolder {
     el: unknown;
     valueIndex: number;
