@@ -1,0 +1,612 @@
+/**
+ * @file The block phase: text to blocks with a container stack of quotes and list items, paragraphs
+ * that continue lazily across lines, GFM pipe tables, fences, indented code, rules, ATX and setext
+ * headings, raw HTML blocks, link reference definitions and footnote definitions collected
+ * document-wide. It then parses each block's text with the inline phase (`inline.ts`) and appends
+ * the referenced footnotes as one trailing block.
+ */
+import { Block, Code, FootnoteDefinition, Footnotes, Heading, Html, Inline, List, ListItem, MAX_NESTING, Paragraph, Quote, Rule, } from "./nodes.js";
+import { FootnoteState, LinkDefinition, normalizeLabel, parseInline, plainText } from "./inline.js";
+import { parseTable } from "./table.js";
+const BLOCK_TAGS = new Set([
+    "address", "article", "aside", "base", "basefont", "blockquote", "body", "caption", "center",
+    "col", "colgroup", "dd", "details", "dialog", "dir", "div", "dl", "dt", "fieldset", "figcaption",
+    "figure", "footer", "form", "frame", "frameset", "h1", "h2", "h3", "h4", "h5", "h6", "head",
+    "header", "hr", "html", "iframe", "legend", "li", "link", "main", "menu", "menuitem", "nav",
+    "noframes", "ol", "optgroup", "option", "p", "param", "search", "section", "summary", "table",
+    "tbody", "td", "tfoot", "th", "thead", "title", "tr", "track", "ul",
+]);
+const RULE = /^(?:(?:\*[ \t]*){3,}|(?:-[ \t]*){3,}|(?:_[ \t]*){3,})$/;
+class Marker {
+    ordered;
+    indent;
+    bullet;
+    delim;
+    start;
+    contentIndent;
+    content;
+    constructor(ordered, indent, bullet, delim, start, contentIndent, content) {
+        this.ordered = ordered;
+        this.indent = indent;
+        this.bullet = bullet;
+        this.delim = delim;
+        this.start = start;
+        this.contentIndent = contentIndent;
+        this.content = content;
+    }
+}
+class DefinitionMatch {
+    label;
+    definition;
+    constructor(label, definition) {
+        this.label = label;
+        this.definition = definition;
+    }
+}
+class FootnoteMatch {
+    label;
+    rest;
+    constructor(label, rest) {
+        this.label = label;
+        this.rest = rest;
+    }
+}
+const isBlank = (line) => line.trim().length === 0;
+const leadingSpaces = (line) => {
+    let i = 0;
+    while (i < line.length && line.charAt(i) === " ")
+        i++;
+    return i;
+};
+const stripIndent = (line, n) => {
+    let i = 0;
+    while (i < line.length && i < n && line.charAt(i) === " ")
+        i++;
+    return line.slice(i);
+};
+const isHtmlStart = (line) => {
+    if (line.startsWith("<!--"))
+        return true;
+    const m = /^<\/?([A-Za-z][A-Za-z0-9-]*)(?:\s|\/?>|$)/.exec(line);
+    if (m === null)
+        return false;
+    if (BLOCK_TAGS.has(m[1].toLowerCase()))
+        return true;
+    return /^<\/?[A-Za-z][A-Za-z0-9-]*(?:\s[^<>]*)?\/?>\s*$/.test(line);
+};
+const matchListMarker = (line) => {
+    const indent = leadingSpaces(line);
+    if (indent > 3)
+        return null;
+    const s = line.slice(indent);
+    if (RULE.test(s))
+        return null;
+    const ul = /^([-+*])([ \t]+)(.*)$/.exec(s);
+    if (ul !== null) {
+        let spaces = ul[2].length;
+        if (spaces > 4)
+            spaces = 1;
+        return new Marker(false, indent, ul[1], "", 0, indent + 1 + spaces, ul[3]);
+    }
+    const ol = /^(\d{1,9})([.)])([ \t]+)(.*)$/.exec(s);
+    if (ol !== null) {
+        let spaces = ol[3].length;
+        if (spaces > 4)
+            spaces = 1;
+        return new Marker(true, indent, ol[2], ol[2], Number(ol[1]), indent + ol[1].length + 1 + spaces, ol[4]);
+    }
+    return null;
+};
+const sameList = (a, b) => a.ordered === b.ordered && a.indent === b.indent && (a.ordered ? a.delim === b.delim : a.bullet === b.bullet);
+const isBlockStart = (line) => {
+    const indent = leadingSpaces(line);
+    if (indent > 3)
+        return false;
+    const s = line.slice(indent);
+    if (/^(`{3,}|~{3,})/.test(s))
+        return true;
+    if (/^#{1,6}(?:[ \t]|$)/.test(s))
+        return true;
+    if (RULE.test(s))
+        return true;
+    if (s.startsWith(">"))
+        return true;
+    if (isHtmlStart(s))
+        return true;
+    return matchListMarker(line) !== null;
+};
+/** `line` with the quote and list markers in front of it stripped, for a definition or fence inside a container. */
+const containerContent = (line) => {
+    let s = line.replace(/^ {0,3}/, "");
+    for (;;) {
+        let changed = false;
+        if (s.startsWith(">")) {
+            s = s.slice(1);
+            if (s.startsWith(" "))
+                s = s.slice(1);
+            changed = true;
+        }
+        const m = /^([-+*]|\d{1,9}[.)])[ \t]+/.exec(s);
+        if (m !== null) {
+            s = s.slice(m[0].length);
+            changed = true;
+        }
+        if (!changed)
+            return s;
+    }
+};
+const definitionOf = (rest) => {
+    const s = rest.trim();
+    let i = 0;
+    let href = "";
+    if (s.charAt(0) === "<") {
+        const close = s.indexOf(">");
+        if (close < 0)
+            return null;
+        href = s.slice(1, close);
+        i = close + 1;
+    }
+    else {
+        const start = i;
+        while (i < s.length && !/\s/.test(s.charAt(i)))
+            i++;
+        href = s.slice(start, i);
+    }
+    if (href.length === 0)
+        return null;
+    while (i < s.length && /\s/.test(s.charAt(i)))
+        i++;
+    let title = "";
+    if (i < s.length) {
+        const q = s.charAt(i);
+        if (q !== '"' && q !== "'" && q !== "(")
+            return null;
+        const close = q === "(" ? ")" : q;
+        const start = i + 1;
+        let j = start;
+        while (j < s.length && s.charAt(j) !== close) {
+            if (s.charAt(j) === "\\")
+                j++;
+            j++;
+        }
+        if (s.charAt(j) !== close)
+            return null;
+        title = s.slice(start, j);
+        i = j + 1;
+        while (i < s.length && /\s/.test(s.charAt(i)))
+            i++;
+        if (i < s.length)
+            return null;
+    }
+    return new LinkDefinition(href, title);
+};
+const matchDefinition = (line) => {
+    const m = /^\[([^\]]+)\]:[ \t]*(.*)$/.exec(line);
+    if (m === null || m[1].startsWith("^"))
+        return null;
+    const definition = definitionOf(m[2]);
+    if (definition === null)
+        return null;
+    return new DefinitionMatch(m[1], definition);
+};
+const matchFootnote = (line) => {
+    const m = /^\[\^([^\]\s]+)\]:[ \t]*(.*)$/.exec(line);
+    if (m === null)
+        return null;
+    return new FootnoteMatch(m[1], m[2]);
+};
+/**
+ * The body lines a footnote definition at `lines[at]` owns, its first `text` included, and the
+ * index after them: continuation lines are indented at least two spaces, blank lines are kept
+ * between them, and a lazy line that does not start a block continues the body too.
+ */
+const readFootnoteBody = (lines, at, text, container) => {
+    const body = [text];
+    let i = at + 1;
+    while (i < lines.length) {
+        const content = container ? containerContent(lines[i]) : lines[i];
+        if (isBlank(content)) {
+            let k = i + 1;
+            while (k < lines.length) {
+                const next = container ? containerContent(lines[k]) : lines[k];
+                if (!isBlank(next))
+                    break;
+                k++;
+            }
+            if (k >= lines.length)
+                break;
+            const next = container ? containerContent(lines[k]) : lines[k];
+            if (leadingSpaces(next) < 2)
+                break;
+            for (let b = i; b < k; b++)
+                body.push("");
+            i = k;
+            continue;
+        }
+        const lead = leadingSpaces(content);
+        if (lead >= 2) {
+            body.push(stripIndent(content, Math.min(lead, 4)));
+            i++;
+            continue;
+        }
+        if (matchFootnote(content) !== null || matchDefinition(content) !== null)
+            break;
+        if (!isBlockStart(content)) {
+            body.push(content.slice(Math.min(lead, 3)));
+            i++;
+            continue;
+        }
+        break;
+    }
+    return { body, end: i };
+};
+const collectFootnoteLabels = (lines) => {
+    const labels = new Map();
+    let fence = "";
+    let inHtml = false;
+    let i = 0;
+    while (i < lines.length) {
+        const line = lines[i];
+        if (isBlank(line)) {
+            inHtml = false;
+            i++;
+            continue;
+        }
+        const content = containerContent(line);
+        if (fence.length > 0) {
+            const close = /^(`{3,}|~{3,})[ \t]*$/.exec(content);
+            if (close !== null && close[1].charAt(0) === fence.charAt(0) && close[1].length >= fence.length)
+                fence = "";
+            i++;
+            continue;
+        }
+        const open = /^(`{3,}|~{3,})(.*)$/.exec(content);
+        if (open !== null) {
+            fence = open[1];
+            i++;
+            continue;
+        }
+        if (inHtml) {
+            i++;
+            continue;
+        }
+        if (isHtmlStart(content)) {
+            inHtml = true;
+            i++;
+            continue;
+        }
+        const footnote = matchFootnote(content);
+        if (footnote !== null) {
+            labels.set(normalizeLabel(footnote.label), true);
+            i = readFootnoteBody(lines, i, footnote.rest, true).end;
+            continue;
+        }
+        i++;
+    }
+    return labels;
+};
+const collectDefinitions = (lines, defs) => {
+    let fence = "";
+    let inHtml = false;
+    for (const line of lines) {
+        if (isBlank(line)) {
+            inHtml = false;
+            continue;
+        }
+        const content = containerContent(line);
+        if (fence.length > 0) {
+            const close = /^(`{3,}|~{3,})[ \t]*$/.exec(content);
+            if (close !== null && close[1].charAt(0) === fence.charAt(0) && close[1].length >= fence.length)
+                fence = "";
+            continue;
+        }
+        const open = /^(`{3,}|~{3,})(.*)$/.exec(content);
+        if (open !== null) {
+            fence = open[1];
+            continue;
+        }
+        if (inHtml)
+            continue;
+        if (isHtmlStart(content)) {
+            inHtml = true;
+            continue;
+        }
+        const definition = matchDefinition(content);
+        if (definition !== null)
+            defs.set(normalizeLabel(definition.label), definition.definition);
+    }
+};
+const parseList = (lines, at, defs, depth, notes) => {
+    const first = matchListMarker(lines[at]);
+    const items = [];
+    let loose = false;
+    let i = at;
+    let end = at;
+    while (i < lines.length) {
+        let blanks = 0;
+        while (i < lines.length && isBlank(lines[i])) {
+            i++;
+            blanks++;
+        }
+        if (i >= lines.length)
+            break;
+        const marker = matchListMarker(lines[i]);
+        if (marker === null || !sameList(first, marker))
+            break;
+        if (blanks > 0 && items.length > 0)
+            loose = true;
+        let content = marker.content;
+        let task = false;
+        let checked = false;
+        if (!marker.ordered) {
+            const tm = /^\[([ xX])\][ \t]+(.*)$/.exec(content);
+            if (tm !== null) {
+                task = true;
+                checked = tm[1].toLowerCase() === "x";
+                content = tm[2];
+            }
+        }
+        const itemLines = [content];
+        i++;
+        while (i < lines.length) {
+            const line = lines[i];
+            if (isBlank(line)) {
+                let k = i + 1;
+                while (k < lines.length && isBlank(lines[k]))
+                    k++;
+                if (k >= lines.length)
+                    break;
+                const next = matchListMarker(lines[k]);
+                if (next !== null && sameList(first, next))
+                    break;
+                if (leadingSpaces(lines[k]) >= marker.contentIndent) {
+                    itemLines.push("");
+                    i++;
+                    continue;
+                }
+                break;
+            }
+            const next = matchListMarker(line);
+            if (next !== null && sameList(first, next))
+                break;
+            const lead = leadingSpaces(line);
+            if (lead >= marker.contentIndent) {
+                itemLines.push(stripIndent(line, marker.contentIndent));
+                i++;
+                continue;
+            }
+            if (!isBlockStart(line)) {
+                itemLines.push(line.slice(Math.min(lead, 3)));
+                i++;
+                continue;
+            }
+            break;
+        }
+        const blocks = parseBlocks(itemLines, defs, depth + 1, notes);
+        for (let k = 1; k < blocks.length; k++) {
+            if (blocks[k].blankBefore)
+                loose = true;
+        }
+        items.push(new ListItem(blocks, task, checked));
+        end = i;
+    }
+    return { list: new List(first.ordered, first.ordered ? first.start : 1, items, loose), end };
+};
+/** `depth` counts the quotes and list items around `lines`; past MAX_NESTING a marker stays text. */
+const parseBlocks = (lines, defs, depth, notes) => {
+    const out = [];
+    let pendingBlank = false;
+    const emit = (block) => {
+        block.blankBefore = pendingBlank;
+        pendingBlank = false;
+        out.push(block);
+    };
+    let i = 0;
+    while (i < lines.length) {
+        const line = lines[i];
+        if (isBlank(line)) {
+            pendingBlank = true;
+            i++;
+            continue;
+        }
+        const indent = leadingSpaces(line);
+        const s = indent <= 3 ? line.slice(indent) : line;
+        if (indent >= 4) {
+            const code = [];
+            let j = i;
+            while (j < lines.length) {
+                if (isBlank(lines[j])) {
+                    let k = j + 1;
+                    while (k < lines.length && isBlank(lines[k]))
+                        k++;
+                    if (k < lines.length && leadingSpaces(lines[k]) >= 4) {
+                        for (let b = j; b < k; b++)
+                            code.push("");
+                        j = k;
+                        continue;
+                    }
+                    break;
+                }
+                if (leadingSpaces(lines[j]) < 4)
+                    break;
+                code.push(stripIndent(lines[j], 4));
+                j++;
+            }
+            emit(new Code("", code.join("\n")));
+            i = j;
+            continue;
+        }
+        const fence = indent <= 3 ? /^(`{3,}|~{3,})(.*)$/.exec(s) : null;
+        if (fence !== null) {
+            const char = fence[1].charAt(0);
+            const length = fence[1].length;
+            const content = [];
+            i++;
+            while (i < lines.length) {
+                const next = lines[i];
+                const nextIndent = leadingSpaces(next);
+                const nextText = nextIndent <= 3 ? next.slice(nextIndent) : next;
+                const close = nextIndent <= 3 ? /^(`{3,}|~{3,})[ \t]*$/.exec(nextText) : null;
+                if (close !== null && close[1].charAt(0) === char && close[1].length >= length) {
+                    i++;
+                    break;
+                }
+                content.push(stripIndent(next, indent));
+                i++;
+            }
+            emit(new Code(fence[2].trim(), content.join("\n")));
+            continue;
+        }
+        const heading = indent <= 3 ? /^(#{1,6})(?:[ \t]+(.*?))?[ \t]*$/.exec(s) : null;
+        if (heading !== null) {
+            let text = heading[2] === undefined ? "" : heading[2];
+            text = text.replace(/[ \t]+#+[ \t]*$/, "");
+            const children = parseInline(text, defs, 0, notes);
+            emit(new Heading(heading[1].length, children, plainText(children)));
+            i++;
+            continue;
+        }
+        if (indent <= 3 && RULE.test(s)) {
+            emit(new Rule());
+            i++;
+            continue;
+        }
+        if (indent <= 3 && isHtmlStart(s)) {
+            let j = i;
+            while (j < lines.length && !isBlank(lines[j]))
+                j++;
+            const html = [];
+            for (let k = i; k < j; k++)
+                html.push(stripIndent(lines[k], Math.min(leadingSpaces(lines[k]), 3)));
+            emit(new Html(html.join("\n")));
+            i = j;
+            continue;
+        }
+        const table = parseTable(lines, i);
+        if (table !== null) {
+            emit(table.table);
+            i = table.end;
+            continue;
+        }
+        if (indent <= 3 && s.startsWith(">") && depth < MAX_NESTING) {
+            const quoteLines = [];
+            while (i < lines.length) {
+                const next = lines[i];
+                const nextIndent = leadingSpaces(next);
+                const nextText = nextIndent <= 3 ? next.slice(nextIndent) : next;
+                if (nextText.startsWith(">")) {
+                    let rest = nextText.slice(1);
+                    if (rest.startsWith(" "))
+                        rest = rest.slice(1);
+                    quoteLines.push(rest);
+                    i++;
+                    continue;
+                }
+                if (isBlank(next))
+                    break;
+                if (!isBlockStart(next)) {
+                    quoteLines.push(next.slice(Math.min(nextIndent, 3)));
+                    i++;
+                    continue;
+                }
+                break;
+            }
+            emit(new Quote(parseBlocks(quoteLines, defs, depth + 1, notes)));
+            continue;
+        }
+        if (indent <= 3 && depth < MAX_NESTING && matchListMarker(line) !== null) {
+            const parsed = parseList(lines, i, defs, depth, notes);
+            emit(parsed.list);
+            i = parsed.end;
+            continue;
+        }
+        if (indent <= 3) {
+            const footnote = matchFootnote(s);
+            if (footnote !== null) {
+                const body = readFootnoteBody(lines, i, footnote.rest, false);
+                notes.definitions.set(normalizeLabel(footnote.label), body.body);
+                i = body.end;
+                continue;
+            }
+            const definition = matchDefinition(s);
+            if (definition !== null) {
+                defs.set(normalizeLabel(definition.label), definition.definition);
+                i++;
+                continue;
+            }
+        }
+        const paragraph = [];
+        let setext = 0;
+        while (i < lines.length) {
+            const next = lines[i];
+            if (isBlank(next))
+                break;
+            if (paragraph.length > 0) {
+                setext = setextLevel(next);
+                if (setext > 0) {
+                    i++;
+                    break;
+                }
+                if (isBlockStart(next) || parseTable(lines, i) !== null)
+                    break;
+            }
+            paragraph.push(next.slice(Math.min(leadingSpaces(next), 3)));
+            i++;
+        }
+        if (setext > 0) {
+            const children = parseInline(paragraph.join("\n"), defs, 0, notes);
+            emit(new Heading(setext, children, plainText(children)));
+            continue;
+        }
+        const children = parseInline(paragraph.join("\n"), defs, 0, notes);
+        emit(new Paragraph(children));
+    }
+    return out;
+};
+/** The setext level a line underlines a paragraph with: 1 for `=`, 2 for `-`, 0 when neither. */
+const setextLevel = (line) => {
+    const indent = leadingSpaces(line);
+    if (indent > 3)
+        return 0;
+    const s = line.slice(indent).replace(/[ \t]+$/, "");
+    if (/^=+$/.test(s))
+        return 1;
+    if (/^-+$/.test(s))
+        return 2;
+    return 0;
+};
+/** The referenced footnotes, parsed in the order their references first numbered them. */
+const buildFootnotes = (notes, defs) => {
+    const items = [];
+    let at = 0;
+    while (at < notes.order.length) {
+        const label = notes.order[at];
+        const number = notes.numbers.get(label);
+        const body = notes.definitions.get(label);
+        const blocks = parseBlocks(body === undefined ? [] : body, defs, 1, notes);
+        items.push(new FootnoteDefinition(label, number === undefined ? at + 1 : number, blocks));
+        at++;
+    }
+    return items;
+};
+/**
+ * `text` as blocks, its link reference definitions resolved across the whole document. The
+ * referenced footnotes come last, as one `Footnotes` block in reference order.
+ */
+export const parse = (text) => {
+    const lines = [];
+    const normalized = text.replace(/\r\n?/g, "\n").replace(/\t/g, "    ");
+    for (const line of normalized.split("\n"))
+        lines.push(line);
+    const defs = new Map();
+    collectDefinitions(lines, defs);
+    const notes = new FootnoteState(collectFootnoteLabels(lines));
+    const blocks = parseBlocks(lines, defs, 0, notes);
+    const items = buildFootnotes(notes, defs);
+    if (items.length > 0) {
+        const footnotes = new Footnotes(items);
+        footnotes.blankBefore = blocks.length > 0;
+        blocks.push(footnotes);
+    }
+    return blocks;
+};

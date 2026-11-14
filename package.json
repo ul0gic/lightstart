@@ -22,11 +22,14 @@
     "access": "public"
   },
   "exports": {
-    ".": "./index.ts",
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./*.ts": {
+      "types": "./*.d.ts",
+      "default": "./*.js"
+    },
     "./*": "./*"
-  },
-  "devDependencies": {
-    "@light/test": "workspace:*",
-    "@types/node": "^26.6.5"
   }
 }

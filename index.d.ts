@@ -5,8 +5,8 @@
  * (`@light/markdown` for the terminal, later the browser component) draws the same tree, and
  * narrows each node with `instanceof`.
  */
-export * from "./nodes.ts";
-export * from "./table.ts";
-export * from "./inline.ts";
-export * from "./parser.ts";
-export { remoteUrl, safeUrl } from "./url.ts";
+export * from "./nodes.js";
+export * from "./table.js";
+export * from "./inline.js";
+export * from "./parser.js";
+export { remoteUrl, safeUrl } from "./url.js";
