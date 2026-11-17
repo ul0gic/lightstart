@@ -11,7 +11,7 @@
 
 ## On a page of your own
 
-A component module is a plain definition; `View.define` registers the tag. Every component declares `style: true` and keeps its stylesheet beside it, so import that too, after `theme/theme.css` (the base the tokens hang off). A component that `extends` another needs its base defined first; `lc-button` extends `lc-link`.
+A component module is a plain definition; `View.define` registers the tag. Every component declares `style: true` and keeps its stylesheet beside it, so import that too, after `theme/theme.css` (the base the tokens hang off). A component that `extends` another needs its base defined first; `lc-button` extends `lc-link`. A component that writes other tags needs those defined too. In a web app on `@lightstart/app`, write the tags: its generation defines them and imports their stylesheets, as the next section says. Elsewhere, register each module with `View.define` and import its CSS, as this example does.
 
 ```js
 import View from "@lightstart/light";
@@ -47,15 +47,15 @@ A browser resolves the bare specifiers through an importmap (`"@lightstart/light
 
 `applyTheme` writes the design tokens the stylesheets read, and links Google Fonts for a preset that names a Google family (`gruvbox-dark`'s Manrope; `configureTheme({ requestFont: () => {} })` stops it, `theme/README.md` › Fonts and icons). `configureIcons` says where `<lc-icon>` fetches an icon (the public Iconify API in the first example, which every visitor's browser calls; the bundled set in the second, which never leaves the origin; a page that has the icons in its own stylesheet leaves it unset). Three more hooks matter only when you have the thing they connect: `configureNavigation` from `@lightstart/light/navigation` for a router (links are plain anchors without one), `configureView({ translate })` for translations (the components speak English without one), and `configureHighlight` from `utils/highlight.js` for a tokenizer behind `<lc-code-block>` (which otherwise colours with `@lightstart/highlight`'s built-in languages, or leaves an unknown language plain).
 
-A component that draws other tags needs them defined too, or they stay inert; the table at the end lists what each one renders. `examples/starter` and `examples/indexeddb-explorer` are whole pages built this way.
+A component that draws other tags needs them defined too, or they stay inert; the table at the end lists what each one renders. `examples/tasks-web` is an app built this way: its views write the tags, and the generation defines them.
 
-## Inside a Bootstrapp app
+## Inside an app on @lightstart/app
 
-Components load themselves. There is no import step and no registration call: the tag is the lookup key, and the framework's loader resolves `<lc-button>` to `display/button.js` through the `bootstrapp.components.lc` map in this package's `package.json`, and the theme plugin brings the stylesheet along. Declare `@lightstart/light` and `@lightstart/components` in the project's `package.json` and write the tags. A production build inlines only the components a project's `bootstrapp.bundle.components` map lists, so an app ships what it renders and nothing else.
+A web app on `@lightstart/app` writes the tags in its views. There is no import and no registration call in the view. Declare `@lightstart/light` and `@lightstart/components` in the project's `package.json`, and `light app` (and `serve`, `build` and `test`, before they start) scans `src/` for the tags. It follows each component's `extends` and the tags it writes, then writes `.light/components.ts` to define every base and used tag before the tag that needs it, and `.light/components.css` with the theme and their stylesheets in that order. `.light/app.ts` imports the definitions before the views, and the app's own stylesheet starts with `@import "../.light/components.css";`. A project without the package, or writing no tag, gets neither file.
 
 ## The catalogue
 
-`@bootstrapp/showcase` renders every component with its props, its examples and a skin picker: `cd projects/light && bootstrapp serve` from the monorepo, or `showcase://showcase` in the IDE.
+Every component is documented by its `props` block and the `<component>.demo.js` beside it: the sentence that describes it, its worked examples, and the content a playground puts inside it.
 
 | Category | Components |
 |---|---|
@@ -69,7 +69,7 @@ Components load themselves. There is no import step and no registration call: th
 | **page sections** (14) | about-section, cta-section, faq-section, feature-grid, float-card, footer, hero-section, pricing-card, pricing-table, showcase-section, site-header, stats-section, steps-section, testimonial-section |
 | **utility** (5) | clipboard, darkmode, device, draggable, droparea |
 
-Every tag is `lc-` plus the name. The nine categories are declared in `@bootstrapp/showcase`'s `lib/categories.js`, whose test fails if a component directory here is not one of them. Three components that need a package of the monorepo live with that package under its prefix: `editor-code`, `editor-diff` (`@bootstrapp/editor`), `qr-code` (`@bootstrapp/qr`) and `anim-drag-panel` (`@bootstrapp/anim`).
+Every tag is `lc-` plus the name. The nine categories are the component folders here.
 
 Each component carries a `<component>.demo.js` beside it: the sentence that describes it, its worked examples, and the content the playground puts inside it. That file is what the catalogue draws, and the code under an example is the example's own source.
 
@@ -148,7 +148,7 @@ registerFormFieldRenderer("colour", (field, value, onChange, html) => html`
 
 The key is `field.cmsType` when there is one, else `field.type`, so registering under a built-in type replaces that control everywhere. A built-in control labels itself; a registered one draws only the control, and `<lc-form>` draws its label above it (`drawsOwnLabel` is the distinction). A view that draws its own chrome around a control asks `renderFormControl(field, value, onChange, html)` for one instead of dispatching on the type itself, which is what `check/field-list-through-form` holds it to.
 
-The field list itself usually comes from a schema: `@bootstrapp/form` reads a model's `$form` block, a schema with none, or a variable spec, and answers one of these.
+The field list itself usually comes from a schema: `@lightstart/form`'s `fieldsForModel` reads a model's `$form` block, `inferFields` a schema with none, and `variableFields` a variable spec, and each answers one of these.
 
 ## The words the components draw
 
@@ -160,7 +160,7 @@ import { lcText } from "../utils/text.js";
 html`<div class="chart-empty">${lcText("lc-chart", "noData")}</div>`
 ```
 
-`bootstrapp.locales: true` in this package's `package.json` is what makes a Bootstrapp app pick the files up: the manifest records which languages the package ships, the runtime merges them beneath the project's own file, and a build merges every contribution into one file per language. A key the project defines wins. Without a translator `lcText` answers the English in `locales/en.js`, interpolation included, so that file is both the contribution and the default. A component outside this package hands its own words in as the fourth argument.
+`bootstrapp.locales: true` in this package's `package.json` is read by the website's build, for now. Without a translator `lcText` answers the English in `locales/en.js`, interpolation included, so that file is both the contribution and the default. A component outside this package hands its own words in as the fourth argument.
 
 A component that takes copy as a prop (`loadmoreText`, `confirmText`, `nextLabel`, the auth form's labels) defaults it to empty and falls through to the locale file. Set the prop and it wins: it is the caller's word for this one instance, the locale file is the language everywhere else.
 
@@ -267,11 +267,11 @@ Every component renders into light DOM, and a `<slot>` in its template projects 
 - A slotted child is the slot element's child: `& slot > [slot="figure"]`.
 - Expose what a consumer may restyle through a part and `--lc-*` variables.
 
-`::part()`, `::slotted()` and `:host` match nothing in light DOM; `bootstrapp check` enforces all of this.
+`::part()`, `::slotted()` and `:host` match nothing in light DOM; `light check` enforces all of this.
 
 ## Developing
 
-Authoring rules, the citizen decisions behind the mixins and stores, and the conventions the checker enforces are in [AGENTS.md](./AGENTS.md). From the monorepo, `cd packages/components && bootstrapp check && bootstrapp test`; from the light repo alone, `pnpm test`.
+Authoring rules, the citizen decisions behind the mixins and stores, and the conventions the checker enforces are in [AGENTS.md](./AGENTS.md). From the monorepo, `cd packages/components && light check && light test`; from the light repo alone, `pnpm test`.
 
 ## What each component renders
 

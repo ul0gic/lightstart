@@ -175,18 +175,10 @@
         "wizard": "navigation/wizard.js"
       }
     },
-    "locales": true,
-    "test": {
-      "browser": true,
-      "ignore": [
-        "website/**"
-      ]
-    },
+    "locales": true
+  },
+  "light": {
     "check": {
-      "from": [
-        "bootstrapp",
-        "@bootstrapp/check"
-      ],
       "rules": {
         "light/no-any": "error",
         "light/declare-instance-surface": "error"
@@ -197,6 +189,7 @@
   "files": [
     "**/*.js",
     "**/*.d.ts",
-    "**/*.css"
+    "**/*.css",
+    "tags.json"
   ]
 }
