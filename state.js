@@ -1,7 +1,9 @@
 /**
  * @file The tokenizers' state between lines: one class for every language (natively a subclass would
  * lose its identity through a base-typed parameter), each mode using its own fields. HTML holds the
- * state of the JavaScript or CSS inside a <script> or <style> as `inner`.
+ * state of the JavaScript or CSS inside a <script> or <style> as `inner`; Markdown holds an open
+ * fence's marker, language and inner state in `fence` and a recognized table's column count in
+ * `table`.
  */
 export class Frame {
     /** "tpl" inside a template literal's text, "expr" inside its ${…}. */
@@ -9,6 +11,43 @@ export class Frame {
     braces = 0;
     constructor(kind) {
         this.kind = kind;
+    }
+}
+/** An open Markdown fence: its marker character and run length, its info language and name, and the state of its code. */
+export class FenceState {
+    marker;
+    len;
+    lang;
+    name;
+    inner;
+    quote;
+    constructor(marker, len, lang, name, inner, quote) {
+        this.marker = marker;
+        this.len = len;
+        this.lang = lang;
+        this.name = name;
+        this.inner = inner;
+        this.quote = quote;
+    }
+    clone() {
+        const inner = this.inner;
+        return new FenceState(this.marker, this.len, this.lang, this.name, inner !== null ? inner.clone() : null, this.quote);
+    }
+    equals(other) {
+        if (this.marker !== other.marker || this.len !== other.len || this.lang !== other.lang || this.name !== other.name || this.quote !== other.quote)
+            return false;
+        const inner = this.inner;
+        const otherInner = other.inner;
+        if (inner === null || otherInner === null)
+            return inner === otherInner;
+        return inner.equals(otherInner);
+    }
+}
+/** A recognized Markdown table, with the number of cells its header has. */
+export class TableState {
+    columns;
+    constructor(columns) {
+        this.columns = columns;
     }
 }
 export class HlState {
@@ -37,6 +76,12 @@ export class HlState {
     /** "javascript", "css", or "" for a <script> of another type (not colored). */
     rawLang = "";
     inner = null;
+    /** Markdown's open fence, null for none. */
+    fence = null;
+    /** Markdown's recognized table, null for none. */
+    table = null;
+    /** Markdown's previous block kind ("blank", "paragraph" or "other"). */
+    prev = "blank";
     clone() {
         const c = new HlState();
         for (const f of this.stack) {
@@ -66,26 +111,90 @@ export class HlState {
         c.rawLang = this.rawLang;
         const inner = this.inner;
         c.inner = inner !== null ? inner.clone() : null;
+        const fence = this.fence;
+        c.fence = fence !== null ? fence.clone() : null;
+        const table = this.table;
+        c.table = table !== null ? new TableState(table.columns) : null;
+        c.prev = this.prev;
         return c;
+    }
+    /**
+     * Whether `other` is the same state, field for field as `clone()` copies them: a line that ends in
+     * the state it ended in before leaves every later line as it was, so re-tokenizing can stop there.
+     */
+    equals(other) {
+        if (this.stack.length !== other.stack.length)
+            return false;
+        for (let i = 0; i < this.stack.length; i++) {
+            const a = this.stack[i];
+            const b = other.stack[i];
+            if (a.kind !== b.kind || a.braces !== b.braces)
+                return false;
+        }
+        if (this.comment !== other.comment ||
+            this.string !== other.string ||
+            this.regexOk !== other.regexOk ||
+            this.decl !== other.decl ||
+            this.afterDot !== other.afterDot ||
+            this.objKey !== other.objKey ||
+            this.depth !== other.depth ||
+            this.mode !== other.mode ||
+            this.url !== other.url ||
+            this.hmode !== other.hmode ||
+            this.quote !== other.quote ||
+            this.tagName !== other.tagName ||
+            this.closing !== other.closing ||
+            this.nameNext !== other.nameNext ||
+            this.afterEq !== other.afterEq ||
+            this.attrName !== other.attrName ||
+            this.scriptType !== other.scriptType ||
+            this.hasScriptType !== other.hasScriptType ||
+            this.rawTag !== other.rawTag ||
+            this.rawLang !== other.rawLang ||
+            this.prev !== other.prev)
+            return false;
+        const inner = this.inner;
+        const otherInner = other.inner;
+        if (inner === null || otherInner === null) {
+            if (inner !== otherInner)
+                return false;
+        }
+        else if (!inner.equals(otherInner))
+            return false;
+        const fence = this.fence;
+        const otherFence = other.fence;
+        if (fence === null || otherFence === null) {
+            if (fence !== otherFence)
+                return false;
+        }
+        else if (!fence.equals(otherFence))
+            return false;
+        const table = this.table;
+        const otherTable = other.table;
+        if (table === null || otherTable === null)
+            return table === otherTable;
+        return table.columns === otherTable.columns;
     }
 }
 export class Token {
     from;
     to;
     type;
-    constructor(from, to, type) {
+    mark;
+    constructor(from, to, type, mark = false) {
         this.from = from;
         this.to = to;
         this.type = type;
+        this.mark = mark;
     }
 }
-/** Append a token, joining it to the last one when they touch and share a type. */
-export const pushToken = (tokens, from, to, type) => {
+/** Append a token, joining it to the last one when they touch, share a type and neither is a mark. */
+export const pushToken = (tokens, from, to, type, mark = false) => {
     if (to <= from)
         return;
     const last = tokens.length > 0 ? tokens[tokens.length - 1] : null;
-    if (last !== null && last.to === from && last.type === type)
+    if (last !== null && last.to === from && last.type === type && !last.mark && !mark)
         last.to = to;
     else
-        tokens.push(new Token(from, to, type));
+        tokens.push(new Token(from, to, type, mark));
 };

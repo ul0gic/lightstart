@@ -15,6 +15,10 @@ export class Language {
     tokenizeText;
     /** The plugin that registered it ("" for none). */
     owner = "";
+    /** How many lines after one its tokens depend on (a Markdown table's header waits for its delimiter row). */
+    lookAhead = 0;
+    /** The extra indentation a new line takes after `textBeforeCursor` (1 after an opening bracket). */
+    indentAfter = (_textBeforeCursor) => 0;
     constructor(id, extensions, fences, tokenizeText) {
         this.id = id;
         this.extensions = extensions;

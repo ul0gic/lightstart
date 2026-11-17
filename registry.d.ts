@@ -12,10 +12,14 @@ export declare class Language {
     readonly extensions: string[];
     /** Lower-case names a Markdown fence gives it ("typescript", "ts"). */
     readonly fences: string[];
-    readonly tokenizeText: (text: string, state: HlState) => Token[];
+    readonly tokenizeText: (text: string, state: HlState, peek: (offset: number) => string | null) => Token[];
     /** The plugin that registered it ("" for none). */
     owner: string;
-    constructor(id: string, extensions: string[], fences: string[], tokenizeText: (text: string, state: HlState) => Token[]);
+    /** How many lines after one its tokens depend on (a Markdown table's header waits for its delimiter row). */
+    lookAhead: number;
+    /** The extra indentation a new line takes after `textBeforeCursor` (1 after an opening bracket). */
+    indentAfter: (textBeforeCursor: string) => number;
+    constructor(id: string, extensions: string[], fences: string[], tokenizeText: (text: string, state: HlState, peek: (offset: number) => string | null) => Token[]);
 }
 /** Register `l`; a later one with the same id replaces the earlier. */
 export declare const addLanguage: (l: Language) => void;
