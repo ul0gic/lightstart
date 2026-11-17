@@ -12,11 +12,11 @@
 import { CLEAR, CURSOR_HIDE, CURSOR_SHOW, cup } from "./ansi.js";
 import { FocusEvent, KeyEvent, MouseEvent, WheelEvent } from "./events.js";
 import { editorHandleKey } from "./editor.js";
-import { focusStates, focusables, hitTest, isFocusable, nextFocusable, scrollBoxOf } from "./focus.js";
+import { focusStates, focusables, hitTestLayers, isFocusable, nextFocusable, scrollBoxOf } from "./focus.js";
 import { InputDecoder } from "./input.js";
 import { layout, scrollBy } from "./layout.js";
 import { TElement, TInput, TRoot } from "./node.js";
-import { Caret, Clip, paint } from "./paint.js";
+import { Caret, Clip, paint, paintLayers } from "./paint.js";
 import { Screen, diffScreens } from "./screen.js";
 import { FLUSH_RENDER, frames } from "./scheduler.js";
 import { DEFAULT_STYLE } from "./style.js";
@@ -106,6 +106,7 @@ export class Renderer {
     this.back.clear();
     const caret = new Caret();
     paint(this.root, this.back, new Clip(0, 0, this.back.w, this.back.h), DEFAULT_STYLE, caret, this.focus);
+    paintLayers(this.root, this.back, caret, this.focus);
     let out = diffScreens(this.front, this.back);
     if (caret.visible) {
       out += cup(caret.x, caret.y);
@@ -184,7 +185,11 @@ export class Renderer {
   }
 
   dispatchMouse(e            ) {
-    const hit = hitTest(this.root, e.x, e.y);
+    const hit = hitTestLayers(this.root, e.x, e.y);
+    if (e.type === "mousehover") {
+      if (hit !== null) hit.dispatch(e);
+      return;
+    }
     // While a button is held, the element pressed gets the moves and the release: a drag that
     // leaves it (a selection running past its edge) is still its drag.
     const held = e.type !== "mousedown" && this.pressed !== null && this.attached(this.pressed) ? this.pressed : null;
@@ -214,7 +219,7 @@ export class Renderer {
   }
 
   dispatchWheel(e            ) {
-    const target = hitTest(this.root, e.x, e.y);
+    const target = hitTestLayers(this.root, e.x, e.y);
     const consumed = target !== null && target.dispatch(e);
     if (!consumed) {
       const box = scrollBoxOf(target);

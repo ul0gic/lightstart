@@ -4,6 +4,13 @@ import { TBox, TElement, TNode } from "./node.js";
  * laid out covers it. A box clips its children to its inner rectangle.
  */
 export declare const hitTest: (node: TNode, x: number, y: number) => TElement | null;
+/**
+ * The element under the cell (x, y) with the overlay layers on top: the last
+ * layer whose rectangle holds the cell wins (its own hit test), a layer with
+ * `backdrop` catches a cell outside it, and otherwise the tree's hit test
+ * answers.
+ */
+export declare const hitTestLayers: (root: TNode, x: number, y: number) => TElement | null;
 export declare const isFocusable: (el: TElement) => boolean;
 /**
  * The focusable elements under `node` in document order, hidden subtrees skipped.

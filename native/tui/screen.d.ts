@@ -17,6 +17,11 @@ export declare class Screen {
      */
     fill(x: number, y: number, w: number, h: number, style: Style): void;
     /**
+     * Set only the background of every cell of a rectangle, keeping glyph,
+     * foreground and attributes; clipped to the grid.
+     */
+    setBg(x: number, y: number, w: number, h: number, bg: number): void;
+    /**
      * Set an attribute bit on every cell of a rectangle, clipped to the grid.
      */
     addAttr(x: number, y: number, w: number, h: number, bit: number): void;

@@ -42,7 +42,7 @@ export declare class InputDecoder {
     /**
      * An SGR mouse report: `CSI < b ; x ; y M` for a press, `m` for a release.
      * The low bits of `b` are the button, 4 shift, 8 alt, 16 ctrl, 32 motion,
-     * 64 the wheel (64 up, 65 down).
+     * 64 the wheel (64 up, 65 down); motion with button 3 (none held) is `mousehover`.
      */
     emitMouse(params: string, pressed: boolean): void;
 }

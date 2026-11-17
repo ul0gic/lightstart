@@ -48,8 +48,8 @@
                          
  
 
-/** Model field definitions plus the directives above. */
-                                                                             
+/** Model field definitions plus the directives above: a `$` key holds a directive's value, any other key a field. */
+                                                                                                                                     
 
                              
                      

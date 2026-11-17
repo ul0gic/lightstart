@@ -6,7 +6,7 @@ can't do: **two-stage adoption** of browser-prerendered DOM, **thunk bindings**
 (`${() => ...}`) for fine-grained updates, and the `key()` / `element()`
 primitives that replaced lit's directives. 9.1 KB min+gzip bundled with esbuild, zero dependencies.
 
-The engine is TypeScript (erasable syntax only), so scriptc compiles its classes natively without JavaScript's per-write field bookkeeping; browsers get it with the types stripped as it is served (light's test server, bootstrapp's dev server) or from the JavaScript the package ships.
+The engine is TypeScript (erasable syntax only), so scriptc compiles its classes natively without JavaScript's per-write field bookkeeping; browsers get it with the types stripped as it is served (by light's test server) or from the JavaScript the package ships.
 
 | File | What it owns |
 |---|---|
@@ -50,8 +50,6 @@ before then adopts, and a region still drifted at settle renders fresh.
 
 ## The render-once pattern
 
-`examples/grand-octave/` is the living demo (with the lit
-original beside it for comparison; both show a `render() ×N` counter).
 Every dynamic binding is a thunk over a signal, so `render()` runs once at
 connect and stays at ×1 while you play; the lit version's counter climbs
 with every note. What the comparison actually teaches: **DOM writes are

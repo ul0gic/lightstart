@@ -5,7 +5,7 @@ export { ATTR_BOLD, ATTR_DIM, ATTR_INVERSE, ATTR_ITALIC, ATTR_STRIKE, ATTR_UNDER
 export { colorDepth, colorDepthOf, colorSgr, parseColor, setColorDepth, to256 } from "./color.js";
 export type { ColorDepth } from "./color.js";
 export { ChangeEvent, CustomEvent, FocusEvent, KeyEvent, MouseEvent, SubmitEvent, UIEvent, WheelEvent } from "./events.js";
-export { focusables, hitTest, isFocusable, nextFocusable, scrollBoxOf } from "./focus.js";
+export { focusables, hitTest, hitTestLayers, isFocusable, nextFocusable, scrollBoxOf } from "./focus.js";
 export { FLUSH_AFTER, FLUSH_RENDER, FLUSH_VIEWS, FrameScheduler, frames } from "./scheduler.js";
 export { HandlerEntry, TAnchor, TBox, TElement, TFragment, TInput, TNode, TRoot, TRun, TSpan, TText, asBool, asEnum, asNumber, asNumberOrNull, asString, childNodes, find } from "./node.js";
 export { EVENT_NAMES, TagDefinition, createElement, isDefinedTag, isKnownProp, isKnownTag, kindOf, registerTag } from "./tags.js";
@@ -13,7 +13,7 @@ export { dumpTree, textOf } from "./dump.js";
 export { codePointWidth, graphemeWidth, graphemes, stringWidth } from "./width.js";
 export { Cell, InlineRun, WrappedLine, lineText, wrapRuns } from "./wrap.js";
 export { ScrollState, Size, TextLayout, arrange, forgetLayout, inlineRuns, inputRows, layout, measure, scrollBy, scrollStateOf, textLayoutOf } from "./layout.js";
-export { Caret, Clip, inputCaretCell, inputVisualRows, paint } from "./paint.js";
+export { Caret, Clip, inputCaretCell, inputVisualRows, paint, paintLayers } from "./paint.js";
 export { Screen, diffScreens } from "./screen.js";
 export { ALT_SCREEN_OFF, ALT_SCREEN_ON, CLEAR, CSI, CURSOR_HIDE, CURSOR_SHOW, ESC, HOME, MOUSE_OFF, MOUSE_ON, PASTE_OFF, PASTE_ON, RESET, SYNC_END, SYNC_START, cup, sgrTransition } from "./ansi.js";
 export { InputDecoder } from "./input.js";

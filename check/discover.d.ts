@@ -2,6 +2,7 @@ export function listRuleFiles(dir: string): string[];
 export function ruleSources(owner: string, dir: string, own?: boolean): RuleSource[];
 export function ownRuleSources(): RuleSource[];
 export function projectRuleSources(projectDir: string, pkg: PackageJson | null): RuleSource[];
+export function dependencyRuleSources(projectDir: string, pkg: PackageJson | null): RuleSource[];
 export function loadRuleFile(owner: string, file: string, own?: boolean): Promise<Loaded>;
 export function loadRuleFileSync(owner: string, file: string, own?: boolean): Loaded;
 export function loadRules<M extends ProjectModel = ProjectModel>(sources: RuleSource[]): Promise<{

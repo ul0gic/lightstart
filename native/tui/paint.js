@@ -2,12 +2,12 @@
  * @lightstart/light/native/tui/paint: a laid-out tree into a Screen, clipping
  * with a rectangle passed down the tree.
  */
-import { TAnchor, TBox, TElement, TInput, TNode, TRun, TText } from "./node.js";
+import { TAnchor, TBox, TElement, TInput, TNode, TRun, TText, tabRowOf } from "./node.js";
 import { Screen } from "./screen.js";
-import { ATTR_INVERSE, Style } from "./style.js";
+import { ATTR_BOLD, ATTR_INVERSE, DEFAULT_STYLE, Style } from "./style.js";
 import { graphemeWidth, graphemes } from "./width.js";
 import { WrappedLine } from "./wrap.js";
-import { textLayoutOf } from "./layout.js";
+import { collectLayers, textLayoutOf } from "./layout.js";
 
 export class Clip {
   x0        ;
@@ -102,6 +102,159 @@ const drawBorder = (screen        , clip      , box      , style       ) => {
   }
 };
 
+const tabLabels = (box      )           => {
+  const out           = [];
+  if (box.tabs !== "") {
+    const parts = box.tabs.split("\n");
+    for (let i = 0; i < parts.length; i++) if (parts[i].length > 0) out.push(parts[i]);
+  }
+  if (out.length === 0 && box.title !== null) out.push(box.title);
+  return out;
+};
+
+const tabActive = (box      )         => {
+  if (box.tabs !== "") {
+    const parts = box.tabs.split("\n");
+    for (let i = 0; i < parts.length; i++) if (parts[i].length > 0) return box.activeTab;
+  }
+  return box.title !== null ? 0 : -1;
+};
+
+                                                                    
+
+/** The tabs that fit on the top edge, from the first; when the active one would not fit, from the first tab that lets it. */
+const tabSpans = (box      )           => {
+  const labels = tabLabels(box);
+  const widths           = [];
+  for (let i = 0; i < labels.length; i++) {
+    let width = 2;
+    for (const g of graphemes(labels[i])) width += graphemeWidth(g);
+    widths.push(width);
+  }
+  const room = box.w;
+  const active = tabActive(box);
+  let first = 0;
+  if (active >= 0 && active < labels.length) {
+    let used = widths[active];
+    first = active;
+    while (first > 0 && used + widths[first - 1] <= room) {
+      first--;
+      used += widths[first];
+    }
+    // From the first tab when the active one fits that way too.
+    let fromStart = 0;
+    for (let i = 0; i <= active; i++) fromStart += widths[i];
+    if (fromStart <= room) first = 0;
+  }
+  const start           = [];
+  const end           = [];
+  const index           = [];
+  const limit = box.x + box.w;
+  let cx = box.x;
+  for (let i = first; i < labels.length; i++) {
+    if (cx + widths[i] > limit) break;
+    start.push(cx);
+    end.push(cx + widths[i]);
+    index.push(i);
+    cx += widths[i];
+  }
+  return { start: start, end: end, index: index };
+};
+
+/**
+ * The tab index under screen column `x` on the box's top row, or -1.
+ */
+export const tabAt = (box      , x        )         => {
+  const spans = tabSpans(box);
+  for (let i = 0; i < spans.start.length; i++) {
+    if (x >= spans.start[i] && x < spans.end[i]) return spans.index[i];
+  }
+  return -1;
+};
+
+const drawCellBorder = (screen        , clip      , box      , style       , inherited       ) => {
+  const x = box.x;
+  const y = box.y;
+  const w = box.w;
+  const h = box.h;
+  if (w < 2 || h < 2) return;
+  const line = box.borderColor !== -1 ? box.borderColor : style.fg;
+  const tint = style.bg;
+  const outer = inherited.bg;
+  const heavy = box.borderHeavy && line !== -1 && tint !== -1 && outer !== -1;
+  let top = "▁";
+  let topFg = line;
+  let topBg = outer;
+  let bottom = "▔";
+  let bottomFg = line;
+  let bottomBg = outer;
+  let left = "▏";
+  let leftFg = line;
+  let leftBg = tint;
+  let right = "▕";
+  let rightFg = line;
+  let rightBg = tint;
+  if (heavy) {
+    top = "▂";
+    bottom = "▆";
+    bottomFg = outer;
+    bottomBg = line;
+    left = "▎";
+    right = "▊";
+    rightFg = tint;
+    rightBg = line;
+  }
+  const topStyle = new Style(topFg, topBg, 0);
+  const bottomStyle = new Style(bottomFg, bottomBg, 0);
+  const leftStyle = new Style(leftFg, leftBg, 0);
+  const rightStyle = new Style(rightFg, rightBg, 0);
+  const tabRow = tabRowOf(box);
+  // With tabs, the edge is the pane's first row with its line along the top, right under the tab
+  // row, the active tab sitting on it in its color.
+  const edge = y + tabRow;
+  const spans = tabSpans(box);
+  const active = tabActive(box);
+  // Heavy, the edge's line is the top quarter (`▆` with its colors swapped); no glyph has a quarter
+  // corner, so a corner is three quadrants (`▛`, `▜`), closed and a little thicker than the lines.
+  const lidGlyph = heavy ? "▆" : "▔";
+  const lid = heavy ? new Style(tint, line, 0) : new Style(line, tint, 0);
+  const corner = new Style(line, tint, 0);
+  for (let i = 0; i < w; i++) {
+    if (tabRow === 0) putClipped(screen, clip, x + i, y, top, 1, topStyle);
+    else if (i > 0 && i < w - 1) putClipped(screen, clip, x + i, edge, lidGlyph, 1, lid);
+    putClipped(screen, clip, x + i, y + h - 1, bottom, 1, bottomStyle);
+  }
+  const leftSide = box.borderSides === "both" || box.borderSides === "left";
+  const rightSide = box.borderSides === "both" || box.borderSides === "right";
+  if (tabRow > 0) {
+    if (!leftSide) putClipped(screen, clip, x, edge, lidGlyph, 1, lid);
+    else putClipped(screen, clip, x, edge, heavy ? "▛" : "🭽", 1, heavy ? corner : lid);
+    if (!rightSide) putClipped(screen, clip, x + w - 1, edge, lidGlyph, 1, lid);
+    else putClipped(screen, clip, x + w - 1, edge, heavy ? "▜" : "🭾", 1, heavy ? corner : lid);
+  }
+  for (let j = 1 + tabRow; j < h - 1; j++) {
+    if (leftSide) putClipped(screen, clip, x, y + j, left, 1, leftStyle);
+    if (rightSide) putClipped(screen, clip, x + w - 1, y + j, right, 1, rightStyle);
+  }
+  const labels = tabLabels(box);
+  for (let s = 0; s < spans.start.length; s++) {
+    const labelIndex = spans.index[s];
+    const on = labelIndex === active;
+    const fg = on ? (box.tabFg !== -1 ? box.tabFg : tint) : line;
+    const bg = on ? (box.tabBg !== -1 ? box.tabBg : line) : outer;
+    const attrs = on ? ATTR_BOLD : 0;
+    const tabStyle = new Style(fg, bg, attrs);
+    const end = spans.end[s];
+    let cx = spans.start[s];
+    for (const g of graphemes(" " + labels[labelIndex] + " ")) {
+      const gw = graphemeWidth(g);
+      if (cx + gw > end) break;
+      putClipped(screen, clip, cx, y, g, gw, tabStyle);
+      cx += gw;
+    }
+  }
+};
+
 /**
  * @param focus the focused element: an input shows its caret, anything else shows inverse
  */
@@ -127,17 +280,29 @@ export const paint = (node       , screen        , clip      , inherited       ,
   }
   if (node instanceof TBox) {
     if (node.style.bg !== -1 || node.style.attrs !== 0) {
-      const c = clip.intersect(node.x, node.y, node.w, node.h);
-      screen.fill(c.x0, c.y0, c.x1 - c.x0, c.y1 - c.y0, style);
+      if (node.border && node.borderStyle === "cell") {
+        if (node.h > 2) {
+          const c = clip.intersect(node.x, node.y + 1, node.w, node.h - 2);
+          screen.fill(c.x0, c.y0, c.x1 - c.x0, c.y1 - c.y0, style);
+        }
+      } else {
+        const c = clip.intersect(node.x, node.y, node.w, node.h);
+        screen.fill(c.x0, c.y0, c.x1 - c.x0, c.y1 - c.y0, style);
+      }
     }
     if (node.rule) {
       for (let i = 0; i < node.w; i++) putClipped(screen, clip, node.x + i, node.y, "─", 1, style);
       return;
     }
-    if (node.border) drawBorder(screen, clip, node, style);
+    if (node.border && node.borderStyle === "cell") drawCellBorder(screen, clip, node, style, inherited);
+    else if (node.border) drawBorder(screen, clip, node, style);
     const pad = node.padding + (node.border ? 1 : 0);
-    const inner = clip.intersect(node.x + pad, node.y + pad, node.w - pad * 2, node.h - pad * 2);
-    for (let c = node.firstChild; c !== null; c = c.next) paint(c, screen, inner, style, caret, focus);
+    const tabRow = tabRowOf(node);
+    const inner = clip.intersect(node.x + pad, node.y + pad + tabRow, node.w - pad * 2, node.h - pad * 2 - tabRow);
+    for (let c = node.firstChild; c !== null; c = c.next) {
+      if (c instanceof TBox && c.layer) continue;
+      paint(c, screen, inner, style, caret, focus);
+    }
     if (focused) invert(screen, clip, node);
   }
 };
@@ -254,5 +419,29 @@ const paintInput = (input        , screen        , clip      , style       , car
         caret.y = vy;
       }
     }
+  }
+};
+
+/** The style `el`'s ancestors hand down to it, as the tree pass would have: a layer drawn on its own keeps their colors. */
+const inheritedAt = (el          )        => {
+  const chain             = [];
+  for (let p = el.parent; p !== null; p = p.parent) chain.push(p);
+  let style = DEFAULT_STYLE;
+  for (let i = chain.length - 1; i >= 0; i--) style = chain[i].style.inherit(style);
+  return style;
+};
+
+/**
+ * Paint the overlay layers under `root` over what the tree painted, in tree order, each over the
+ * whole screen in the style its ancestors hand down, then its shadow: the column right of it and
+ * the row below it take the shadow's bg and keep their glyphs.
+ */
+export const paintLayers = (root       , screen        , caret       , focus                 ) => {
+  const full = new Clip(0, 0, screen.w, screen.h);
+  for (const layer of collectLayers(root, [])) {
+    paint(layer, screen, full, inheritedAt(layer), caret, focus);
+    if (layer.shadow === -1) continue;
+    screen.setBg(layer.x + layer.w, layer.y + 1, 1, layer.h - 1, layer.shadow);
+    screen.setBg(layer.x + 1, layer.y + layer.h, layer.w - 1, 1, layer.shadow);
   }
 };

@@ -46,6 +46,10 @@ export declare const asString: (name: string, v: PropValue) => string;
 export declare const asNumber: (name: string, v: PropValue) => number;
 export declare const asNumberOrNull: (name: string, v: PropValue) => number | null;
 export declare const asBool: (v: PropValue) => boolean;
+/** The prop a template attribute names: `sticktobottom` is `stickToBottom`. */
+export declare const propName: (name: string) => string;
+/** The row a cell box's tabs take above its top edge: 1 for a cell border with tabs or a title, else 0. */
+export declare const tabRowOf: (box: TBox) => number;
 export declare const asEnum: (name: string, v: PropValue, allowed: string[]) => string;
 export declare class TElement extends TNode {
     kind: string;
@@ -127,12 +131,25 @@ export declare class TBox extends TElement {
     padding: number;
     gap: number;
     border: boolean;
+    borderStyle: string;
+    borderColor: number;
+    borderHeavy: boolean;
+    borderSides: string;
+    tabBg: number;
+    tabFg: number;
+    tabs: string;
+    activeTab: number;
     title: string | null;
     scroll: boolean;
     scrollTop: number;
     stickToBottom: boolean;
     align: string;
     rule: boolean;
+    layer: boolean;
+    layerX: number;
+    layerY: number;
+    backdrop: boolean;
+    shadow: number;
     scrollState: ScrollState | null;
     measured: MeasureCache | null;
     constructor(tag: string);
@@ -146,9 +163,22 @@ export declare class TBox extends TElement {
     setWidth(n: number | null): void;
     setHeight(n: number | null): void;
     setBorder(b: boolean): void;
+    setBorderStyle(s: string): void;
+    setBorderColor(c: number): void;
+    setBorderHeavy(b: boolean): void;
+    setBorderSides(s: string): void;
+    setTabs(s: string): void;
+    setActiveTab(n: number): void;
+    setTabBg(c: number): void;
+    setTabFg(c: number): void;
     setScroll(b: boolean): void;
     setStickToBottom(b: boolean): void;
     setTitle(s: string | null): void;
+    setLayer(b: boolean): void;
+    setLayerX(n: number): void;
+    setLayerY(n: number): void;
+    setBackdrop(b: boolean): void;
+    setShadow(c: number): void;
     propsSummary(): string[];
 }
 /** The tree root: a box the renderer sizes to the terminal. */

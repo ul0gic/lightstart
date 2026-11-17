@@ -37,8 +37,10 @@ export interface ModelSchemaDirectives {
 export interface ModelField extends Omit<TypeDefinitionFields, "props" | "itemType" | "types" | "args" | "returns" | "getter" | "setter" | "hasChanged" | "customValidator" | "validate" | "format" | "query"> {
     [key: string]: unknown;
 }
-/** Model field definitions plus the directives above. */
-export type ModelSchema = Record<string, ModelField> & ModelSchemaDirectives;
+/** Model field definitions plus the directives above: a `$` key holds a directive's value, any other key a field. */
+export type ModelSchema = ModelSchemaDirectives & {
+    [key: string]: ModelField | ModelSchemaDirectives[keyof ModelSchemaDirectives];
+};
 export interface ModelHooks {
     beforeAdd?: HookFn;
     afterAdd?: HookFn;

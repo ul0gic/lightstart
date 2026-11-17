@@ -12,7 +12,7 @@ What every target shares sits here: which scriptc the tools run, the parity runn
 ```
 npm run typecheck:native   # tsc-ts over the terminal graph (native/tui) against es2024, no dom lib
 npm run coverage:native    # scriptc coverage native/tui/index.ts: fully static, nothing deferred
-npm run coverage:tasks     # the same over examples/tasks/main.js: no blocker (its JSDoc JavaScript is not held to fully static)
+npm run coverage:tasks     # the same over examples/tasks-tui's generated entry: fully static, nothing deferred
 npm run test:native        # every target's *.test.js under node and under scriptc run; outputs must match
 npm run probes             # the compiler probes (native/probes/) that decided how the core is written
 light desktop run native/desktop/demo/backend.js   # the desktop shell's demo: a light page in the system web view
@@ -28,16 +28,16 @@ SCRIPTC=/path/to/scriptc npm run verify
 
 To move to another scriptc release, change `scriptc` in the root `package.json` and in `packages/light/package.json`, run `pnpm install`, and run the gates. With npm's `ignore-scripts` on, scriptc's install script does not run and the CLI answers "native installation is incomplete"; `pnpm rebuild scriptc --config.ignore-scripts=false` runs it for scriptc alone.
 
-`native/scriptc.js` resolves the compiler for every tool, `light-native` included: `$SCRIPTC`, else the scriptc in the workspace's `node_modules`, else the one on `PATH`. `light desktop build` and `native/tui/pty.sh` follow it too.
+`native/scriptc.js` resolves the compiler for every tool, the native commands included: `$SCRIPTC`, else the scriptc in the workspace's `node_modules`, else the one on `PATH`. `light desktop build` and `native/tui/pty.sh` follow it too.
 
 The coverage gates run `--fail-on=blockers`: they fail on any blocker and on a divergence from node not listed in `divergences.json`, and, unless dynamic code is allowed, on any deferred or unreached site or a statically compiled share under 100%. scriptc's SC6101 warning, a function that likely runs often and works on untyped values (an `any`, an untyped `JSON.parse` result, an untyped JavaScript file), is printed as a note: the warning guesses which functions are hot, and data parsed from outside stays `unknown` on purpose.
 
 | File | What it owns |
 |---|---|
-| `assert.ts` | `ok`, `eq`, `eqn`, `throws`, `budget`, `done`: the checks a native test uses, light's and its packages' (`@light/test` re-exports them), since node:test does not run under scriptc |
+| `assert.ts` | `ok`, `eq`, `eqn`, `throws`, `budget`, `done`: the checks a native test uses, light's and its packages' (`@lightstart/test` re-exports them), since node:test does not run under scriptc |
 | `run.js` | The parity runner `npm run test:native` runs: every `*.test.js` of a target's folder under node and under `scriptc run` |
-| `coverage.js`, `diagnostics.js`, `coverage-baseline.json` | The coverage gate `npm run verify` runs, over `native/tui/index.ts` and, with `--allow-dynamic`, the tasks app's entry; the reading of scriptc's JSON report it shares with the desktop gate and the probes; the counts the tasks graph may only lower |
-| `scriptc.js` | Which scriptc the native tools and `light-native` run (`$SCRIPTC`, then the workspace's `node_modules`, then `PATH`) |
+| `coverage.js`, `diagnostics.js`, `coverage-baseline.json` | The coverage gate `npm run verify` runs, over `native/tui/index.ts` and, with `--allow-dynamic`, the tasks-tui example's entry (`.light/main.ts`, generated first); the reading of scriptc's JSON report it shares with the desktop gate and the probes; the counts the tasks graph may only lower |
+| `scriptc.js` | Which scriptc the native tools and the commands run (`$SCRIPTC`, then the workspace's `node_modules`, then `PATH`) |
 | `probes/` | One-file programs that pin what the compiler accepts, and the decisions they produced (`probes/README.md`) |
 | `tui/`, `desktop/` | The targets |
 

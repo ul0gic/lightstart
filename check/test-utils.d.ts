@@ -1,6 +1,6 @@
 export namespace FIXTURE_PKG {
     let name: string;
-    namespace bootstrapp {
+    namespace light {
         let prefix: string;
         namespace components {
             let fx: string;

@@ -389,6 +389,27 @@ TypeScript 7's `typescript` no longer exports. Under TypeScript 7, install
 checker reads the API from there. A rule of light's own that cannot load fails
 the run.
 
+Rules come from light, from the project and from the packages it depends on. A
+rule is one file under a `check/rules/` folder, its id `<owner>/<file name>`:
+light's are `light/…`, the project's own are owned by its name, and a
+package's by its name after the scope. Every `@lightstart/*` dependency that
+ships `check/rules/` brings its rules (`@lightstart/components` would bring
+`components/…`), and so does every package the project names in
+`light.check.from`. `light.check.rules` sets any of them to `"error"`, `"warn"`
+or `"off"`, and a rule from a package that cannot load is a warning.
+
+`npx light lint [--fix]` runs eslint over the project. It uses the project's
+`eslint.config.js` when there is one, else light's recommended config, and
+ignores `node_modules`, `dist`, `.deployed`, `.light` and `.data`. ESLint and
+the packages the config needs (`@stylistic/eslint-plugin`, `eslint-plugin-lit`
+and `globals`) are optional peers: install them with
+`npm i -D eslint @stylistic/eslint-plugin eslint-plugin-lit globals`.
+
+`npx light typecheck` runs `tsc --noEmit` over the project's `tsconfig.json`,
+with the `typescript` the project installs. In an app project it generates
+`.light/` first, as `light test` does. A native project's typecheck is
+`@lightstart/native`'s: it runs the prepare steps first and adds `--all`.
+
 ### Extending light check
 
 A package adds `cli/extend/check.ts`, default-exporting

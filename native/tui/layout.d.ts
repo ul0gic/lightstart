@@ -46,6 +46,11 @@ export declare const scrollStateOf: (box: TBox) => ScrollState;
  */
 export declare const inlineRuns: (el: TElement, base: Style, out: InlineRun[]) => void;
 /**
+ * Collect the overlay layers under `node` in tree order, hidden subtrees
+ * skipped.
+ */
+export declare const collectLayers: (node: TNode, out: TBox[]) => TBox[];
+/**
  * Visual rows an input needs at `width`; each logical line wraps by characters.
  */
 export declare const inputRows: (input: TInput, width: number) => number;

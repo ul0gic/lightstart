@@ -1,6 +1,6 @@
 # @lightstart/light/model
 
-The data layer: a schema per model, a store that runs every write the same way over any storage adapter, a model's api that its module declares and every user imports, and one change event that keeps every live query current. It needs no host: a page or a native program builds a store and binds components and controllers to its queries. A host that keeps the store elsewhere (Bootstrapp runs it in a db-worker) configures a request that crosses to it and forwards the change event back.
+The data layer: a schema per model, a store that runs every write the same way over any storage adapter, a model's api that its module declares and every user imports, and one change event that keeps every live query current. It needs no host: a page or a native program builds a store and binds components and controllers to its queries. A host that keeps the store elsewhere (for example in a db-worker) configures a request that crosses to it and forwards the change event back.
 
 ## Entries
 
@@ -15,7 +15,7 @@ Each entry loads only its own code; nothing is a barrel.
 | `@lightstart/light/model/jsonl` | the JSON Lines adapter: a file per model, through the IO its host hands it |
 | `@lightstart/light/model/sql` | the SQLite adapter: the model schema as tables, reads and writes as parameterized SQL, over an injected `@lightstart/sqlite` driver |
 | `@lightstart/light/model/sql-builder` | the SQL generator: DDL, additive columns, indexes, where/order and CRUD |
-| `@lightstart/light/model/binder` | `modelQuery`, `bindModelQuery`, `modelBinder` |
+| `@lightstart/light/model/binder` | `modelQuery`, `bindModelQuery`, `modelBinder`, `LiveRows`, `liveRows` |
 | `@lightstart/light/model/slug` | `slugify`, `slugHooks` |
 | `@lightstart/light/model/events` | the event names the model emits |
 
@@ -65,7 +65,7 @@ await users.removeAll(where);
 
 A write rejects on failure. A schema rejection is a `ValidationError` whose `errors` maps each failing field to its message. `users.schema` is the model's schema.
 
-Every method sends through the request `configureModel({ request })` set, read when the call is made: `request(action, model, payload)` with `action` one of the `MODEL:*` commands. `storeRequest(store)` answers it from a store in the same runtime; across a worker, `createModelHandlers(getStore)` is the same map on the worker's side. Until a request is configured, a call rejects. A host that resolves schemas by name builds an api with `modelApi(name, schemaOf)`, where `schemaOf()` answers the schema when it is read; Bootstrapp's `$APP.Model` is that under every name.
+Every method sends through the request `configureModel({ request })` set, read when the call is made: `request(action, model, payload)` with `action` one of the `MODEL:*` commands. `storeRequest(store)` answers it from a store in the same runtime; across a worker, `createModelHandlers(getStore)` is the same map on the worker's side. Until a request is configured, a call rejects. A host that resolves schemas by name builds an api with `modelApi(name, schemaOf)`, where `schemaOf()` answers the schema when it is read.
 
 `registerQueryHook(({ model, schema, opts }) => opts)` shapes every read before it is sent, in registration order; a hook answers the options to use, or nothing to keep them.
 
@@ -105,6 +105,8 @@ const rows = modelQuery(sessions, { where, order, limit });
 ```
 
 An array property runs `modelQuery()`; any other keeps one row (`query.id`, or a `where`). `query` may be a function of the host; `dependsOn: ["month"]` rebuilds the query when those properties change. The resource behind a property is `this.$queries.<key>` (`pending`, `error`, `total`, `refresh()`), a controller's `$ready` waits for the first load of every model-bound property, and a component with a `query`-backed property gets `dataPending`.
+
+For a `Controller` subclass, `liveRows(controller, model, build)` is the same query as a `sync:` entry, its rows read through a `LiveRows<T>`. It registers the query with `controller.$onStart`, so it starts with `start()` against the stores the run opened, its first load counts in `$ready`, a `dispose()` tears it down and a second `start()` follows it again; `build` is a function, so the signals it reads rebuild the query.
 
 ## Hooks
 
@@ -183,7 +185,7 @@ const db = createAdapter("jsonl", { name: "tasks", dir: "data", io });
 await db.init();
 ```
 
-`examples/tasks/` is a terminal app over it.
+`examples/tasks-tui/` and `examples/tasks-web/` are an app over it, on a terminal and in a page.
 
 The SQL adapter is the same store pipeline over one SQLite database. The schema makes the table (`id`, `created`, `updated`, JSON fields as text, booleans as integers, `index`/`unique` and `$indexes` as indexes); `applySchema` is additive, so a new field becomes `ALTER TABLE ... ADD COLUMN` and a destructive change belongs in an explicit migration. Reads translate `where`, `order`, `limit` and `fields` to SQL, with `has`/`has all` through `json_each`; writes go through the same hooks, defaults and validation as every adapter.
 

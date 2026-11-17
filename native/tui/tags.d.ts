@@ -34,7 +34,7 @@ export declare const isKnownTag: (tag: string) => boolean;
 /**
  * Whether an element of `tag` has a prop or attribute named `name`.
  */
-export declare const isKnownProp: (tag: string, name: string) => boolean;
+export declare const isKnownProp: (tag: string, attr: string) => boolean;
 /**
  * An element for `tag`: a defined tag's view box, else an element styled as
  * the HTML name implies.

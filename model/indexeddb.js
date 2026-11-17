@@ -13,6 +13,7 @@
 import { IDB_ERROR, IDB_LOG, IDB_WARN } from "./events.js";
 import { buildQueryResult, validateQueryOptions } from "./query-builder.js";
 import { modelBus } from "./config.js";
+import { schemaField } from "./fields.js";
 
                                                                                                           
 
@@ -60,7 +61,7 @@ const fieldsOf = (schema                         )                              
 export const planIndex = (schema                         , where                         )                                                                    => {
   if (!schema || !where) return null;
   for (const [field, condition] of Object.entries(where)) {
-    const def                         = schema[field];
+    const def = schemaField(schema, field);
     if (!def || (def.index !== true && def.unique !== true)) continue;
     const multiEntry = def.$type === "array";
     const encoded = (v         )          => (def.$type === "boolean" && typeof v === "boolean" ? BOOLEAN_TO_STORAGE[String(v)] : v);
@@ -192,7 +193,7 @@ const IndexedDBAdapter                 = {
   },
 
   _createObjectStore(                  db             , storeName        , schema             ) {
-    const idField                         = schema.id;
+    const idField = schemaField(schema, "id");
     const store = db.createObjectStore(storeName, { keyPath: "id", autoIncrement: !idField || idField.$type === "number" });
     this._updateObjectStore(store, schema);
     modelBus().emit(IDB_LOG, { type: "store_created", store: storeName, fields: Object.keys(schema).length });

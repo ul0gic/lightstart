@@ -2,7 +2,7 @@
  * @lightstart/light/native/tui/paint: a laid-out tree into a Screen, clipping
  * with a rectangle passed down the tree.
  */
-import { TElement, TInput, TNode } from "./node.js";
+import { TBox, TElement, TInput, TNode } from "./node.js";
 import { Screen } from "./screen.js";
 import { Style } from "./style.js";
 export declare class Clip {
@@ -23,6 +23,10 @@ export declare class Caret {
     get visible(): boolean;
 }
 /**
+ * The tab index under screen column `x` on the box's top row, or -1.
+ */
+export declare const tabAt: (box: TBox, x: number) => number;
+/**
  * @param focus the focused element: an input shows its caret, anything else shows inverse
  */
 export declare const paint: (node: TNode, screen: Screen, clip: Clip, inherited: Style, caret: Caret, focus: TElement | null) => void;
@@ -34,3 +38,9 @@ export declare const inputVisualRows: (input: TInput, w: number) => string[][];
  * The visual row and column of the logical caret.
  */
 export declare const inputCaretCell: (input: TInput, w: number) => [number, number];
+/**
+ * Paint the overlay layers under `root` over what the tree painted, in tree order, each over the
+ * whole screen in the style its ancestors hand down, then its shadow: the column right of it and
+ * the row below it take the shadow's bg and keep their glyphs.
+ */
+export declare const paintLayers: (root: TNode, screen: Screen, caret: Caret, focus: TElement | null) => void;
