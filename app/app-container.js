@@ -3,7 +3,7 @@ import T from "@lightstart/light/types";
 import { defineComponent } from "@lightstart/light";
 import { env } from "@lightstart/light/env";
 
-/** @import { AppRouteState, Prop } from "../types.js" */
+/** @import { AppRouteState } from "../types.js" */
 
 export default defineComponent({
   tag: "lc-app-container",
@@ -59,8 +59,10 @@ export default defineComponent({
         });
       }
     };
-    window.addEventListener("popstate", onPopState);
-    this.$own(() => window.removeEventListener("popstate", onPopState));
+    if (typeof window !== "undefined") {
+      window.addEventListener("popstate", onPopState);
+      this.$own(() => window.removeEventListener("popstate", onPopState));
+    }
   },
 
   /** @param {{ changedProps: Map<string, unknown> }} arg */

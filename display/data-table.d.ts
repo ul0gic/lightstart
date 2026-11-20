@@ -18,12 +18,12 @@ declare const _default: Omit<{
         isSelected: Prop<TableRowSelected | null>;
         emptyMessage: string;
         compact: false;
-        total: number;
         _queryKey: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";
         }>;
-        _query: Prop<Record<string, unknown> | null>;
+        _resource: Prop<ModelQueryResource<Record<string, unknown>> | null>;
+        _queryOffs: Prop<Array<() => void>>;
     };
     events: {
         "page-change": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
@@ -35,11 +35,16 @@ declare const _default: Omit<{
             readonly sortDir: import("@lightstart/light/types").DeclaredTypeDefinition<string, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     };
+    connected(): void;
     /** @param {{ changedProps: Map<string, unknown> }} detail */
     willUpdate({ changedProps }: {
         changedProps: Map<string, unknown>;
     }): void;
+    _syncQuery(): void;
+    _disposeQuery(): void;
     _count(): number;
+    _queryRows(): TableRow[];
+    _emptyMessage(): string;
     /** @param {number} page */
     _go(page: number): void;
     /** @param {number} size */
@@ -49,7 +54,6 @@ declare const _default: Omit<{
         sortBy: string;
         sortDir: string;
     }>): void;
-    _pageQuery(): Record<string, unknown> | null;
     _renderFooter(): import("@lightstart/light/html").TemplateResult | "";
     render(): import("@lightstart/light/html").TemplateResult;
 }, "events"> & {
@@ -70,12 +74,12 @@ declare const _default: Omit<{
         isSelected: Prop<TableRowSelected | null>;
         emptyMessage: string;
         compact: false;
-        total: number;
         _queryKey: import("@lightstart/light/types").DeclaredTypeDefinition<string, {
             readonly reactive: false;
             readonly defaultValue: "";
         }>;
-        _query: Prop<Record<string, unknown> | null>;
+        _resource: Prop<ModelQueryResource<Record<string, unknown>> | null>;
+        _queryOffs: Prop<Array<() => void>>;
     } | undefined;
     events?: {
         "page-change": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
@@ -96,3 +100,4 @@ import type { TableRow } from "../types.js";
 import type { DataTableQuery } from "../types.js";
 import type { TableRowSelect } from "../types.js";
 import type { TableRowSelected } from "../types.js";
+import type { ModelQueryResource } from "@lightstart/light/model";

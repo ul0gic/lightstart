@@ -1,6 +1,7 @@
 export function registerFormFieldRenderer(type: string, render: FormFieldRenderer): void;
 export function getFormFieldRenderer(type: string): FormFieldRenderer | undefined;
 export function formFieldTypes(): string[];
+export function controlTagsOf(fields: readonly FormField[]): Set<string>;
 export function renderFormControl(field: FormField, value: unknown, onChange?: (value: unknown) => void, html?: typeof defaultHtml): Renderable;
 export function drawsOwnLabel(field: FormField): boolean;
 export function drawsOwnError(field: FormField): boolean;

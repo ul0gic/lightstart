@@ -1,5 +1,5 @@
 declare const _default: Omit<{
-    mixins: [{
+    mixins: [...({
         props: {
             _overlayId: Prop<string | null>;
         };
@@ -12,7 +12,7 @@ declare const _default: Omit<{
             _overlayId: Prop<string | null>;
         } | undefined;
         events?: {} | undefined;
-    }, {
+    })[], {
         props: {
             _swipe: Prop<import("../types.js").SwipeStart | null>;
         };
@@ -89,7 +89,7 @@ declare const _default: Omit<{
         }>;
     } | undefined;
     events?: {} | undefined;
-    mixins?: [{
+    mixins?: [...({
         props: {
             _overlayId: Prop<string | null>;
         };
@@ -102,7 +102,7 @@ declare const _default: Omit<{
             _overlayId: Prop<string | null>;
         } | undefined;
         events?: {} | undefined;
-    }, {
+    })[], {
         props: {
             _swipe: Prop<import("../types.js").SwipeStart | null>;
         };

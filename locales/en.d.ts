@@ -77,6 +77,8 @@ declare const _default: {
     "lc-data-table": {
         range: string;
         perPage: string;
+        loading: string;
+        failed: string;
     };
     "lc-table": {
         noData: string;

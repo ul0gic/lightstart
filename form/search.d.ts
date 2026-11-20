@@ -1,5 +1,5 @@
 declare const _default: Omit<{
-    mixins: [{
+    mixins: [...({
         props: {
             _overlayId: Prop<string | null>;
         };
@@ -12,7 +12,7 @@ declare const _default: Omit<{
             _overlayId: Prop<string | null>;
         } | undefined;
         events?: {} | undefined;
-    }, {
+    })[], {
         connected(this: import("@lightstart/light").default & {
             onClickOutside?: (e: Event) => void;
         }): void;
@@ -138,7 +138,7 @@ declare const _default: Omit<{
             readonly expanded: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, import("@lightstart/light/types").TypeOptionsOrDefault>;
         }>;
     } | undefined;
-    mixins?: [{
+    mixins?: [...({
         props: {
             _overlayId: Prop<string | null>;
         };
@@ -151,7 +151,7 @@ declare const _default: Omit<{
             _overlayId: Prop<string | null>;
         } | undefined;
         events?: {} | undefined;
-    }, {
+    })[], {
         connected(this: import("@lightstart/light").default & {
             onClickOutside?: (e: Event) => void;
         }): void;

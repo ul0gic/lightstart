@@ -37,7 +37,7 @@ export default defineComponent({
     const { value, max, readonly, disabled, clearable, label, change } = this;
     const perStar = this.step === 0.5 ? 2 : 1;
     const rated = Math.round(value * perStar) / perStar;
-    const locale = document.documentElement.lang || "en";
+    const locale = typeof document === "undefined" ? "en" : document.documentElement.lang || "en";
     /** @param {number} n */
     const number = (n) => (Number.isInteger(n) ? n : new Intl.NumberFormat(locale).format(n));
     const steps = Array.from({ length: max * perStar }, (/** @type {unknown} */ _, index) => (index + 1) / perStar);

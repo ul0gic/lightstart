@@ -1,5 +1,5 @@
 import T from "@lightstart/light/types";
-import View, { defineComponent, trackWork } from "@lightstart/light";
+import { defineComponent, trackWork } from "@lightstart/light";
 import { icons } from "@lightstart/light/theme/icons.js";
 import { ICON_NAME, iconSizeRule, maskRule } from "./icon-mask.js";
 /** @import { IconEntry } from "@lightstart/light/theme" */
@@ -99,7 +99,7 @@ export default defineComponent({
   getIcon(name, solid = false, bold = false) {
     if (!isIconName(name) || !icons.load || variantsOf(solid, bold).every((variant) => drawn.has(ruleKey(name, variant)))) return;
     return trackWork(drawIcon(name, solid, bold), "icon").then(
-      () => this.$requestUpdate(),
+      () => { if (this.isConnected) this.$requestUpdate(); },
       (/** @type {unknown} */ error) => console.error(`Error drawing icon: ${name}`, error),
     );
   },

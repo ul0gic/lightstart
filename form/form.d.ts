@@ -22,6 +22,14 @@ declare const _default: Omit<{
             readonly reactive: false;
             readonly defaultValue: false;
         }>;
+        _pendingControls: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
+            readonly reactive: false;
+            readonly defaultValue: false;
+        }>;
+        _controlLoad: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
+            readonly reactive: false;
+            readonly defaultValue: 0;
+        }>;
     };
     events: {
         "field-change": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, {
@@ -35,6 +43,16 @@ declare const _default: Omit<{
         "form-submit": import("@lightstart/light/types").DeclaredTypeDefinition<Record<string, unknown>, import("@lightstart/light/types").TypeOptionsOrDefault>;
     };
     connected(): void;
+    /** @param {{ changedProps: Map<string, unknown> }} [changed] */
+    updated({ changedProps }?: {
+        changedProps: Map<string, unknown>;
+    }): void;
+    /**
+     * Define every control tag the current fields will draw, and hold the fields
+     * back until they exist. A page without a definer, or a tag already defined,
+     * answers null and the form draws as it always has.
+     */
+    _syncControls(): Promise<void>;
     /**
      * A native control the platform refused. It fires one `invalid` per failing
      * control and then submits nothing, so this is where a submit driven by a
@@ -187,6 +205,14 @@ declare const _default: Omit<{
         _refusing: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
             readonly reactive: false;
             readonly defaultValue: false;
+        }>;
+        _pendingControls: import("@lightstart/light/types").DeclaredTypeDefinition<boolean, {
+            readonly reactive: false;
+            readonly defaultValue: false;
+        }>;
+        _controlLoad: import("@lightstart/light/types").DeclaredTypeDefinition<number, {
+            readonly reactive: false;
+            readonly defaultValue: 0;
         }>;
     } | undefined;
     events?: {

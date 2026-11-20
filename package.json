@@ -184,7 +184,8 @@
         "light/declare-instance-surface": "error"
       },
       "noAny": {}
-    }
+    },
+    "locales": true
   },
   "files": [
     "**/*.js",
