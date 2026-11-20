@@ -5,7 +5,7 @@
  * document-wide. It then parses each block's text with the inline phase (`inline.ts`) and appends
  * the referenced footnotes as one trailing block.
  */
-import { Block, Code, FootnoteDefinition, Footnotes, Heading, Html, Inline, List, ListItem, MAX_NESTING, Paragraph, Quote, Rule, } from "./nodes.js";
+import { Code, FootnoteDefinition, Footnotes, Heading, Html, List, ListItem, MAX_NESTING, Paragraph, Quote, Rule, } from "./nodes.js";
 import { FootnoteState, LinkDefinition, normalizeLabel, parseInline, plainText } from "./inline.js";
 import { parseTable } from "./table.js";
 const BLOCK_TAGS = new Set([
