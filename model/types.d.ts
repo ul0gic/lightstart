@@ -144,7 +144,7 @@ export interface FileStorage {
     }>;
 }
 /**
- * The `model:changed` payload the store emits after every write. A `sync`
+ * The `modelChanged` payload the store emits after every write. A `sync`
  * carries no row: the whole collection changed and every follower re-reads.
  * A `remove` carries the stored row when the model declares a remove hook,
  * `{ id }` otherwise: the store reads nothing it does not need.
@@ -155,6 +155,11 @@ export interface ModelChanged<R = Row> {
     row?: R;
 }
 export type ChangeCallback<R = Row> = (event: ModelChanged<R>) => void;
+/** A warning, an error or a log line the model reports: `type` names it, the rest is its detail. */
+export interface ModelNote {
+    type: string;
+    [detail: string]: unknown;
+}
 /** One `onChange` follower: the matcher its `where` compiled to, and its callback. */
 export interface ChangeSubscriber {
     match: (row: Record<string, unknown>) => boolean;
@@ -172,18 +177,22 @@ type Holds<F> = Held<F> extends {
 } ? true : Held<F> extends {
     readonly defaultValue: infer D;
 } ? ([D] extends [undefined] ? false : true) : false;
-/** The value a field holds, read off its descriptor, with `null` when its default is `null`. */
+/** The value a field holds, read off its descriptor, with `null` when its default is `null` or it is declared `nullable`. */
 type FieldValue<F> = (F extends TypeDefinition<infer V> ? V : unknown) | (Held<F> extends {
     readonly defaultValue: null;
+} ? null : never) | (Held<F> extends {
+    readonly nullable: true;
 } ? null : never);
 /**
  * The row a schema declares. A field declared `required: true` or given a
  * default (`T.boolean({ defaultValue: false })`, `T.number(0)`) is on every
  * stored row, since the store fills defaults on every add whatever the
- * adapter; any other field may be absent; a `null` default adds `null` to
- * the value. `id` is the declared `id` descriptor's type (`id: T.number()`
- * for an auto-incremented key), else the string the store assigns. `$`
- * directives are not fields.
+ * adapter; any other field may be absent; a `null` default or a `nullable`
+ * field adds `null` to the value. `id` is the declared `id` descriptor's type (`id: T.number()`
+ * for an auto-incremented key), else the string the store assigns, and is
+ * always a string or number, as a store key is. `$`
+ * directives are not fields. A row has exactly its schema's fields and `id`,
+ * so a misspelled field is a type error.
  */
 export type RowOf<S> = {
     [K in keyof S as Holds<S[K]> extends true ? FieldKey<K> : never]: FieldValue<S[K]>;
@@ -192,8 +201,8 @@ export type RowOf<S> = {
 } & {
     id: S extends {
         readonly id: TypeDefinition<infer I>;
-    } ? I : string;
-} & Row;
+    } ? I & (string | number) : string;
+};
 /** The row a model's api answers, as `defineModel` or a host's typings bound it: `type Todo = ModelRow<typeof todos>`. */
 export type ModelRow<M> = M extends ModelApi<infer R, ModelSchema | undefined> ? R : never;
 /** The eleven methods of a model's api; `defineModel` or a host's generated typings bind `R`; a model `defineModel` declares always has its schema. */
@@ -272,7 +281,7 @@ export interface StorageAdapter {
     facets?(model: string, fields?: string[], opts?: QueryOptions): Promise<FacetResult>;
     truncate?(model: string): Promise<unknown>;
     supportsOperator?(operator: string): boolean;
-    /** A remote adapter with push feeds `model:changed` through this; the store never calls it. */
+    /** A remote adapter with push feeds `modelChanged` through this; the store never calls it. */
     subscribe?(model: string, cb: ChangeCallback): () => void;
     [extra: string]: unknown;
 }
@@ -283,7 +292,8 @@ export interface AdapterDecoratorContext {
     store: Store;
     /** The model's `$shadow` adapter, or null when it declares none. */
     shadow: StorageAdapter | null;
-    emit: (event: string, data: unknown) => unknown;
+    /** Announce a change; a no-op when the store announces nothing. */
+    changed: (change: ModelChanged) => void;
 }
 /**
  * A `registerAdapterDecorator` factory: answers the adapter the store uses for
@@ -322,8 +332,8 @@ export interface StoreConfig {
     models: Record<string, ModelSchema>;
     databases?: Record<string, StorageAdapter>;
     defaultAdapter?: string;
-    /** Receives `model:changed` after every write; omit for a store nothing follows. */
-    emit?: ((event: string, data: unknown) => unknown) | null;
+    /** Receives every change after a write; omit to announce on `modelChanged`, `null` to announce nothing, a function to take them instead. */
+    changed?: ((change: ModelChanged) => void) | null;
 }
 /** The store: every model's reads and writes over the adapter that holds it. */
 export interface Store extends RowReader {
@@ -362,11 +372,6 @@ export interface RelationshipDefinition extends ModelField {
     belongs?: boolean;
     polymorphic?: boolean;
     as?: string;
-}
-/** The bus the model emits its warnings, its logs and `model:changed` on; see `configureModel`. */
-export interface ModelBus {
-    on(key: string, cb: (data: unknown) => unknown): () => void;
-    emit(key: string, data?: unknown): unknown;
 }
 /** `modelQuery()`'s answer: the resource, and the size of the whole match. */
 export interface ModelQueryResource<T> extends Resource<T[]> {

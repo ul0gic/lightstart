@@ -6,8 +6,7 @@
  * that directive.
  */
 
-import { modelBus } from "./config.js";
-import { ADAPTER_REGISTERED, DATABASE_CREATED, MODEL_WARN } from "./events.js";
+import { adapterRegistered, databaseCreated, modelWarn } from "./events.js";
 import { schemaEntry } from "./fields.js";
 
                                                                                 
@@ -25,9 +24,9 @@ const REQUIRED_METHODS           = ["init", "get", "query", "insert", "update", 
 export const registerStorageAdapter = (type        , definition                )       => {
   const missing = REQUIRED_METHODS.filter((method) => typeof definition[method] !== "function");
   if (missing.length) throw new Error(`Adapter "${type}" is missing required methods: ${missing.join(", ")}`);
-  if (ADAPTER_REGISTRY.has(type)) modelBus().emit(MODEL_WARN, { type: "adapter_overwrite", adapterType: type });
+  if (ADAPTER_REGISTRY.has(type)) modelWarn.emit({ type: "adapter_overwrite", adapterType: type });
   ADAPTER_REGISTRY.set(type, definition);
-  modelBus().emit(ADAPTER_REGISTERED, { type });
+  adapterRegistered.emit({ type });
 };
 
 /**
@@ -38,9 +37,9 @@ export const createAdapter = (type        , config                              
   const definition = ADAPTER_REGISTRY.get(type);
   if (!definition)
     throw new Error(`Unknown adapter type "${type}". Available types: ${getAvailableAdapters().join(", ")}. Use registerStorageAdapter() to register adapters.`);
-  const instance = Object.create(definition)                  ;
+  const instance                 = { ...definition };
   for (const [key, value] of Object.entries(config)) instance[key] = value;
-  modelBus().emit(DATABASE_CREATED, { type, name: config.name, version: config.version });
+  databaseCreated.emit({ type, name: config.name, version: config.version });
   return instance;
 };
 
@@ -55,7 +54,7 @@ export const hasAdapter = (type        )          => ADAPTER_REGISTRY.has(type);
  * a model passes through it.
  */
 export const registerAdapterDecorator = (directive        , factory                  )       => {
-  if (DECORATOR_REGISTRY.has(directive)) modelBus().emit(MODEL_WARN, { type: "decorator_overwrite", directive });
+  if (DECORATOR_REGISTRY.has(directive)) modelWarn.emit({ type: "decorator_overwrite", directive });
   DECORATOR_REGISTRY.set(directive, { decorate: factory });
 };
 

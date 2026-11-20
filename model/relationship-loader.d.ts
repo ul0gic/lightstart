@@ -6,7 +6,7 @@
 import type { ModelSchema, Row, RowReader } from "./types.js";
 /**
  * Enrich `record` with the relations listed in `includes`. An unknown name
- * warns and is skipped; a failed load emits `MODEL_ERROR` and leaves `[]` or
+ * warns and is skipped; a failed load emits `modelError` and leaves `[]` or
  * `null` per the relation's cardinality.
  */
 export declare function loadRelationships<R extends RowReader>(reader: R, models: Record<string, ModelSchema>, modelName: string, record: Row, includes: string[]): Promise<Row>;

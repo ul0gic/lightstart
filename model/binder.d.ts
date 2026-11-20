@@ -35,6 +35,8 @@ export declare const bindModelQuery: ({ store, key, prop, host, api, onValue, on
  * and `dependsOn`.
  */
 export declare const modelBinder: SyncBinder;
+/** A resource of rows, with a `total` when its source is a model query. */
+type RowsResource = ModelQueryResource<Record<string, unknown>>;
 /**
  * The rows of a live query as a `Controller` subclass reads them. A query's
  * resource keeps its rows in a signal typed over `unknown`, which no
@@ -43,21 +45,39 @@ export declare const modelBinder: SyncBinder;
  * as `T[]`, the one cast, the way a view's `Prop<T>` reads its signal. `use`
  * points it at a resource (the next query when the options change), disposing
  * the one before.
+ *
+ * Given a `convert`, each row the resource answers is checked to be a non-null
+ * object and handed to `convert` once, and the converted array is cached
+ * against the source array it came from, so reading `value` twice converts
+ * once. A row that is not an object or that `convert` answers `null` for is
+ * skipped, counted in `skipped`, and reported once per row id through
+ * `modelWarn` as `row_skipped`.
  */
 export declare class LiveRows<T> {
     private res;
     private following;
     private readonly sig;
+    private readonly convert;
+    private readonly model;
+    private source;
+    private converted;
+    private skippedCount;
+    private readonly warned;
+    constructor(convert?: ((row: Record<string, unknown>) => T | null) | null, model?: string);
     /** The rows now; a render or an effect reading them follows the query. */
     get value(): T[];
     /** The rows now, without tracking. */
     peek(): T[];
+    /** How many rows the last conversion skipped. */
+    get skipped(): number;
     /** Whether a load is in flight. */
     get pending(): boolean;
     /** The size of the whole match, past `limit`. */
     get total(): number;
     /** Follow `res` from now on, its rows replacing these as they land; the resource before is disposed. */
-    use(res: ModelQueryResource<Record<string, unknown>>): void;
+    use(res: RowsResource): void;
+    private ingest;
+    private warn;
     /** The first load of the resource followed, settled either way; at once when there is none. */
     loaded(): Promise<void>;
     /** Run the query again. */
@@ -74,5 +94,10 @@ export declare class LiveRows<T> {
  * the run opened; its first load counts in `$ready`, and a second `start()`
  * follows it again. The signals `build` reads are declared above the field
  * that holds the rows.
+ *
+ * `convert` turns each row the query answers into `T` (a generated row class's
+ * `static of`, say), with a `null` answer skipping the row; `rows.value` is
+ * then `T[]` and `rows.skipped` counts the rows the last conversion skipped.
  */
-export declare const liveRows: <T>(controller: Controller, model: ModelApi, build: () => ModelQueryOptions) => LiveRows<T>;
+export declare const liveRows: <T>(controller: Controller, model: ModelApi, build: () => ModelQueryOptions, convert?: (row: Record<string, unknown>) => T | null) => LiveRows<T>;
+export {};

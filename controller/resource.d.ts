@@ -4,8 +4,9 @@
  * JSON, a join across sources. It holds the value, whether it is loading and
  * the last error as signals, dedupes concurrent loads, and never shows an
  * empty middle state: a refresh keeps the last good value until the new
- * answer lands (stale-while-revalidate). The ready gate, the event bus behind
- * `invalidateOn` and work tracking come from `configureControllers`.
+ * answer lands (stale-while-revalidate). The ready gate and work tracking
+ * come from `configureControllers`; the events behind `invalidateOn` are
+ * handed in.
  */
 import type { KeyedResource, KeyedResourceOptions, Resource, ResourceOptions } from "./types.js";
 /**

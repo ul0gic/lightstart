@@ -149,9 +149,13 @@
                               
  
 
-/** The bus a resource's `invalidateOn` listens on. */
-                           
-                                                                 
+/**
+ * An occurrence a resource's `invalidateOn` listens to: any `Emitter<T>`.
+ * The listener takes `unknown`, not `never`: a callback parameter is compared
+ * one way, so `never` would reject every `Emitter<T>` whose `T` is not `never`.
+ */
+                             
+                                                     
  
 
 /** What controllers read from their host; see `configureControllers`. */
@@ -160,8 +164,6 @@
                                                 
                                                           
                                             
-                                           
-                          
  
 
                           
@@ -235,11 +237,10 @@
                   
                                                                                                         
                                                        
-                                                                    
-                           
-                                   
-                                                                                                                                                                           
-                                                       
+                                                                             
+                                                
+                                                                                                                                                                                    
+                                                         
      
                                                                              
                                                                                

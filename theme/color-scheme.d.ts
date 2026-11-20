@@ -15,4 +15,5 @@ export namespace colorScheme {
     function follow(): void;
     function toggle(): void;
 }
+export function applyScheme(mode?: string): void;
 export default colorScheme;

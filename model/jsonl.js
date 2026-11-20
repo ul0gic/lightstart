@@ -14,7 +14,7 @@
  * both for a process that holds its own models and store.
  */
 
-import { configureModel, modelBus } from "./config.js";
+import { configureModel } from "./config.js";
 import { createAdapter, hasAdapter, registerStorageAdapter } from "./factory.js";
 import { buildQueryResult, validateQueryOptions } from "./query-builder.js";
 import { createStore, storeRequest } from "./store.js";
@@ -177,7 +177,7 @@ export default JsonlAdapter;
 /**
  * The store of a process that holds its own models, over JSONL files: the
  * adapter registered once, opened on `dir` through `io`, a store over the
- * models' schemas with the model bus as its emitter, and the store's request
+ * models' schemas announcing on `modelChanged`, and the store's request
  * as what every model call goes through from here on. Answers the store.
  */
 export const openJsonl = async ({ name, dir, io, models }           )                 => {
@@ -188,7 +188,6 @@ export const openJsonl = async ({ name, dir, io, models }           )           
     models: Object.fromEntries(models.map((model)                        => [model.name, model.schema])),
     databases: { jsonl: db },
     defaultAdapter: "jsonl",
-    emit: (event, data) => modelBus().emit(event, data),
   });
   configureModel({ request: storeRequest(store) });
   return store;

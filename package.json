@@ -60,6 +60,7 @@
       "types": "./navigation/types.d.ts",
       "default": "./navigation/index.js"
     },
+    "./i18n": "./i18n/index.js",
     "./theme": {
       "types": "./theme/types.d.ts",
       "default": "./theme/index.js"

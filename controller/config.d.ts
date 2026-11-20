@@ -1,10 +1,10 @@
 /**
- * @lightstart/light/controller: what controllers read from their host
+ * @lightstart/light/controller: what controllers read from their host.
  * `track(label)` is called when async work starts (a controller connecting, a
  * resource fetching) and answers what ends it, so a host that waits for a
- * quiet page counts it; `ready()` answers what a resource waits for before its
- * first fetch; `events` is the bus a resource's `invalidateOn` listens on. A
- * page with no host keeps the defaults: nothing tracked, no gate, no bus.
+ * quiet page counts it; `ready()` answers what a resource waits for before
+ * its first fetch. A page with no host keeps the defaults: nothing tracked,
+ * no gate.
  */
 import type { ControllerConfig } from "./types.js";
 /** The host's hooks, as `configureControllers` left them. */

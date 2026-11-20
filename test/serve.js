@@ -35,6 +35,29 @@ const stripped = (file) => {
   }
 };
 
+const isBare = (/** @type {string} */ specifier) => !/^(?:[A-Za-z][A-Za-z0-9+.-]*:|\/|\.)/.test(specifier);
+
+const resolveSpecifier = (/** @type {string} */ specifier, /** @type {Record<string, string>} */ importmap) => {
+  if (Object.prototype.hasOwnProperty.call(importmap, specifier)) return importmap[specifier];
+  const start = specifier.startsWith("@") ? specifier.indexOf("/") + 1 : 0;
+  const slash = specifier.indexOf("/", start);
+  if (slash === -1) return null;
+  const key = specifier.slice(0, slash + 1);
+  if (!Object.prototype.hasOwnProperty.call(importmap, key)) return null;
+  return importmap[key] + specifier.slice(slash + 1);
+};
+
+const IMPORT_SPECIFIER = /(\bfrom\s+|\bimport\s*\(\s*|\bimport\s+)(["'])([^"'\n]+)\2/g;
+
+const rewriteSpecifiers = (/** @type {string} */ source, /** @type {Record<string, string>} */ importmap) => {
+  if (Object.keys(importmap).length === 0) return source;
+  return source.replace(IMPORT_SPECIFIER, (match, prefix, quote, specifier) => {
+    if (!isBare(specifier)) return match;
+    const target = resolveSpecifier(specifier, importmap);
+    return target === null ? match : prefix + quote + target + quote;
+  });
+};
+
 /** @param {string} dir */
 const manifestOf = (dir) => {
   const file = path.join(dir, "package.json");
@@ -90,12 +113,18 @@ export const serve = async (root, port = 0, render = runnerPage) => {
   const harnessUrl = `/${path.relative(root, path.join(lightDir, "test/harness.js")).split(path.sep).join("/")}`;
   const reportUrl = `/${path.relative(root, path.join(lightDir, "test/report.js")).split(path.sep).join("/")}`;
   const files = new Static({ root, dotfiles: true, cacheControl: "no-store" });
+  const publicFiles = new Static({ root: path.join(root, "public"), dotfiles: true, cacheControl: "no-store" });
   const app = new App()
     .get(RUNNER_PATH, (c) => html(render({ file: c.query("file") ?? "", importmap: imports, harnessUrl, reportUrl })).header("cache-control", "no-store"))
     .get("/*", async (c) => {
-      const found = await files.find(c.param("*") ?? "");
-      if (found === null) return text("", 404);
-      if (found.path.endsWith(".ts") && !found.path.endsWith(".d.ts")) return text(stripped(found.path)).header("content-type", "text/javascript; charset=utf-8").header("cache-control", "no-store");
+      const rest = c.param("*") ?? "";
+      const found = await files.find(rest);
+      if (found === null) {
+        const fromPublic = await publicFiles.find(rest);
+        return fromPublic === null ? text("", 404) : publicFiles.reply(c, fromPublic);
+      }
+      if (found.path.endsWith(".ts") && !found.path.endsWith(".d.ts")) return text(rewriteSpecifiers(stripped(found.path), imports)).header("content-type", "text/javascript; charset=utf-8").header("cache-control", "no-store");
+      if (/\.(?:js|mjs)$/.test(found.path)) return text(rewriteSpecifiers(readFileSync(found.path, "utf8"), imports)).header("content-type", "text/javascript; charset=utf-8").header("cache-control", "no-store");
       return files.reply(c, found);
     });
   const node = await listen(app, { port, host: "127.0.0.1" });

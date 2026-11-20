@@ -416,3 +416,5 @@ export function selector   (source           )                      {
     return key === currentKey;
   };
 }
+
+export { event, Emitter } from "./event.js";

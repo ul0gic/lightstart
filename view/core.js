@@ -12,6 +12,7 @@
 import { currentHost } from "../html/host.js";
 import { configure } from "../html/reactive.js";
 import { Reactive, effect, swapCurrent } from "../signals/index.js";
+import { configureTranslation, translation } from "../i18n/index.js";
 
 configure({ effect });
 
@@ -20,7 +21,6 @@ class Config {
   tracked         ;
   wrap                                                 ;
   settle                                      ;
-  translate                                                                       ;
   dev         ;
 
   constructor() {
@@ -28,7 +28,6 @@ class Config {
     this.tracked = false;
     this.wrap = () => {};
     this.settle = undefined;
-    this.translate = () => undefined;
     this.dev = true;
   }
 }
@@ -42,16 +41,17 @@ export const config = new Config();
  * ran; `wrap(promise, label)` receives every async lifecycle hook, plugin
  * init and the work components pass to `trackWork`; `settle()` resolves when
  * a served region the client cannot adopt may be rendered over; `translate`
- * answers the host's text for a key; `dev` turns on diagnostics.
+ * answers the host's text for a key (a translation of its own: what
+ * `configureTranslation` takes whole); `dev` turns on diagnostics.
  */
-export const configureView = (options                                  ) => {
+export const configureView = (options                                                                                                                          ) => {
   if (options.track !== undefined) {
     config.track = options.track;
     config.tracked = true;
   }
   if (options.wrap !== undefined) config.wrap = options.wrap;
   if (options.settle !== undefined) config.settle = options.settle;
-  if (options.translate !== undefined) config.translate = options.translate;
+  if (options.translate !== undefined) configureTranslation({ translate: options.translate });
   if (options.dev !== undefined) config.dev = options.dev;
 };
 
@@ -66,9 +66,10 @@ export const trackWork =    (work            , label        )             => {
 
 /**
  * The host's text for `key`, or undefined when it has none, so a component
- * falls back to its own.
+ * falls back to its own; a render that asks draws again when the language
+ * changes (`@lightstart/light/i18n`).
  */
-export const translate = (key        , params                          )                     => config.translate(key, params);
+export const translate = (key        , params                          )                     => translation.translate(key, params);
 
 let queue             = [];
 let flushing                    = null;
@@ -81,7 +82,7 @@ function depthOf(node         ) {
   return depth;
 }
 
-function flushUpdates() {
+function flushQueue() {
   if (!flushScheduled) return;
   flushScheduled = false;
   const batch = queue;
@@ -111,8 +112,19 @@ function flushUpdates() {
 function scheduleFlush() {
   if (flushScheduled) return;
   flushScheduled = true;
-  currentHost().scheduleFlush(flushUpdates);
+  currentHost().scheduleFlush(flushQueue);
 }
+
+/**
+ * Perform every pending update now, and the updates those make, instead of
+ * waiting for the host's next flush: for a caller that must have the views
+ * drawn before it returns, such as a view transition's update callback, where
+ * the browser pauses rendering (and the frame the host waits for) until the
+ * callback settles. The host's own scheduled flush then finds nothing to do.
+ */
+export const flushUpdates = ()       => {
+  for (let round = 0; flushScheduled && round < 100; round++) flushQueue();
+};
 
 function enqueueUpdate(view          ) {
   if (flushing !== null) flushing.push(view);

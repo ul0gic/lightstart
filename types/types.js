@@ -48,6 +48,8 @@
                                                                                                                                
                    
                      
+                                                                                                                            
+                     
                   
                                                                                                                  
                    
@@ -159,12 +161,12 @@
                                                            
  
 
-/** A bare default as the `defaultValue` it stands for, or the `required` and `defaultValue` of an options object. */
+/** A bare default as the `defaultValue` it stands for, or the `required`, `nullable` and `defaultValue` of an options object. */
                                                 
                                                                                                       
-                                                           
+                                                                        
 
-/** What a primitive factory's descriptor carries from its options, in its type: the `required` and `defaultValue` written there, which a model's `RowOf` reads. */
+/** What a primitive factory's descriptor carries from its options, in its type: the `required`, `nullable` and `defaultValue` written there, which a model's `RowOf` reads. */
                                                                  
 
 /**

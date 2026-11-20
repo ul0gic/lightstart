@@ -8,11 +8,11 @@ export function lightUnits(host: SlotHost): ChildNode[];
 export function unitsIn(parent: ParentNode): ChildNode[];
 export class SlotPart {
     /**
-     * @param {PartSpec} spec
+     * @param {PartSpec} _spec
      * @param {Element} el
      * @param {object | undefined} host
      */
-    constructor(spec: PartSpec, el: Element, host: object | undefined);
+    constructor(_spec: PartSpec, el: Element, host: object | undefined);
     el: Element;
     /** @type {ChildNode[]} */
     units: ChildNode[];

@@ -4,7 +4,6 @@ declare class Config {
     tracked: boolean;
     wrap: (work: Promise<unknown>, label: string) => void;
     settle: (() => Promise<unknown>) | undefined;
-    translate: (key: string, params?: Record<string, unknown>) => string | undefined;
     dev: boolean;
     constructor();
 }
@@ -16,9 +15,12 @@ export declare const config: Config;
  * ran; `wrap(promise, label)` receives every async lifecycle hook, plugin
  * init and the work components pass to `trackWork`; `settle()` resolves when
  * a served region the client cannot adopt may be rendered over; `translate`
- * answers the host's text for a key; `dev` turns on diagnostics.
+ * answers the host's text for a key (a translation of its own: what
+ * `configureTranslation` takes whole); `dev` turns on diagnostics.
  */
-export declare const configureView: (options: Partial<Omit<Config, "tracked">>) => void;
+export declare const configureView: (options: Partial<Omit<Config, "tracked">> & {
+    translate?: (key: string, params?: Record<string, unknown>) => string | undefined;
+}) => void;
 /**
  * Hand async work an element waits on to the host, so a host that waits for
  * a quiet page counts it. Answers the same promise.
@@ -26,9 +28,18 @@ export declare const configureView: (options: Partial<Omit<Config, "tracked">>) 
 export declare const trackWork: <T>(work: Promise<T>, label: string) => Promise<T>;
 /**
  * The host's text for `key`, or undefined when it has none, so a component
- * falls back to its own.
+ * falls back to its own; a render that asks draws again when the language
+ * changes (`@lightstart/light/i18n`).
  */
 export declare const translate: (key: string, params?: Record<string, unknown>) => string | undefined;
+/**
+ * Perform every pending update now, and the updates those make, instead of
+ * waiting for the host's next flush: for a caller that must have the views
+ * drawn before it returns, such as a view transition's update callback, where
+ * the browser pauses rendering (and the frame the host waits for) until the
+ * callback settles. The host's own scheduled flush then finds nothing to do.
+ */
+export declare const flushUpdates: () => void;
 declare class RenderNode extends Reactive {
     owner: ViewCore;
     constructor(owner: ViewCore);

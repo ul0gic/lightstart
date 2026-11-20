@@ -9,7 +9,7 @@
  * does both for a process that holds its own models and store.
  */
 import type { SqlDatabase } from "@lightstart/sqlite";
-import type { ModelApi, ModelSchema, Row, StorageAdapter, Store } from "./types.js";
+import type { ModelApi, ModelChanged, ModelSchema, Row, StorageAdapter, Store } from "./types.js";
 /** The adapter as `createAdapter("sql", { name, db, models })` makes it. */
 export type SqlStorage = StorageAdapter & {
     db: SqlDatabase;
@@ -33,17 +33,17 @@ export interface SyncWriteOptions {
     /** The stored row an edit or a remove already read, so it is not read again. */
     current?: Row | null;
 }
-/** What a `SqlWriter` writes through: the database, the schemas, the store its hooks see, and where `model:changed` goes. */
+/** What a `SqlWriter` writes through: the database, the schemas, the store its hooks see, and where its changes go (`modelChanged` when absent, nowhere when null). */
 export interface SqlWriterConfig {
     db: SqlDatabase;
     models: Record<string, ModelSchema>;
     store: Store;
-    changes?: ((event: string, data: unknown) => void) | null;
+    changed?: ((change: ModelChanged) => void) | null;
 }
 /**
  * The store's write pipeline, synchronous, over one SQLite database: the
  * before hook, the id, relations reduced, defaults, validation, the write,
- * then `model:changed` and the after hook. It runs inside a caller's
+ * then `modelChanged` and the after hook. It runs inside a caller's
  * transaction, so a hook must answer at once (a promise is refused), and a
  * row whose file would be uploaded is refused too; the async store does both.
  * The SQL adapter's reads see what it writes, since both use one database.
@@ -75,7 +75,7 @@ export interface SqlOpen {
 /**
  * The store of a process that holds its own models, over one SQLite database:
  * the adapter registered once, opened on `db`, a store over the models'
- * schemas with the model bus as its emitter, and the store's request as what
+ * schemas announcing on `modelChanged`, and the store's request as what
  * every model call goes through from here on. Answers the store.
  */
 export declare const openSql: ({ name, db, models }: SqlOpen) => Promise<Store>;

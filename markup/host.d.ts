@@ -1,3 +1,4 @@
+export { dispatch } from "./node.js";
 /** @import { HostNode } from "../html/host.js" */
 /** @import { EventBinding } from "../html/parts.js" */
 /** @import { PartSpec } from "../html/types.js" */
@@ -14,6 +15,7 @@ export class MarkupPrepared extends Prepared {
 export class MarkupHost extends Host {
     /** @type {((error: unknown) => void) | null} */
     onError: ((error: unknown) => void) | null;
+    _pending: number;
     /**
      * @param {ReadonlyArray<string>} strings
      * @param {number} kind
@@ -45,8 +47,8 @@ export class MarkupHost extends Host {
         adopt(): void;
         dispose(): void;
     };
+    settle(): Promise<void>;
 }
-export function dispatch(el: MElement, name: string, event: unknown): number;
 import { Prepared } from "../html/host.js";
 import { TplNode } from "../html/tokenizer.js";
 import type { PartSpec } from "../html/types.js";

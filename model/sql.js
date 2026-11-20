@@ -9,8 +9,8 @@
  * does both for a process that holds its own models and store.
  */
 
-import { configureModel, modelBus } from "./config.js";
-import { MODEL_CHANGED } from "./events.js";
+import { configureModel } from "./config.js";
+import { modelChanged } from "./events.js";
 import { createAdapter, hasAdapter, registerStorageAdapter } from "./factory.js";
 import { needsUpload } from "./file-storage.js";
 import { forStorage, prepareAddRow, prepareEditRow, withId, withoutImmutable } from "./pipeline.js";
@@ -22,7 +22,7 @@ import {
 } from "./sql-builder.js";
 
                                                       
-                                                                                                                                                                 
+                                                                                                                                                                               
 
 const OPERATORS           = [">", ">=", "<", "<=", "!=", "<>", "=", "in", "not in", "has", "has all", "like", "ilike", "is null", "is not null"];
 
@@ -195,12 +195,12 @@ export default SqlAdapter;
                        
  
 
-/** What a `SqlWriter` writes through: the database, the schemas, the store its hooks see, and where `model:changed` goes. */
+/** What a `SqlWriter` writes through: the database, the schemas, the store its hooks see, and where its changes go (`modelChanged` when absent, nowhere when null). */
                                   
                   
                                       
                
-                                                            
+                                                    
  
 
 const runNow = (work            )       => {
@@ -210,7 +210,7 @@ const runNow = (work            )       => {
 /**
  * The store's write pipeline, synchronous, over one SQLite database: the
  * before hook, the id, relations reduced, defaults, validation, the write,
- * then `model:changed` and the after hook. It runs inside a caller's
+ * then `modelChanged` and the after hook. It runs inside a caller's
  * transaction, so a hook must answer at once (a promise is refused), and a
  * row whose file would be uploaded is refused too; the async store does both.
  * The SQL adapter's reads see what it writes, since both use one database.
@@ -220,14 +220,14 @@ export class SqlWriter {
            models                             ;
            store       ;
                    schemas                          ;
-                   announce                                                 ;
+                   announce                                         ;
 
   constructor(config                 ) {
     this.db = config.db;
     this.models = config.models;
     this.store = config.store;
     this.schemas = new Map(Object.entries(config.models));
-    this.announce = config.changes ?? null;
+    this.announce = config.changed === undefined ? (change) => modelChanged.emit(change) : config.changed;
   }
 
           schemaOf(model        )              {
@@ -254,7 +254,7 @@ export class SqlWriter {
 
           changed(model        , action                           , row     )       {
     const announce = this.announce;
-    if (announce !== null) announce(MODEL_CHANGED, { model, action, row });
+    if (announce !== null) announce({ model, action, row });
   }
 
   /** The stored row, decoded, or null. */
@@ -323,7 +323,7 @@ export class SqlWriter {
 /**
  * The store of a process that holds its own models, over one SQLite database:
  * the adapter registered once, opened on `db`, a store over the models'
- * schemas with the model bus as its emitter, and the store's request as what
+ * schemas announcing on `modelChanged`, and the store's request as what
  * every model call goes through from here on. Answers the store.
  */
 export const openSql = async ({ name, db, models }         )                 => {
@@ -335,7 +335,6 @@ export const openSql = async ({ name, db, models }         )                 => 
     models: schemas,
     databases: { sql: adapter },
     defaultAdapter: "sql",
-    emit: (event, data) => modelBus().emit(event, data),
   });
   configureModel({ request: storeRequest(store) });
   return store;

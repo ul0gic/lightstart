@@ -26,7 +26,7 @@ export interface JsonlOpen {
 /**
  * The store of a process that holds its own models, over JSONL files: the
  * adapter registered once, opened on `dir` through `io`, a store over the
- * models' schemas with the model bus as its emitter, and the store's request
+ * models' schemas announcing on `modelChanged`, and the store's request
  * as what every model call goes through from here on. Answers the store.
  */
 export declare const openJsonl: ({ name, dir, io, models }: JsonlOpen) => Promise<Store>;

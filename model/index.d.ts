@@ -9,7 +9,8 @@ export { registerQueryHook } from "./query-hooks.js";
 export { setFileStorage, getFileStorage } from "./file-storage.js";
 export { onChange } from "./changes.js";
 export { ValidationError } from "./validate.js";
-export { configureModel, modelBus, modelRequest, newId } from "./config.js";
+export { configureModel, modelRequest, newId } from "./config.js";
+export { adapterRegistered, databaseCreated, idbError, idbLog, idbWarn, modelChanged, modelError, modelWarn, } from "./events.js";
 import type { ModelApi, ModelSchema, RowOf } from "./types.js";
 /** Brands a per-model api so a `sync:` binder can tell it from any other object. */
 export declare const MODEL_API: unique symbol;

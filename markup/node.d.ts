@@ -1,10 +1,3 @@
-/**
- * @lightstart/light/markup/node: an in-memory tree with the shape the
- * renderer's host seam needs and nothing a browser adds. Elements hold
- * attributes, properties and listeners as maps; a fragment's children move
- * into the parent it is inserted into; a root is the one container whose
- * descendants count as connected.
- */
 /** @import { EventBinding } from "../html/parts.js" */
 export class MNode {
     /** @type {MElement | null} */
@@ -15,12 +8,16 @@ export class MText extends MNode {
     constructor(data: string);
     /** @type {string} */
     data: string;
+    get nodeType(): number;
+    get textContent(): string;
 }
 export class MComment extends MNode {
     /** @param {string} data */
     constructor(data: string);
     /** @type {string} */
     data: string;
+    get nodeType(): number;
+    get textContent(): string;
 }
 /** A listener an element holds: the engine's binding and the options it was added with. */
 export class MListener {
@@ -41,10 +38,12 @@ export class MListener {
         once: boolean;
         passive: boolean;
     } | null;
+    /** @type {unknown} */
+    raw: unknown;
 }
 export class MElement extends MNode {
     /** @param {string} tag */
-    constructor(tag: string);
+    constructor(tag?: string);
     /** @type {string} */
     tag: string;
     /** @type {Map<string, string>} */
@@ -54,7 +53,102 @@ export class MElement extends MNode {
     /** @type {Map<string, MListener[]>} */
     listeners: Map<string, MListener[]>;
     /** @type {MNode[]} */
-    children: MNode[];
+    _childNodes: MNode[];
+    /** @type {boolean} */
+    _viewConnected: boolean;
+    /** @type {object | undefined} */
+    _style: object | undefined;
+    get nodeType(): number;
+    /** @param {string} name */
+    getAttribute(name: string): string | null;
+    /**
+     * @param {string} name
+     * @param {unknown} value
+     */
+    setAttribute(name: string, value: unknown): void;
+    /** @param {string} name */
+    hasAttribute(name: string): boolean;
+    /** @param {string} name */
+    removeAttribute(name: string): void;
+    /**
+     * @param {string} name
+     * @param {boolean} [force]
+     */
+    toggleAttribute(name: string, force?: boolean): boolean;
+    getAttributeNames(): string[];
+    get attributes(): {
+        name: string;
+        value: string;
+    }[];
+    /** @returns {object} the minimal `ElementInternals` a form-associated component reads off the browser */
+    attachInternals(): object;
+    /** @param {MNode[]} nodes */
+    set childNodes(nodes: MNode[]);
+    /** @returns {MNode[]} */
+    get childNodes(): MNode[];
+    /** @returns {MNode[]} */
+    get children(): MNode[];
+    get firstChild(): MNode | null;
+    get lastChild(): MNode | null;
+    get parentNode(): MElement | null;
+    /** @returns {MElement | null} */
+    get parentElement(): MElement | null;
+    get isConnected(): boolean;
+    get localName(): string;
+    get tagName(): string;
+    get classList(): {
+        /** @param {...string} names */
+        add(...names: string[]): void;
+        /** @param {...string} names */
+        remove(...names: string[]): void;
+        /** @param {string} name */
+        contains(name: string): boolean;
+        /**
+         * @param {string} name
+         * @param {boolean} [force]
+         */
+        toggle(name: string, force?: boolean): boolean;
+        readonly length: number;
+    };
+    get style(): object;
+    /**
+     * @param {string} name
+     * @param {EventListenerOrEventListenerObject} listener
+     * @param {AddEventListenerOptions | boolean} [options]
+     */
+    addEventListener(name: string, listener: EventListenerOrEventListenerObject, options?: AddEventListenerOptions | boolean): void;
+    /**
+     * @param {string} name
+     * @param {EventListenerOrEventListenerObject} listener
+     */
+    removeEventListener(name: string, listener: EventListenerOrEventListenerObject): void;
+    /** @param {{ type?: string }} event */
+    dispatchEvent(event: {
+        type?: string;
+    }): boolean;
+    /** @param {...(MNode | string)} nodes */
+    append(...nodes: (MNode | string)[]): void;
+    /** @param {MNode | string} node */
+    appendChild(node: MNode | string): MNode;
+    /**
+     * @param {MNode | string} node
+     * @param {MNode | null} ref
+     */
+    insertBefore(node: MNode | string, ref: MNode | null): MNode;
+    /** @param {MNode} node */
+    removeChild(node: MNode): MNode;
+    /** @param {...(MNode | string)} nodes */
+    replaceWith(...nodes: (MNode | string)[]): void;
+    remove(): void;
+    /** @param {MNode} node */
+    contains(node: MNode): boolean;
+    getRootNode(): MNode;
+    /** @param {string} selector */
+    querySelector(selector: string): MElement | null;
+    /** @param {string} selector */
+    querySelectorAll(selector: string): MElement[];
+    set textContent(value: string);
+    get textContent(): string;
 }
 /** A holder whose children splice into the parent it is inserted into, leaving it empty. */
 export class MFragment extends MElement {
@@ -69,4 +163,10 @@ export function insertBefore(parent: MElement, node: MNode, ref: MNode | null): 
 export function nextSiblingOf(node: MNode): MNode | null;
 export function isConnected(node: MNode): boolean;
 export function descendants(node: MElement): MElement[];
+export function disconnectTree(node: MNode): void;
+export function dispatch(el: MElement, name: string, event: unknown): number;
+export type ParsedSelector = {
+    compound: string;
+    combinator: string;
+}[];
 import type { EventBinding } from "../html/parts.js";

@@ -22,6 +22,15 @@ export declare class Caret {
     constructor();
     get visible(): boolean;
 }
+type TabSpan = {
+    index: number;
+    start: number;
+    end: number;
+};
+/**
+ * The tab under screen column `x` on the box's top row, with its label's start and end columns (end exclusive), or null.
+ */
+export declare const tabSpanAt: (box: TBox, x: number) => TabSpan | null;
 /**
  * The tab index under screen column `x` on the box's top row, or -1.
  */
@@ -44,3 +53,4 @@ export declare const inputCaretCell: (input: TInput, w: number) => [number, numb
  * the row below it take the shadow's bg and keep their glyphs.
  */
 export declare const paintLayers: (root: TNode, screen: Screen, caret: Caret, focus: TElement | null) => void;
+export {};

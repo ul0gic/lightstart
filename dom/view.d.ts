@@ -94,6 +94,15 @@ declare class View extends HTMLElement {
     /** @type {import("../signals/types.js").Store} */
     $state: import("../signals/types.js").Store;
     /**
+     * The live query behind each model-bound property (`sync:` to a model, with
+     * `query`): `pending`, `error`, `total`, `refresh()`. The binding makes the
+     * record on the first such property, so a view without one has none.
+     * @type {Record<string, import("../controller/types.js").ResourceHandle & { total?: number }> | undefined}
+     */
+    $queries: Record<string, import("../controller/types.js").ResourceHandle & {
+        total?: number;
+    }> | undefined;
+    /**
      * The values of the props declared `reactive: false`, made on first use.
      * @type {Record<string, unknown> | null}
      */
@@ -286,6 +295,18 @@ declare class View extends HTMLElement {
         type?: string;
         skipPropUpdate?: boolean;
     }): void;
+}
+declare namespace View {
+    /**
+     * Build a `View` subclass that declares `props`, the typed form of a class
+     * view: `class Page extends View.props({ slug: "" })` reads `this.slug` in
+     * JavaScript under `checkJs` and in TypeScript. A plain class keeps its
+     * `static props`.
+     * @template {import("../view/types.js").PropertyDeclarations} P
+     * @param {P} props
+     * @returns {import("../view/types.js").PropsView<P>}
+     */
+    function props<P extends import("../view/types.js").PropertyDeclarations>(props: P): import("../view/types.js").PropsView<P>;
 }
 import { ViewCore } from "../view/core.js";
 import { render } from "../html/index.js";

@@ -144,4 +144,4 @@ export declare const getCurrentEffect: () => Reactive | null;
  * two notifications per selection change instead of a thousand.
  */
 export declare function selector<T>(source: Signal<T>): (key: T) => boolean;
-export {};
+export { event, Emitter } from "./event.js";

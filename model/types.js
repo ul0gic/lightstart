@@ -174,7 +174,7 @@
 // ---------------------------------------------------------------------
 
 /**
- * The `model:changed` payload the store emits after every write. A `sync`
+ * The `modelChanged` payload the store emits after every write. A `sync`
  * carries no row: the whole collection changed and every follower re-reads.
  * A `remove` carries the stored row when the model declares a remove hook,
  * `{ id }` otherwise: the store reads nothing it does not need.
@@ -186,6 +186,12 @@
  
 
                                                                        
+
+/** A warning, an error or a log line the model reports: `type` names it, the rest is its detail. */
+                            
+               
+                            
+ 
 
 /** One `onChange` follower: the matcher its `where` compiled to, and its callback. */
                                    
@@ -207,23 +213,27 @@
                                                                   
                                                                                                           
 
-/** The value a field holds, read off its descriptor, with `null` when its default is `null`. */
-                                                                                                                                          
+/** The value a field holds, read off its descriptor, with `null` when its default is `null` or it is declared `nullable`. */
+                                                                      
+                                                                    
+                                                                 
 
 /**
  * The row a schema declares. A field declared `required: true` or given a
  * default (`T.boolean({ defaultValue: false })`, `T.number(0)`) is on every
  * stored row, since the store fills defaults on every add whatever the
- * adapter; any other field may be absent; a `null` default adds `null` to
- * the value. `id` is the declared `id` descriptor's type (`id: T.number()`
- * for an auto-incremented key), else the string the store assigns. `$`
- * directives are not fields.
+ * adapter; any other field may be absent; a `null` default or a `nullable`
+ * field adds `null` to the value. `id` is the declared `id` descriptor's type (`id: T.number()`
+ * for an auto-incremented key), else the string the store assigns, and is
+ * always a string or number, as a store key is. `$`
+ * directives are not fields. A row has exactly its schema's fields and `id`,
+ * so a misspelled field is a type error.
  */
                         
                                                                                      
      
                                                                                       
-                                                                                  
+                                                                                                
 
 /** The row a model's api answers, as `defineModel` or a host's typings bound it: `type Todo = ModelRow<typeof todos>`. */
                                                                                            
@@ -311,7 +321,7 @@
                                                                                        
                                              
                                                
-                                                                                                 
+                                                                                                
                                                             
                            
  
@@ -323,7 +333,8 @@
                
                                                                       
                                 
-                                                  
+                                                                     
+                                          
  
 
 /**
@@ -368,8 +379,8 @@
                                       
                                              
                           
-                                                                                      
-                                                            
+                                                                                                                                              
+                                                    
  
 
 /** The store: every model's reads and writes over the adapter that holds it. */
@@ -414,12 +425,6 @@
                     
                         
               
- 
-
-/** The bus the model emits its warnings, its logs and `model:changed` on; see `configureModel`. */
-                           
-                                                              
-                                             
  
 
 /** `modelQuery()`'s answer: the resource, and the size of the whole match. */

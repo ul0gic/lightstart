@@ -20,6 +20,7 @@ import { writableRecord, writerOf } from "../controller/writers.js";
 import { effect, signal, untracked } from "../signals/index.js";
 import { isModelApi } from "./index.js";
 import { onChange } from "./changes.js";
+import { modelWarn } from "./events.js";
                                                          
                                                                                                                             
                                                                                                 
@@ -235,6 +236,23 @@ export const modelBinder             = {
   },
 };
 
+/** A resource of rows, with a `total` when its source is a model query. */
+                                                                
+
+const isRowObject = (value         )          => typeof value === "object" && value !== null && !Array.isArray(value);
+
+const rowId = (row                         )                         => {
+  const id = row.id;
+  if (typeof id === "string" || typeof id === "number") return id;
+  return null;
+};
+
+const idKey = (id                        )         => {
+  if (typeof id === "number") return `n:${id}`;
+  if (typeof id === "string") return `s:${id}`;
+  return "null";
+};
+
 /**
  * The rows of a live query as a `Controller` subclass reads them. A query's
  * resource keeps its rows in a signal typed over `unknown`, which no
@@ -243,11 +261,29 @@ export const modelBinder             = {
  * as `T[]`, the one cast, the way a view's `Prop<T>` reads its signal. `use`
  * points it at a resource (the next query when the options change), disposing
  * the one before.
+ *
+ * Given a `convert`, each row the resource answers is checked to be a non-null
+ * object and handed to `convert` once, and the converted array is cached
+ * against the source array it came from, so reading `value` twice converts
+ * once. A row that is not an object or that `convert` answers `null` for is
+ * skipped, counted in `skipped`, and reported once per row id through
+ * `modelWarn` as `row_skipped`.
  */
 export class LiveRows    {
-          res                                                     = null;
+          res                      = null;
           following                      = null;
                    sig = signal         ([]);
+                   convert                                                     ;
+                   model        ;
+          source                   = null;
+          converted      = [];
+          skippedCount = 0;
+                   warned              = new Set();
+
+  constructor(convert                                                      = null, model = "") {
+    this.convert = convert;
+    this.model = model;
+  }
 
   /** The rows now; a render or an effect reading them follows the query. */
   get value()      {
@@ -257,6 +293,11 @@ export class LiveRows    {
   /** The rows now, without tracking. */
   peek()      {
     return this.sig.peek()       ;
+  }
+
+  /** How many rows the last conversion skipped. */
+  get skipped()         {
+    return this.skippedCount;
   }
 
   /** Whether a load is in flight. */
@@ -272,12 +313,53 @@ export class LiveRows    {
   }
 
   /** Follow `res` from now on, its rows replacing these as they land; the resource before is disposed. */
-  use(res                                             )       {
+  use(res              )       {
     this.drop();
     this.res = res;
     this.following = res.value.subscribe((rows) => {
-      if (rows !== undefined) this.sig.value = rows;
+      if (rows === undefined) return;
+      this.ingest(rows);
     });
+  }
+
+          ingest(rows           )       {
+    const convert = this.convert;
+    if (convert === null) {
+      this.sig.value = rows;
+      return;
+    }
+    if (rows === this.source) {
+      this.sig.value = this.converted;
+      return;
+    }
+    this.source = rows;
+    const converted      = [];
+    let skipped = 0;
+    for (const value of rows) {
+      if (!isRowObject(value)) {
+        skipped++;
+        this.warn(null);
+        continue;
+      }
+      const row = value                           ;
+      const next = convert(row);
+      if (next === null) {
+        skipped++;
+        this.warn(rowId(row));
+        continue;
+      }
+      converted.push(next);
+    }
+    this.converted = converted;
+    this.skippedCount = skipped;
+    this.sig.value = converted;
+  }
+
+          warn(id                        )       {
+    const key = idKey(id);
+    if (this.warned.has(key)) return;
+    this.warned.add(key);
+    modelWarn.emit({ type: "row_skipped", model: this.model, id });
   }
 
   /** The first load of the resource followed, settled either way; at once when there is none. */
@@ -315,9 +397,13 @@ export class LiveRows    {
  * the run opened; its first load counts in `$ready`, and a second `start()`
  * follows it again. The signals `build` reads are declared above the field
  * that holds the rows.
+ *
+ * `convert` turns each row the query answers into `T` (a generated row class's
+ * `static of`, say), with a `null` answer skipping the row; `rows.value` is
+ * then `T[]` and `rows.skipped` counts the rows the last conversion skipped.
  */
-export const liveRows =    (controller            , model          , build                         )              => {
-  const rows = new LiveRows   ();
+export const liveRows =    (controller            , model          , build                         , convert                                             )              => {
+  const rows = new LiveRows   (convert ?? null, model.name);
   controller.$onStart(() => {
     const run = effect(() => {
       const options = build();

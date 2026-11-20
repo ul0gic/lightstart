@@ -15,6 +15,7 @@ in browsers, under server-side prerendering, and on native targets.
 | `@lightstart/light/model` | Models: schemas, a store over IndexedDB or another adapter, live queries ([README](model/README.md)) |
 | `@lightstart/light/env` | The page environment: viewport, breakpoint, OS, color scheme, `subscribe` |
 | `@lightstart/light/navigation` | The host's router as components see it; plain anchors until one is configured |
+| `@lightstart/light/i18n` | The host's translation as components see it; the components' own words until one is configured |
 | `@lightstart/light/theme` | Design tokens from a theme object, presets, `theme.css`, the color scheme, icons ([README](theme/README.md)) |
 | `@lightstart/light/theme/classes` | The utility classes a theme provides: `createEngine`, `buildTheme`, the rule table ([README](theme/README.md#classes)) |
 
@@ -34,18 +35,15 @@ View.define("my-counter", { count: 0, label: "Count" }, (el) => html`
 `);
 ```
 
-A class declares its props with `static props`, in the same shape a definition
-takes (`static properties` is read when `static props` is absent), and holds
-state it writes in signal fields. Its `render()` is tracked,
-so any signal the render reads re-renders the element when it changes:
+A class declares its props with `View.props(definition)`, in the same shape a
+definition takes, so `this.label` is typed under `checkJs` and in TypeScript:
 
 ```js
 import View from "@lightstart/light";
 import { html } from "@lightstart/light/html";
 import { signal } from "@lightstart/light/signals";
 
-class MyCounter extends View {
-  static props = { label: "Count" };
+class MyCounter extends View.props({ label: "Count" }) {
   count = signal(0);
 
   render() {
@@ -59,6 +57,13 @@ class MyCounter extends View {
 
 View.register("my-counter", MyCounter);
 ```
+
+A plain class may keep its props in `static props` (or `static properties`
+when `static props` is absent); the engine gives both forms the same prop
+behaviour. `View.props` is the web and markup hosts' factory: the terminal's
+`View` declares props with `prop()` instead. A class holds state it writes in
+signal fields, and its `render()` is tracked, so any signal the render reads
+re-renders the element when it changes.
 
 Both examples register the `<my-counter>` element, and a class gets the same
 prop behaviour a definition does. A class adds methods and lifecycle hooks
@@ -296,12 +301,12 @@ See [controller/README.md](controller/README.md).
 `@lightstart/light/model` is the data layer. A model has a schema written with
 `T` and an api created by `defineModel`. A store applies every write the same
 way (hooks, defaults, validation, file uploads, the adapter, then
-`model:changed`) over any storage adapter. A page can keep rows in IndexedDB
+`modelChanged`) over any storage adapter. A page can keep rows in IndexedDB
 and bind components and controllers to live queries:
 
 ```js
 import T from "@lightstart/light/types";
-import { configureModel, defineModel, modelBus } from "@lightstart/light/model";
+import { configureModel, defineModel } from "@lightstart/light/model";
 import { createStore, storeRequest } from "@lightstart/light/model/store";
 import { createAdapter, registerStorageAdapter } from "@lightstart/light/model/adapter";
 import IndexedDBAdapter from "@lightstart/light/model/indexeddb";
@@ -323,7 +328,6 @@ await db.init();
 const store = createStore({
   models,
   databases: { indexeddb: db },
-  emit: (event, data) => modelBus().emit(event, data),
 });
 configureModel({ request: storeRequest(store) });
 ```
@@ -345,8 +349,16 @@ once.
   `click(event)`, `path()`, `subscribe(fn)`. Without a router, a link is a plain
   anchor; `configureNavigation({ href, go, click, path, subscribe })` plugs one
   in.
+- **`translation`** (`@lightstart/light/i18n`): `translate(key, params)`,
+  `language()`, `languages()`, `setLanguage(language)`, `subscribe(fn)`. Without
+  a library, a component keeps its own words and the language is the
+  document's; `configureTranslation({ translate, language, languages,
+  setLanguage, subscribe })` plugs one in (`@lightstart/i18n` is light's own, any
+  other works the same), and a render that read the translation draws again
+  when the language changes.
 - **`translate(key, params)`**: the host's text for a key, or `undefined` so a
-  component falls back to its own words. Set through `configureView({ translate })`.
+  component falls back to its own words: `translation.translate`.
+  `configureView({ translate })` plugs a library that has only sentences.
 - **`trackWork(promise, label)`**: hands async work to the host's `wrap`, so a
   host that waits for a quiet page counts it.
 - **`configureView({ track, wrap, settle, translate, dev })`**: `track(label)`
@@ -378,10 +390,12 @@ and light's own `test/serve.js` remains the test runner's server.
 `npx light check [dirs...]` checks component definitions against light's
 conventions: definitions go through `defineComponent`, props are declared under
 `props`, boolean attributes bind as `?attr`, parts are named by their tag, hooks
-use the engine's names, methods do not shadow DOM methods, and stylesheets scope
-through the component's tag. It reads templates as trees, including `<script
-type="module">` blocks in pages. Findings are reported at their file, line and
-column; `--rule <id>` runs one rule and `--json` prints the result.
+use the engine's names, methods do not shadow DOM methods, stylesheets scope
+through the component's tag, and a view's render reads no browser global (use
+`env`, `navigation`, a storage adapter or `translation.language()`, or move the
+read to `connected()` or an event handler). It reads templates as trees,
+including `<script type="module">` blocks in pages. Findings are reported at
+their file, line and column; `--rule <id>` runs one rule and `--json` prints the result.
 
 The checker reads definitions with the TypeScript 6 compiler API, which
 TypeScript 7's `typescript` no longer exports. Under TypeScript 7, install

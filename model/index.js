@@ -18,7 +18,10 @@ export { onChange } from "./changes.js";
 export { ValidationError } from "./validate.js";
 import { modelRequest } from "./config.js";
 
-export { configureModel, modelBus, modelRequest, newId } from "./config.js";
+export { configureModel, modelRequest, newId } from "./config.js";
+export {
+  adapterRegistered, databaseCreated, idbError, idbLog, idbWarn, modelChanged, modelError, modelWarn,
+} from "./events.js";
 
                                                                                                                                             
 
