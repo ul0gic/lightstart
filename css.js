@@ -1,10 +1,4 @@
-/**
- * @file CSS tokenizer. Each statement inside a block is a
- * nested rule when its line reaches a `{` before a `;`, a declaration otherwise; that one rule
- * covers nesting without more machinery.
- */
-import { HlState } from "./state.js";
-import { readString, Stream } from "./stream.js";
+import { readString } from "./stream.js";
 const IDENT = /-?[_a-zA-Z -￿][\w -￿-]*/y;
 const NUMBER = /[+-]?(?:\d*\.\d+|\d+)(?:e[+-]?\d+)?(?:%|[a-zA-Z]+)?/y;
 const HEX = /#[0-9a-fA-F]{3,8}\b/y;

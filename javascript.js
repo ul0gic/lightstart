@@ -4,8 +4,8 @@
  * significant token allows. A token
  * function answers the token type, or "" for text that gets no color.
  */
-import { HlState, Frame } from "./state.js";
-import { readString, Stream } from "./stream.js";
+import { Frame } from "./state.js";
+import { readString } from "./stream.js";
 const KEYWORDS = new Set("break case catch class const continue debugger default delete do else enum export extends finally for function if import in instanceof new return super switch this throw try typeof var void while with yield let static async await of as from get set".split(" "));
 const TS_KEYWORDS = new Set("interface type implements private public protected readonly declare namespace abstract keyof satisfies infer is override module unique asserts".split(" "));
 const ATOMS = new Set(["true", "false", "null", "undefined", "NaN", "Infinity"]);

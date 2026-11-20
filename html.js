@@ -6,7 +6,6 @@
 import { cssToken } from "./css.js";
 import { jsToken } from "./javascript.js";
 import { HlState } from "./state.js";
-import { Stream } from "./stream.js";
 const TEXT = 0;
 const TAG = 1;
 const VALUE = 2;

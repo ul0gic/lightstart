@@ -1,11 +1,3 @@
-/**
- * @file The languages the code column and the chat's code blocks color, as the languages plugin
- * registers them: each with the file extensions and the fence names it answers to, and a tokenizer
- * for one line (the state carried to the next; tokenizers.ts names the core's). With none
- * registered nothing is colored. The registry is the process's, so a plugin's languages are
- * removed by its id when it stops.
- */
-import { HlState, Token } from "./state.js";
 export class Language {
     id;
     /** Lower-case file extensions ("ts"). */
@@ -27,6 +19,13 @@ export class Language {
     }
 }
 const languages = [];
+let markdownStructureFn = null;
+/** Register the structure reader a loaded Markdown grammar answers, so a synchronous caller can use it once the grammar is loaded. */
+export const setMarkdownStructure = (fn) => {
+    markdownStructureFn = fn;
+};
+/** The loaded Markdown grammar's structure reader, or null before it loads. */
+export const markdownStructureHook = () => markdownStructureFn;
 /** Register `l`; a later one with the same id replaces the earlier. */
 export const addLanguage = (l) => {
     for (let i = 0; i < languages.length; i++)
